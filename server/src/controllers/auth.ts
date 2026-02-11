@@ -8,6 +8,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/User";
+import { sendMail } from "../services/email-services";
 
 // ---------------------------------------------------------
 // SIGNUP : creer un nouveau compte utilisateur
@@ -154,5 +155,47 @@ async function login(req: Request, res: Response) {
   }
 }
 
+// Recovery password
+
+const EMAIL_REGEX: RegExp =
+  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+async function recovery(req: Request, res: Response) {
+  try {
+    // Etape 1 : recupere email et mot de passe
+    const email = req.body.email;
+
+    // Etape 2 : vérification input
+    if (!email) {
+      return res.status(400).json({
+        message: "Email requis",
+      });
+    }
+
+    // Etape 3 : vérification du format du mail
+    if (!EMAIL_REGEX.test(email)) {
+      return res.status(400).json({
+        message: "Format invalide",
+      });
+    }
+
+    // Etape 4 : recherche du user avec son adresse mail
+    // utilisation await : je veux que le résultat de user.findOne soit intégrer à ma const user (= .then(data))
+    const user = await User.findOne({ email: email });
+    // si format ok on fait une recherche par mail
+    if (!user) {
+      return res.status(400).json({
+        message: "Utilisateur non reconnu",
+      });
+    } else {
+      sendMail(email);
+      return res.status(200);
+    }
+  } catch (error) {
+    console.error("Erreur recovery:", error);
+    return res.status(500).json({ message: "Erreur serveur" });
+  }
+}
 // export  pour les utiliser dans les routes
-export { signup, login };
+
+export { signup, login, recovery };
