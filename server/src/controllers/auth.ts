@@ -29,33 +29,32 @@ async function signup(req: Request, res: Response) {
       });
     }
 
-    // Etape 3 : verifier si un compte avec cet email existe deja
+    // Etape 3 : check si  compte avec cet email existe deja
     const existingUser = await User.findOne({ email: email });
 
     if (existingUser) {
       return res.status(400).json({
-        message: "Cet email est deja utilise",
+        message: "Cet email est deja utilisé",
       });
     }
 
-    // Etape 4 : hasher (chiffrer) le mot de passe avant de le stocker
-    // On ne stocke JAMAIS un mot de passe en clair dans la base de donnees
-    // Le "salt" ajoute des caracteres aleatoires pour rendre le hash unique
-    // Le nombre 10 = nombre de "tours" de chiffrement (plus c'est haut, plus c'est securise mais lent)
+    // Etape 4 : hashe le mot de passe avant de le stocker
+    // Le "salt" = caracteres aleatoires > hash unique
+    // 10 = nombre de "tours" de chiffrement
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Etape 5 : creer l'utilisateur dans la base de donnees
+    // Etape 5 : creer l'utilisateur en DB
     const newUser = await User.create({
       firstName: firstName,
       lastName: lastName,
       email: email,
-      password: hashedPassword, // on stocke le hash, pas le mot de passe en clair
+      password: hashedPassword, // on stocke le hash
     });
 
     // Etape 6 : generer un token JWT (JSON Web Token)
-    // C'est comme un "badge d'acces" qu'on donne a l'utilisateur
-    // Il le renverra a chaque requete pour prouver qu'il est connecte
+    // Sorte de "badge d'acces"
+    // Check a chaque requete pour prouver qu'il est connecté
     const token = jwt.sign(
       {
         id: newUser._id, // on met l'id du user dans le token
@@ -63,14 +62,14 @@ async function signup(req: Request, res: Response) {
         role: newUser.role,
       },
       process.env.JWT_SECRET as string, // cle secrete pour signer le token (dans le .env)
-      { expiresIn: "7d" } // le token expire apres 7 jours
+      { expiresIn: "7d" }, // le token expire apres 7 jours
     );
 
     // Etape 7 : renvoyer une reponse au frontend
-    // Code 201 = "created" (ressource creee avec succes)
-    // On renvoie le token + les infos du user (SANS le mot de passe)
+    // Code 201 = "created"
+    // On renvoie le token + les infos du user (sans le mot de passe)
     return res.status(201).json({
-      message: "Compte cree avec succes",
+      message: "Compte créé avec succés",
       token: token,
       user: {
         id: newUser._id,
@@ -81,7 +80,7 @@ async function signup(req: Request, res: Response) {
       },
     });
   } catch (error) {
-    // Si une erreur inattendue se produit, on renvoie une erreur 500 (erreur serveur)
+    // Si  erreur :
     console.error("Erreur signup:", error);
     return res.status(500).json({ message: "Erreur serveur" });
   }
@@ -94,22 +93,21 @@ async function signup(req: Request, res: Response) {
 // ---------------------------------------------------------
 async function login(req: Request, res: Response) {
   try {
-    // Etape 1 : recuperer email et mot de passe du formulaire
+    // Etape 1 : recupere email et mot de passe
     const email = req.body.email;
     const password = req.body.password;
 
-    // Etape 2 : verifier que les champs sont remplis
+    // Etape 2 : vérification input
     if (!email || !password) {
       return res.status(400).json({
         message: "Email et mot de passe requis",
       });
     }
 
-    // Etape 3 : chercher l'utilisateur par son email dans la base
+    // Etape 3 : check user par son email
     const user = await User.findOne({ email: email });
 
-    // Si aucun utilisateur trouve, on renvoie une erreur
-    // On ne precise pas si c'est l'email ou le mdp qui est faux (pour la securite)
+    // Si aucun utilisateur trouvé = erreur
     if (!user) {
       return res.status(401).json({
         message: "Email ou mot de passe incorrect",
@@ -117,7 +115,7 @@ async function login(req: Request, res: Response) {
     }
 
     // Etape 4 : comparer le mot de passe envoye avec le hash en base
-    // bcrypt.compare fait la comparaison de maniere securisee
+    // bcrypt.compare pour la comparaison
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
     if (!isPasswordCorrect) {
@@ -134,11 +132,11 @@ async function login(req: Request, res: Response) {
         role: user.role,
       },
       process.env.JWT_SECRET as string,
-      { expiresIn: "7d" }
+      { expiresIn: "7d" },
     );
 
-    // Etape 6 : renvoyer le token et les infos utilisateur
-    // Code 200 = "OK" (requete reussie)
+    // Etape 6 : renvoyer le token et les infos user
+    // Code 200 = "OK"
     return res.status(200).json({
       message: "Connexion reussie",
       token: token,
@@ -156,5 +154,5 @@ async function login(req: Request, res: Response) {
   }
 }
 
-// On exporte les deux fonctions pour les utiliser dans les routes
+// export  pour les utiliser dans les routes
 export { signup, login };

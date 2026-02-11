@@ -1,6 +1,5 @@
 // =============================================================
-// APP.TSX - Composant principal de l'application React
-// C'est ici qu'on definit les routes (quelle URL affiche quelle page)
+// Ici on definit les routes (quelle URL affiche quelle page)
 // =============================================================
 
 import React from "react";
@@ -11,7 +10,9 @@ import Signup from "./pages/Signup";
 function App() {
   return (
     // BrowserRouter : active le systeme de routing (navigation entre pages)
+    // Grace à lui on remplace le composant appelé sans reload
     <BrowserRouter>
+      {/* ICI on ajoutera la <Navbar />  via le composant Navbar.tsx à faire donc*/}
       <Routes>
         {/* Si l'URL est /login, on affiche la page Login */}
         <Route path="/login" element={<Login />} />
@@ -26,5 +27,5 @@ function App() {
   );
 }
 
-// On exporte App pour l'utiliser dans main.tsx (point d'entree React)
+// On exporte pour l'utiliser dans main.tsx
 export default App;

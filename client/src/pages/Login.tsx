@@ -1,5 +1,5 @@
 // =============================================================
-// PAGE LOGIN - Formulaire de connexion
+// LOGIN
 // L'utilisateur entre son email et mot de passe pour se connecter
 // =============================================================
 
@@ -13,6 +13,7 @@ function Login() {
   // Quand un state change, React re-affiche le composant automatiquement
 
   // Contenu du champ email (vide au depart)
+  // rappel email = valeur setEmail = fonction pour la modifier
   const [email, setEmail] = useState("");
 
   // Contenu du champ mot de passe (vide au depart)
@@ -22,7 +23,10 @@ function Login() {
   const [error, setError] = useState("");
 
   // --- FONCTION DE SOUMISSION DU FORMULAIRE ---
-  // Cette fonction est appelee quand l'utilisateur clique sur "Se connecter"
+  // quand l'utilisateur clique sur "Se connecter"
+  // au sujet de "e" = l'event qui vient de se passer ici le submit
+  // au sujet de React.FormEvent : TS "e" sera un event de formulaire = étiquette de typage
+  // rappel : TS = précision sur le type (ici e = event formulaire)
   async function handleSubmit(e: React.FormEvent) {
     // Empecher le rechargement de la page (comportement par defaut d'un formulaire HTML)
     e.preventDefault();
@@ -30,17 +34,36 @@ function Login() {
     // Remettre le message d'erreur a vide
     setError("");
 
+    // A LIRE
+    //
+    //
+    // Ici on passe la requete POST au back avec email et mdp
+    // axios.post(url, donnees) envoie les donnees en JSON au serveur
+    // AXIOS :
+    // lib qui remplace (facilite) la syntaxe :
+    // AU lieu d'écrire
+    // fetch("http://localhost:5000/api/auth/login", {
+    // method: "POST",
+    // headers: { "Content-Type": "application/json" },
+    // body: JSON.stringify({ email: email, password: password })
+    //})
+    //.then(function(res) { return res.json(); })
+    //.then(function(data) { console.log(data); })
+    // Résultat carrément plus simple !
+    //
+    //
+    // TRY : on test un truc qui peut rater
     try {
-      // Envoyer une requete POST au backend avec l'email et le mot de passe
-      // axios.post(url, donnees) envoie les donnees en JSON au serveur
-      var response = await axios.post("http://localhost:5000/api/auth/login", {
-        email: email,
-        password: password,
-      });
-
-      // Si on arrive ici, c'est que la connexion a reussi
-      // On sauvegarde le token et les infos user dans le localStorage du navigateur
-      // Le localStorage garde les donnees meme si on ferme le navigateur
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        {
+          email: email,
+          password: password,
+        },
+      );
+      // Si on arrive ici, connexion = ok
+      // On save le token et les infos user dans localStorage
+      // Rappel : localStorage garde les donnees meme si on ferme le browser
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
 
@@ -71,7 +94,7 @@ function Login() {
             <span className="logo-text">Z</span>
           </div>
           <h1 className="auth-title">ZENDO</h1>
-          <p className="auth-subtitle">L'artisanat en tout simplicite</p>
+          <p className="auth-subtitle">L'artisanat en tout simplicité</p>
         </div>
 
         {/* --- FORMULAIRE --- */}

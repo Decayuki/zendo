@@ -9,30 +9,18 @@ import axios from "axios";
 import "../styles/Auth.css";
 
 function Signup() {
-  // --- STATES ---
-  // Un state par champ du formulaire + un pour l'erreur + un pour le succes
-
-  // Contenu du champ prenom
+  // STATES
   const [firstName, setFirstName] = useState("");
-
-  // Contenu du champ nom
   const [lastName, setLastName] = useState("");
-
-  // Contenu du champ email
   const [email, setEmail] = useState("");
-
-  // Contenu du champ mot de passe
   const [password, setPassword] = useState("");
 
-  // Message d'erreur (vide = pas d'erreur)
+  // Erreur & succès
   const [error, setError] = useState("");
-
-  // Message de succes (vide = pas de succes)
   const [success, setSuccess] = useState("");
 
-  // --- FONCTION DE SOUMISSION DU FORMULAIRE ---
+  //  FONCTION DE SOUMISSION DU FORMULAIRE (meme logique que pour login)
   async function handleSubmit(e: React.FormEvent) {
-    // Empecher le rechargement de la page
     e.preventDefault();
 
     // Remettre les messages a vide
@@ -40,19 +28,21 @@ function Signup() {
     setSuccess("");
 
     try {
-      // Envoyer les donnees du formulaire au backend
-      var response = await axios.post("http://localhost:5000/api/auth/signup", {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        password: password,
-      });
+      // Envoyer les donnees du formulaire au back
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/signup",
+        {
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          password: password,
+        },
+      );
 
-      // Si on arrive ici, le compte a ete cree avec succes
-      // Afficher le message de succes renvoye par le serveur
+      // Si on arrive ici : compte créé o//
       setSuccess(response.data.message);
 
-      // Sauvegarder le token et les infos dans le navigateur
+      // Sauvegarder le token et les infos dans browser
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
 
@@ -60,7 +50,7 @@ function Signup() {
 
       // TODO: plus tard, rediriger vers la page d'accueil ou login
     } catch (err: any) {
-      // Si le serveur a renvoye une erreur (email deja utilise, champ manquant...)
+      // Si erreur (email deja utilise, champ manquant...)
       if (err.response) {
         setError(err.response.data.message);
       } else {
@@ -73,7 +63,6 @@ function Signup() {
   return (
     <div className="auth-container">
       <div className="auth-card">
-
         {/* --- EN-TETE : logo + titre --- */}
         <div className="auth-header">
           <div className="auth-logo">
@@ -85,11 +74,10 @@ function Signup() {
 
         {/* --- FORMULAIRE --- */}
         <form onSubmit={handleSubmit} className="auth-form">
-
-          {/* Afficher l'erreur si il y en a une */}
+          {/* Gestion erreur */}
           {error && <p className="auth-error">{error}</p>}
 
-          {/* Afficher le message de succes si il y en a un */}
+          {/* Connexion OK */}
           {success && <p className="auth-success">{success}</p>}
 
           {/* Champ prenom */}
@@ -100,7 +88,9 @@ function Signup() {
               type="text"
               placeholder="Jean"
               value={firstName}
-              onChange={function (e) { setFirstName(e.target.value); }}
+              onChange={function (e) {
+                setFirstName(e.target.value);
+              }}
               required
             />
           </div>
@@ -113,7 +103,9 @@ function Signup() {
               type="text"
               placeholder="Dupont"
               value={lastName}
-              onChange={function (e) { setLastName(e.target.value); }}
+              onChange={function (e) {
+                setLastName(e.target.value);
+              }}
               required
             />
           </div>
@@ -126,7 +118,9 @@ function Signup() {
               type="email"
               placeholder="johndoe@example.com"
               value={email}
-              onChange={function (e) { setEmail(e.target.value); }}
+              onChange={function (e) {
+                setEmail(e.target.value);
+              }}
               required
             />
           </div>
@@ -139,7 +133,9 @@ function Signup() {
               type="password"
               placeholder="********"
               value={password}
-              onChange={function (e) { setPassword(e.target.value); }}
+              onChange={function (e) {
+                setPassword(e.target.value);
+              }}
               required
               minLength={6}
             />
@@ -157,11 +153,10 @@ function Signup() {
             Deja un compte ? <a href="/login">Se connecter</a>
           </p>
         </div>
-
       </div>
     </div>
   );
 }
 
-// On exporte le composant pour l'utiliser dans App.tsx
+//  Export du composant pour l'utiliser dans App.tsx
 export default Signup;
