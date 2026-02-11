@@ -1,0 +1,167 @@
+// =============================================================
+// PAGE SIGNUP - Formulaire de creation de compte
+// L'utilisateur entre son prenom, nom, email et mot de passe
+// pour creer un nouveau compte
+// =============================================================
+
+import React, { useState } from "react";
+import axios from "axios";
+import "../styles/Auth.css";
+
+function Signup() {
+  // --- STATES ---
+  // Un state par champ du formulaire + un pour l'erreur + un pour le succes
+
+  // Contenu du champ prenom
+  const [firstName, setFirstName] = useState("");
+
+  // Contenu du champ nom
+  const [lastName, setLastName] = useState("");
+
+  // Contenu du champ email
+  const [email, setEmail] = useState("");
+
+  // Contenu du champ mot de passe
+  const [password, setPassword] = useState("");
+
+  // Message d'erreur (vide = pas d'erreur)
+  const [error, setError] = useState("");
+
+  // Message de succes (vide = pas de succes)
+  const [success, setSuccess] = useState("");
+
+  // --- FONCTION DE SOUMISSION DU FORMULAIRE ---
+  async function handleSubmit(e: React.FormEvent) {
+    // Empecher le rechargement de la page
+    e.preventDefault();
+
+    // Remettre les messages a vide
+    setError("");
+    setSuccess("");
+
+    try {
+      // Envoyer les donnees du formulaire au backend
+      var response = await axios.post("http://localhost:5000/api/auth/signup", {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password,
+      });
+
+      // Si on arrive ici, le compte a ete cree avec succes
+      // Afficher le message de succes renvoye par le serveur
+      setSuccess(response.data.message);
+
+      // Sauvegarder le token et les infos dans le navigateur
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+
+      alert("Compte cree avec succes !");
+
+      // TODO: plus tard, rediriger vers la page d'accueil ou login
+    } catch (err: any) {
+      // Si le serveur a renvoye une erreur (email deja utilise, champ manquant...)
+      if (err.response) {
+        setError(err.response.data.message);
+      } else {
+        setError("Erreur de connexion au serveur");
+      }
+    }
+  }
+
+  // --- AFFICHAGE (JSX) ---
+  return (
+    <div className="auth-container">
+      <div className="auth-card">
+
+        {/* --- EN-TETE : logo + titre --- */}
+        <div className="auth-header">
+          <div className="auth-logo">
+            <span className="logo-text">Z</span>
+          </div>
+          <h1 className="auth-title">ZENDO</h1>
+          <p className="auth-subtitle">L'artisanat en tout simplicite</p>
+        </div>
+
+        {/* --- FORMULAIRE --- */}
+        <form onSubmit={handleSubmit} className="auth-form">
+
+          {/* Afficher l'erreur si il y en a une */}
+          {error && <p className="auth-error">{error}</p>}
+
+          {/* Afficher le message de succes si il y en a un */}
+          {success && <p className="auth-success">{success}</p>}
+
+          {/* Champ prenom */}
+          <div className="form-group">
+            <label htmlFor="firstName">Prenom</label>
+            <input
+              id="firstName"
+              type="text"
+              placeholder="Jean"
+              value={firstName}
+              onChange={function (e) { setFirstName(e.target.value); }}
+              required
+            />
+          </div>
+
+          {/* Champ nom */}
+          <div className="form-group">
+            <label htmlFor="lastName">Nom</label>
+            <input
+              id="lastName"
+              type="text"
+              placeholder="Dupont"
+              value={lastName}
+              onChange={function (e) { setLastName(e.target.value); }}
+              required
+            />
+          </div>
+
+          {/* Champ email */}
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              type="email"
+              placeholder="johndoe@example.com"
+              value={email}
+              onChange={function (e) { setEmail(e.target.value); }}
+              required
+            />
+          </div>
+
+          {/* Champ mot de passe */}
+          <div className="form-group">
+            <label htmlFor="password">Mot de passe</label>
+            <input
+              id="password"
+              type="password"
+              placeholder="********"
+              value={password}
+              onChange={function (e) { setPassword(e.target.value); }}
+              required
+              minLength={6}
+            />
+          </div>
+
+          {/* Bouton de soumission */}
+          <button type="submit" className="auth-button">
+            Creer mon compte
+          </button>
+        </form>
+
+        {/* --- LIENS EN BAS --- */}
+        <div className="auth-links">
+          <p className="auth-link-switch">
+            Deja un compte ? <a href="/login">Se connecter</a>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+// On exporte le composant pour l'utiliser dans App.tsx
+export default Signup;
