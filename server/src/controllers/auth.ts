@@ -10,7 +10,7 @@ import jwt from "jsonwebtoken";
 import User from "../models/User";
 
 // ---------------------------------------------------------
-// SIGNUP : creer un nouveau compte utilisateur
+// SIGNUP
 // Route : POST /api/auth/signup
 // Body attendu : { firstName, lastName, email, password }
 // ---------------------------------------------------------
@@ -87,7 +87,7 @@ async function signup(req: Request, res: Response) {
 }
 
 // ---------------------------------------------------------
-// LOGIN : connecter un utilisateur existant
+// LOGIN
 // Route : POST /api/auth/login
 // Body attendu : { email, password }
 // ---------------------------------------------------------
@@ -114,7 +114,7 @@ async function login(req: Request, res: Response) {
       });
     }
 
-    // Etape 4 : comparer le mot de passe envoye avec le hash en base
+    // Etape 4 : compare le mot de passe envoyé avec le hash en base
     // bcrypt.compare pour la comparaison
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
@@ -132,6 +132,7 @@ async function login(req: Request, res: Response) {
         role: user.role,
       },
       process.env.JWT_SECRET as string,
+      // définition du temps de validité
       { expiresIn: "7d" },
     );
 
