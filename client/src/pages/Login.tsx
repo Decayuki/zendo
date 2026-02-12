@@ -141,7 +141,7 @@ function Login() {
 
         {/* --- LIENS EN BAS --- */}
         <div className="auth-links">
-          <a href="/forgot-password" className="auth-link-forgot">
+          <a href="/recovery" className="auth-link-forgot">
             Mot de passe oublie ?
           </a>
           <p className="auth-link-switch">

@@ -6,6 +6,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import RecoveryScreen from "./pages/RecoveryScreen";
 
 function App() {
   return (
@@ -22,6 +23,9 @@ function App() {
 
         {/* Pour toute autre URL, on redirige vers /login */}
         <Route path="*" element={<Navigate to="/login" />} />
+
+        {/* Pour toute autre URL, on redirige vers /login */}
+        <Route path="/recovery" element={<RecoveryScreen />} />
       </Routes>
     </BrowserRouter>
   );
