@@ -60,12 +60,13 @@ const ProductSchema = new mongoose.Schema(
       default: [],
     },
 
+    // !!!JC!!! pas ici mais pour variation
     // Prix du produit en euros
     // Plus tard ce prix pourra etre dans un modele Variation (couleur/taille)
-    price: {
-      type: Number,
-      required: true,
-    },
+    // price: {
+    //   type: Number,
+    //   required: true,
+    // },
 
     // Famille du produit (Femme, Homme, Enfant, Maison...)
     family: {
@@ -95,14 +96,16 @@ const ProductSchema = new mongoose.Schema(
     // Reference produit (code vendeur)
     reference: {
       type: String,
-      default: "",
+      // default: "", // !!!JC!!! pas de valeur par defaut, le vendeur doit la renseigner
+      require: true, // !!!JC!!! la reference est obligatoire pour identifier le produit
+                     // !!!JC!!! Plus tard on pourra ajouter un index unique sur (sellerId + reference) pour garantir que chaque vendeur a des references uniques
     },
 
     // Statut du produit : actif (visible) ou inactif (cache)
     status: {
-      type: String,
-      enum: ["active", "inactive"],
-      default: "active",
+      type: Boolean, // !!!JC!!! boolean car une string "active"/"inactive" ca prend plus de place et c'est plus compliqué a manipuler que true/false
+      // enum: ["active", "inactive"],
+      default: true, // !!!JC!!! par defaut le produit est actif, le vendeur doit le desactiver s'il ne veut pas le vendre
     },
 
     // ID du vendeur qui a cree ce produit
@@ -111,6 +114,7 @@ const ProductSchema = new mongoose.Schema(
     sellerId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true, // !!!JC!!! le vendeur est obligatoire pour savoir a qui appartient le produit
     },
   },
   {
