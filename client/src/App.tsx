@@ -6,6 +6,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Log from "./pages/Auth/Login";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Routes>
         {/* Si l'URL est /login, on affiche la page Login */}
         <Route path="/login" element={<Login />} />
+        <Route path="/log" element={<Log />} />
 
         {/* Si l'URL est /signup, on affiche la page Signup */}
         <Route path="/signup" element={<Signup />} />
