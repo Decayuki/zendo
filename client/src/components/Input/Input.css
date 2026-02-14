@@ -1,0 +1,61 @@
+.input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.input-label {
+    font-weight: 600;
+    font-size: 0.75rem;
+    color: #1a1a2e;
+}
+
+.input {
+    border: 0.0625rem solid #e0ddd8;
+    border-radius: 0.625rem;
+    background-color: #faf8f5;
+    color: #333;
+    transition: border-color 0.2s ease;
+    outline: none;
+}
+
+input::placeholder {
+    color: #b5b3ae;
+}
+
+/* Sizes */
+.input-sm {
+    font-size: 0.5rem;
+    padding: 0.375rem 0.625rem;
+}
+.input-md {
+    font-size: 0.875rem;
+    padding: 0.625rem 0.75rem;
+}
+.input-lg {
+    font-size: 1.1rem;
+    padding: 0.75rem 1rem;
+}
+
+/* Variants */
+.input-default:focus {
+    border-color: #3b5998;
+}
+
+.input-error {
+    border-color: #c0392b;
+    font-size: 0.8rem;
+}
+
+.input-success {
+    border-color: #27ae60;
+}
+
+.input-helper {
+    color: #666;
+    font-size: 0.8rem;
+}
