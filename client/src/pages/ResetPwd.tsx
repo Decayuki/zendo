@@ -8,23 +8,26 @@ function RecoveryScreen({ navigation }: any) {
 
   // STATES
   const [error, setError] = useState("");
-  const [mail, setMail] = useState("");.
-
+  const [mail, setMail] = useState("");
+  const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
   // Fonction de soumission du formulaire
   const handleSubmit = () => {
     setError("");
-    if (EMAIL_REGEX.test(mail)) {
-      fetch(`http://localhost:3000/recovery`, {
-        method: "POST",
+    if (password === password2 && password.length >= 6) {
+      fetch(`http://localhost:3000/user/`, {
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          mail: mail,
+          password: password,
         }),
       })
         .then((response) => response.json())
         .then((data) => {
-          if (data.result === "Email envoyé") {
-            alert("Email envoyé");
+          if (data.result === "Mot de passe mis à jour") {
+            navigation.navigate("Login", {
+              screen: "Login",
+            });
           } else {
             setError(data.result);
           }
@@ -48,14 +51,25 @@ function RecoveryScreen({ navigation }: any) {
         {error && <p className="auth-error">{error}</p>}
 
         <div className="form-group">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="password">Nouveau mot de passe</label>
           <input
-            id="email"
-            type="email"
-            placeholder="johndoe@example.com"
-            value={mail}
+            id="password"
+            type="password"
+            placeholder="Mot de passe"
+            value={password}
             onChange={function (e) {
-              setMail(e.target.value);
+              setPassword(e.target.value);
+            }}
+            required
+          />
+          <label htmlFor="password2">Confirmation mot de passe</label>
+          <input
+            id="password2"
+            type="password"
+            placeholder="Mot de passe"
+            value={password2}
+            onChange={function (e) {
+              setPassword2(e.target.value);
             }}
             required
           />

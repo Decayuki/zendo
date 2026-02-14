@@ -179,15 +179,17 @@ async function recovery(req: Request, res: Response) {
       });
     }
 
-    // Etape 4 : recherche du user avec son adresse mail
+    // Etape 4 : si format ok, recherche du user avec son adresse mail
     // utilisation await : je veux que le résultat de user.findOne soit intégrer à ma const user (= .then(data))
+
     const user = await User.findOne({ email: email });
-    // si format ok on fait une recherche par mail
+    // Si aucun utilisateur trouvé = erreur
     if (!user) {
       return res.status(400).json({
         message: "Utilisateur non reconnu",
       });
-    } else {
+    } // Etape 5 : si user trouvé, envoi du mail de récupération
+    else {
       sendMail(email);
       return res.status(200);
     }
