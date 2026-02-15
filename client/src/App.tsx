@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import RecoveryScreen from "./pages/RecoveryScreen";
 import Log from "./pages/Auth/Login";
+import ResetPwd from "./pages/ResetPwd";
 
 function App() {
   return (
@@ -28,6 +29,9 @@ function App() {
 
         {/* Pour toute autre URL, on redirige vers /login */}
         <Route path="/recovery" element={<RecoveryScreen />} />
+
+        {/* Pour toute autre URL, on redirige vers /login */}
+        <Route path="/reset" element={<ResetPwd />} />
       </Routes>
     </BrowserRouter>
   );

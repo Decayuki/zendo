@@ -1,5 +1,7 @@
 import { useState } from "react";
 import "../styles/Auth.css";
+import Button from "../components/Button/Button";
+import { Input } from "../components/Input/Input";
 
 function RecoveryScreen({ navigation }: any) {
   // Grabbed from emailregex.com
@@ -8,7 +10,7 @@ function RecoveryScreen({ navigation }: any) {
 
   // STATES
   const [error, setError] = useState("");
-  const [mail, setMail] = useState("");.
+  const [mail, setMail] = useState("");
 
   // Fonction de soumission du formulaire
   const handleSubmit = () => {
@@ -49,7 +51,7 @@ function RecoveryScreen({ navigation }: any) {
 
         <div className="form-group">
           <label htmlFor="email">Email</label>
-          <input
+          <Input
             id="email"
             type="email"
             placeholder="johndoe@example.com"
@@ -59,11 +61,8 @@ function RecoveryScreen({ navigation }: any) {
             }}
             required
           />
+          <Button onClick={handleSubmit}>Récupérer mon mot de passe</Button>
         </div>
-
-        <button className="auth-button" onClick={handleSubmit}>
-          Récupérer mon mot de passe
-        </button>
       </div>
     </div>
   );
