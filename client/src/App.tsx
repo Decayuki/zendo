@@ -15,6 +15,7 @@ import {
 // --- Pages ---
 import Login from "./pages/Auth/Login";
 import Signup from "./pages/Auth/Signup";
+import RecoveryScreen from "./pages/Auth/RecoveryScreen";
 
 // --- Composants ---
 import Navbar from "./components/Navbar/Navbar";
@@ -25,7 +26,9 @@ function AppContent() {
 
   // On cache la navbar sur les pages d'auth
   const hideNavbar =
-    location.pathname === "/login" || location.pathname === "/signup";
+    location.pathname === "/login" ||
+    location.pathname === "/signup" ||
+    location.pathname === "/recovery";
 
   return (
     <>
@@ -33,6 +36,7 @@ function AppContent() {
         {/* --- Pages d'authentification (sans navbar) --- */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/recovery" element={<RecoveryScreen />} />
 
         {/* --- Route par defaut : redirige vers login --- */}
         {/* Plus tard on pourra rediriger vers /accueil si l'utilisateur est connecte */}
