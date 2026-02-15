@@ -191,7 +191,18 @@ async function recovery(req: Request, res: Response) {
       });
     } // Etape 5 : si user trouvé, envoi du mail de récupération
     else {
-      sendMail(email);
+      // création d'un token avec user id + email + role (pour pouvoir l'utiliser dans la route de reset)
+      const token = jwt.sign(
+        {
+          id: user._id,
+          email: user.email,
+          role: user.role,
+        },
+        process.env.JWT_SECRET as string,
+        // définition du temps de validité
+        { expiresIn: "15m" },
+      );
+      sendMail(email, token);
       return res.status(200);
     }
   } catch (error) {
@@ -199,6 +210,66 @@ async function recovery(req: Request, res: Response) {
     return res.status(500).json({ message: "Erreur serveur" });
   }
 }
+
+// ---------------------------------------------------------
+// RESET PASSWORD
+// Route : POST /api/auth/reset?token=xxx
+// Body attendu : { password }
+// ---------------------------------------------------------
+// Route : POST /api/auth/reset
+// Body attendu : { firstName, lastName, email, password }
+// ---------------------------------------------------------
+async function reset(req: Request, res: Response) {
+  try {
+    // Etape 1 : recuperer les donnees envoyees par le formulaire
+    /* Recuperer le token dans les headers qui arrive du frontend (dans la requete)
+    sous le format Authorization: Bearer {token}*/
+    // ici on recupere le token et on enleve "Bearer " pour ne garder que le token
+    const token = req.header("authorization")?.replace("Bearer ", "");
+    const password = req.body.password;
+
+    // Etape 2 : récuperer les infos du token pour savoir de quel user il s'agit
+    // jwt.verify pour decoder le token
+    const decodedToken = jwt.verify(
+      token as string,
+      process.env.JWT_SECRET as string,
+    );
+    // on recupere l'id du user à partir du token décodé
+    const userId = (decodedToken as { id: string }).id;
+    if (!password) {
+      return res.status(400).json({
+        message: "Tous les champs sont requis",
+      });
+    }
+
+    // Etape 4 : hashe le mot de passe avant de le stocker
+    // Le "salt" = caracteres aleatoires > hash unique
+    // 10 = nombre de "tours" de chiffrement
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Etape 5 : creer l'utilisateur en DB
+    const newUser = await User.updateOne(
+      { _id: userId },
+      {
+        $set: {
+          password: hashedPassword, // on stocke le hash
+        },
+      },
+    );
+
+    // Etape 6 : renvoyer une reponse au frontend
+    // Code 201 = "created"
+    // On affiche un message de succès
+    return res.status(201).json({
+      message: "Mot de passe mis à jour",
+    });
+  } catch (error) {
+    // Si  erreur :
+    console.error("Erreur signup:", error);
+    return res.status(500).json({ message: "Erreur serveur" });
+  }
+}
 // export  pour les utiliser dans les routes
 
-export { signup, login, recovery };
+export { signup, login, recovery, reset };
