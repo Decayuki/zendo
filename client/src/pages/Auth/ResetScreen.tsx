@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
-import "../styles/Auth.css";
-import Button from "../components/Button/Button";
-import { Input } from "../components/Input/Input";
-import { Header } from "../components/Header";
+import "../../styles/Auth.css";
+import Button from "../../components/Button/Button";
+import { Input } from "../../components/Input/Input";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
-function ResetPassword({ navigation }: any) {
+function ResetScreen({ navigation }: any) {
   useEffect(() => {
     /* URLSearchParams : permet de recuperer les parametres dans l'URL (ce qui est après le ? dans l'URL)
     ex ici : http://localhost:3000/reset?token=xxx */
@@ -65,6 +67,11 @@ function ResetPassword({ navigation }: any) {
   return (
     <div className="auth-container">
       <div className="auth-card">
+        <div className="auth-return">
+          <Link to="/login" className="link">
+            <FontAwesomeIcon icon={faArrowLeft} size="lg" color="#3b4553" />
+          </Link>
+        </div>
         {/* --- EN-TETE : logo + titre --- */}
         <div className="auth-header">
           <div className="auth-logo">
@@ -104,4 +111,4 @@ function ResetPassword({ navigation }: any) {
     </div>
   );
 }
-export default ResetPassword;
+export default ResetScreen;

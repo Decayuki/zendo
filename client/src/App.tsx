@@ -16,6 +16,7 @@ import {
 import Login from "./pages/Auth/Login";
 import Signup from "./pages/Auth/Signup";
 import RecoveryScreen from "./pages/Auth/RecoveryScreen";
+import ResetScreen from "./pages/Auth/ResetScreen";
 
 // --- Composants ---
 import Navbar from "./components/Navbar/Navbar";
@@ -28,7 +29,8 @@ function AppContent() {
   const hideNavbar =
     location.pathname === "/login" ||
     location.pathname === "/signup" ||
-    location.pathname === "/recovery";
+    location.pathname === "/recovery" ||
+    location.pathname === "/reset";
 
   return (
     <>
@@ -37,7 +39,7 @@ function AppContent() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/recovery" element={<RecoveryScreen />} />
-
+        <Route path="/reset" element={<ResetScreen />} />
         {/* --- Route par defaut : redirige vers login --- */}
         {/* Plus tard on pourra rediriger vers /accueil si l'utilisateur est connecte */}
         <Route path="*" element={<Navigate to="/login" />} />
