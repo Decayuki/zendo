@@ -86,4 +86,7 @@ function App() {
       <AppContent />
     </BrowserRouter>
   );
-}
+
+
+// On exporte pour l'utiliser dans main.tsx
+export default App;
