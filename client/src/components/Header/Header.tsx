@@ -1,12 +1,10 @@
-import React from "react";
-import "../styles/Header.css";
+import "./Header.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBell,
   faCartShopping,
   faCompass,
   faNavicon,
-  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
