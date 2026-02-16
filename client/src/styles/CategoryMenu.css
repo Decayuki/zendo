@@ -1,0 +1,57 @@
+
+.category-menu {
+  width: 100%;
+  max-width: 100%; 
+  background-color: transparent; 
+  padding: 10px 0;
+  font-family: 'Inter', sans-serif;
+}
+
+.family-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.family-item {
+  margin-bottom: 2px;
+}
+
+.family-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 10px;
+  cursor: pointer;
+  font-weight: 600; 
+  color: #333;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+}
+
+.family-header:hover {
+  background-color: rgba(0, 0, 0, 0.03); /* Effet de survol très léger */
+}
+
+/* Style quand une catégorie est ouverte */
+.family-header.active {
+  color: #000;
+}
+
+.category-list {
+  list-style: none;
+  padding: 0 0 10px 30px; 
+  margin: 0;
+}
+
+.category-item {
+  padding: 8px 0;
+  font-size: 0.9rem;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.category-item:hover {
+  color: #d4c5a9; 
+}

@@ -1,0 +1,15 @@
+/* Home.css */
+
+.home-container {
+  padding: 20px;
+  padding-bottom: 80px; /* Espace pour la navbar mobile en bas */
+}
+
+.product-grid {
+  display: grid;
+  /* Crée des colonnes automatiques de minimum 250px */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  margin-top: 30px;
+}
