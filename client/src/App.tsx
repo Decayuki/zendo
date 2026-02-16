@@ -16,6 +16,7 @@ import {
 import Login from "./pages/Auth/Login";
 import Signup from "./pages/Auth/Signup";
 import RecoveryScreen from "./pages/Auth/RecoveryScreen";
+import Home from "./pages/Home";
 
 // --- Composants ---
 import Navbar from "./components/Navbar/Navbar";
@@ -37,6 +38,7 @@ function AppContent() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/recovery" element={<RecoveryScreen />} />
+        <Route path="/home" element={<Home />} />
 
         {/* --- Route par defaut : redirige vers login --- */}
         {/* Plus tard on pourra rediriger vers /accueil si l'utilisateur est connecte */}

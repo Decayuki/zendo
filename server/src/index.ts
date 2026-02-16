@@ -9,6 +9,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth";
+import productRoutes from "./routes/product";
 
 // Charge depuis le .env
 // (MONGO_URI, JWT_SECRET, PORT)
@@ -35,6 +36,7 @@ app.use(express.json());
 // Exemple : POST /api/auth/signup, POST /api/auth/login
 //
 app.use("/api/auth", authRoutes);
+app.use("/api/products", productRoutes);
 
 // Route de test pour verifier que le serveur fonctionne
 // http://localhost:5000

@@ -9,7 +9,7 @@ import "./Navbar.css";
 function Navbar() {
   return (
     <nav className="navbar">
-      <NavLink to="/accueil" className="navbar-item">
+      <NavLink to="/home" className="navbar-item">
         Accueil
       </NavLink>
 
