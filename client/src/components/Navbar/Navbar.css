@@ -1,0 +1,36 @@
+/* ===== NAVBAR - Barre de navigation en bas ===== */
+
+.navbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: #ffffff;
+  border-top: 1px solid #e0ddd8;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Chaque element de la navbar */
+.navbar-item {
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  color: #8e8e9a;
+  padding: 8px 12px;
+  transition: color 0.2s;
+}
+
+/* Onglet actif (la page actuelle) */
+.navbar-item.active {
+  color: #3b5998;
+  font-weight: 700;
+}
+
+/* Hover au survol */
+.navbar-item:hover {
+  color: #1a1a2e;
+}

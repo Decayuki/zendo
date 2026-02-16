@@ -1,7 +1,5 @@
 // =============================================================
-// CONTROLLER AUTH - Contient la logique pour signup et login
-// C'est ici qu'on gere ce qui se passe quand un utilisateur
-// veut creer un compte ou se connecter
+// CONTROLLER AUTH - Contient la logique pour signup, login & recovery
 // =============================================================
 
 import { Request, Response } from "express";
@@ -156,40 +154,42 @@ async function login(req: Request, res: Response) {
   }
 }
 
-// Recovery password
-
+// ---------------------------------------------------------
+// RECOVERY : envoyer un email de reinitialisation de mot de passe
+// Route : POST /api/auth/recovery
+// Body attendu : { email }
+// ---------------------------------------------------------
 const EMAIL_REGEX: RegExp =
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 async function recovery(req: Request, res: Response) {
   try {
-    // Etape 1 : recupere email et mot de passe
+    // Etape 1 : recupere email
     const email = req.body.email;
 
-    // Etape 2 : vérification input
+    // Etape 2 : verification input
     if (!email) {
       return res.status(400).json({
         message: "Email requis",
       });
     }
 
-    // Etape 3 : vérification du format du mail
+    // Etape 3 : verification du format du mail
     if (!EMAIL_REGEX.test(email)) {
       return res.status(400).json({
         message: "Format invalide",
       });
     }
 
-    // Etape 4 : si format ok, recherche du user avec son adresse mail
-    // utilisation await : je veux que le résultat de user.findOne soit intégrer à ma const user (= .then(data))
-
+    // Etape 4 : recherche du user avec son adresse mail
     const user = await User.findOne({ email: email });
-    // Si aucun utilisateur trouvé = erreur
+
     if (!user) {
       return res.status(400).json({
         message: "Utilisateur non reconnu",
       });
-    } // Etape 5 : si user trouvé, envoi du mail de récupération
+    }
+    // Etape 5 : si user trouvé, envoi du mail de récupération
     else {
       // création d'un token avec user id + email + role (pour pouvoir l'utiliser dans la route de reset)
       const token = jwt.sign(

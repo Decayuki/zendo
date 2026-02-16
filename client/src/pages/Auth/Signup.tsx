@@ -6,7 +6,7 @@
 
 import React, { useState } from "react";
 import axios from "axios";
-import "../styles/Auth.css";
+import "../../styles/Auth.css";
 
 function Signup() {
   // STATES

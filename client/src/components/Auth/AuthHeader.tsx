@@ -1,5 +1,5 @@
-import "./Auth.css";
-import Logo from "../../components/Logo/Logo";
+import "../../styles/Auth.css";
+import Logo from "../Logo/Logo";
 
 const AuthHeader = () => {
     return (

@@ -1,5 +1,5 @@
 // =============================================================
-// MAIN.TSX - Point d'entree de l'app
+// MAIN - Point d'entree de l'app
 // Fait le lien entre React et HTML (dans la div #root)
 // =============================================================
 
