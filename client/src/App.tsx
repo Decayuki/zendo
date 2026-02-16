@@ -38,6 +38,7 @@ import Search from "./pages/Search";
 import Profil from "./pages/Profil";
 import Favoris from "./pages/Favoris";
 import Shop from "./pages/Shop";
+import ProductList from "./pages/ProductList";
 
 function App() {
   return (
@@ -46,18 +47,22 @@ function App() {
     // Grace à lui on remplace le composant appelé sans reload
     <BrowserRouter>
       {/* ICI on ajoutera la <Navbar />  via le composant Navbar.tsx à faire donc*/}
-       <Navbar />
+      <Navbar />
       <Routes>
         {/* --- Pages d'authentification (sans navbar) --- */}
         {/* Définition des chemins correspondants aux 'to' de Navbar */}
         <Route path="/home" element={<Home />} />
         <Route path="/recherche" element={<Search />} />
+        {/* Routes pour la liste de produits par catégorie */}
+        <Route path="/:family" element={<ProductList />} />
+        <Route path="/:family/:category" element={<ProductList />} />
+
         <Route path="/favoris" element={<Favoris />} />
-        <Route path="/boutique" element={<Shop/>} />
+        <Route path="/boutique" element={<Shop />} />
         <Route path="/profil" element={<Profil />} />
         {/* Redirection par défaut si l'utilisateur arrive sur le site */}
         <Route path="/" element={<Navigate to="/home" />} />
-        
+
         {/* Si l'URL est /login, on affiche la page Login */}
         <Route path="/login" element={<Login />} />
         <Route path="/log" element={<Log />} />
