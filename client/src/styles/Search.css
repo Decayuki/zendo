@@ -1,0 +1,44 @@
+/* Search.css */
+
+.search-page-container {
+  min-height: 100vh; /* La couleur de fond couvrira toute la hauteur */
+  background-color: #f9f7f2; /* Le fond crème demandé */
+  padding: 20px;
+}
+
+.search-header {
+  max-width: 800px;
+  margin: 0 auto 40px auto;
+  display: flex;
+  justify-content: center;
+}
+
+.search-layout {
+  display: flex;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.search-sidebar {
+  width: 260px; /* Aligné avec la largeur du CategoryMenu */
+  flex-shrink: 0;
+}
+
+.search-results {
+  flex-grow: 1;
+  background-color: transparent;
+}
+
+/* Tablette et Mobile */
+@media (max-width: 768px) {
+  .search-layout {
+    flex-direction: column;
+  }
+  
+  .search-sidebar {
+    width: 100%;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+  }
+}
