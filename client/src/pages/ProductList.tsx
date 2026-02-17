@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../services/api';
 import { fromSlug } from '../utils/formatUrl';
-import Product from '../components/Product';
+import Product from '../components/ProductView';
 import '../styles/ProductList.css';
 import product from '../asset/Logo/Product.png';
 

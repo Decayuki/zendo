@@ -1,6 +1,6 @@
 import React from 'react';
 import SearchBar from '../components/SearchBar';
-import Product from '../components/Product';
+import Product from '../components/ProductView';
 import '../styles/Home.css';
 
 
