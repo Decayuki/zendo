@@ -54,7 +54,7 @@ function getProducts(req: Request, res: Response) {
 }
 
 // GET /api/products/:id
-// Recupere un produit par son ID
+// Recupere un produit par ID
 function getProductById(req: Request, res: Response) {
   Product.findById(req.params.id)
     .then(function (product) {
