@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FavoriteBorder, Favorite, AddShoppingCart } from "@mui/icons-material";
-import "../styles/Product.css";
+import "../styles/ProductView.css";
 import ProductModal from "./ProductModal";
 
 // Définition de la structure des données du produit (TypeScript)
