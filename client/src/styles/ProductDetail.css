@@ -19,11 +19,11 @@
 }
 
 .product-detail-container::-webkit-scrollbar-track {
-  background: #f5f5f5;
+  background: #faf8f5;
 }
 
 .product-detail-container::-webkit-scrollbar-thumb {
-  background: #d4a574;
+  background: #faf8f5;
   border-radius: 6px;
 }
 
@@ -35,11 +35,12 @@
   height: 500px;
   border-radius: 0;
   overflow: hidden;
-  background: #f5f5f5;
+  background: #faf8f5;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  padding-top: 80px;
 }
 
 .product-image img {
@@ -81,12 +82,11 @@
    INFOS PRODUIT
    ======================================== */
 .product-info {
-  display: flex;
-  flex-direction: row;
-  gap: 50px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   justify-content: flex-start;
   padding: 30px 20px;
-  background: white;
+  background: #faf8f5;
 }
 
 .product-title {
@@ -121,7 +121,6 @@
   font-size: 16px;
   margin: 0;
 }
-
 /* ========================================
    BOUTONS
    ======================================== */
@@ -129,7 +128,7 @@
   display: flex;
   gap: 15px;
   flex-direction: row;
-  padding: 20px;
+  padding: 20px 20px 80px 20px;
   background: white;
 }
 
