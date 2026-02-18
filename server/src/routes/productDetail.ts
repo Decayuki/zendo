@@ -7,13 +7,31 @@
 // =============================================================
 
 import { Router } from "express";
-import { getProduct } from "../controllers/productDetail";
+import {
+  getProduct,
+  addFavori,
+  deleteFavori,
+  addProductToCart,
+  getFavori,
+} from "../controllers/productDetail";
 
 // On cree un "routeur" Express
 const router = Router();
 
-// Quand on recoit un GET sur /article/:id, on appelle la fonction detailProduct du controller
-router.get("/article/:id", getProduct);
+// Quand on recoit un GET sur /article/:id, on appelle la fonction getProduct du controller
+router.get("/product/:id", getProduct);
+
+// Quand on recoit un POST sur /favoris/:id, on appelle la fonction favori du controller
+router.post("/user/:id/favoris/:productId", addFavori);
+
+// Quand on recoit un DELETE sur /favoris/:id, on appelle la fonction favori du controller
+router.delete("/user/:id/favoris/:productId", deleteFavori);
+
+// Quand on recoit un POST sur /favoris/:id, on appelle la fonction favori du controller
+router.post("/user/:id/cart/:productId", addProductToCart);
+
+// Quand on recoit un GET sur /favoris/:id, on appelle la fonction favori du controller
+router.get("/user/:id/favoris/:productId", getFavori);
 
 // On exporte le routeur pour l'utiliser dans index.ts
 export default router;
