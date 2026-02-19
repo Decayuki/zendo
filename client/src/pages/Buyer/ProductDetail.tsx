@@ -6,20 +6,22 @@ import Navbar from "../../components/Navbar/Navbar";
 import "../../styles/ProductDetail.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import { addFavoris } from "../../reducers/favoris";
-import { deleteFavoris } from "../../reducers/favoris";
+import { addcart, deletecart } from "../../reducers/cart";
 
 function ProductDetail() {
   // ETATS
 
   const dispatch = useDispatch();
 
+  const [error, setError] = useState("");
   const [productImage, setProductImage] = useState([]);
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [productDescription, setProductDescription] = useState("");
+  const [userId, setUserID] = useState();
   const [productID, setProductID] = useState("");
-  const [userFavoris, setUserFavoris] = useState(false);
+  const [isFavori, setIsFavori] = useState(false);
+  const [userFavori, setUserFavori] = useState();
   const [userCart, setUserCart] = useState(false);
 
   useEffect(() => {
@@ -32,7 +34,6 @@ function ProductDetail() {
         setProductPrice(data.product.price);
         setProductDescription(data.product.description);
         setProductID(data.product._id);
-        setUserFavoris(data.product.isFavoris);
       });
   }, []);
 
@@ -52,30 +53,61 @@ function ProductDetail() {
     return "";
   };
 
-  /*setUserCart(data.productCart);
-
   const handleFavoriClick = () => {
-    if (productID === userFavoris) {
-      dispatch(deleteFavoris(productID));
+    if (productID.includes(userFavori)) {
+      fetch(`http://localhost:3000/user/${userId}/favoris/${productID}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: userId,
+          productID: productID,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status !== 200) {
+            alert(data.message);
+            setError(data.message);
+          } else {
+            setError("");
+            setIsFavori(false);
+          }
+        });
     } else {
-      setUserFavoris(data.productFavoris);
-      dispatch(addFavoris(productID));
+      fetch(`http://localhost:3000/user/${userId}/favoris/${productID}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: userId,
+          productID: productID,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status !== 200) {
+            alert(data.message);
+            setError(data.message);
+          } else {
+            setError("");
+            setIsFavori(true);
+          }
+        });
     }
   };
 
   const handleAddCartClick = () => {
-    if (productID in productFavoris) {
-      dispatch(deleteFavoris(productID));
-      setProductFavoris(false);
+    if (userCart && userCart.includes(productID)) {
+      dispatch(deletecart(productID));
+      setUserCart(userCart.filter((id) => id !== productID));
     } else {
-      dispatch(addFavoris(productID));
+      dispatch(addcart(productID));
     }
   };
 
   let iconStyle = {};
-  if (userFavoris) {
+  if (isFavori) {
     iconStyle = { color: "#E9BE59" };
-  }*/
+  }
 
   return (
     <div>
@@ -101,15 +133,11 @@ function ProductDetail() {
           <p className="product-description">{productDescription}</p>
         </div>
         <div className="product-buttons">
-          <Button onClick={() => alert("Produit ajouté au panier")}>
+          <Button onClick={() => handleAddCartClick()}>
             Ajouter au panier
-          </Button>
-          <Button onClick={() => alert("Produit ajouté aux favoris")}>
-            Ajouter aux favoris
           </Button>
         </div>
         <Navbar />
-        <div>ProductDetail</div>
       </div>
     </div>
   );
