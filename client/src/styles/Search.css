@@ -1,0 +1,82 @@
+/* ===== PAGE RECHERCHE - Layout sidebar + resultats ===== */
+
+.search-page-container {
+  min-height: 100vh;
+  background-color: #faf8f5;
+  padding: 20px;
+  padding-bottom: 80px;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Barre de recherche en haut, centree */
+.search-header {
+  max-width: 800px;
+  margin: 0 auto 40px auto;
+  display: flex;
+  justify-content: center;
+}
+
+/* Layout 2 colonnes : sidebar + resultats */
+.search-layout {
+  display: flex;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Sidebar gauche (CategoryMenu) */
+.search-sidebar {
+  width: 260px;
+  flex-shrink: 0;
+}
+
+/* Zone de resultats a droite */
+.search-results {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Message "aucun resultat" */
+.search-empty {
+  text-align: center;
+  color: #8e8e9a;
+  font-size: 14px;
+  margin-top: 40px;
+}
+
+/* Carte produit dans les resultats */
+.search-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.search-card-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin: 0 0 6px 0;
+}
+
+.search-card-price {
+  font-size: 14px;
+  color: #3b5998;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Responsive : sur mobile, sidebar passe au dessus des resultats */
+@media (max-width: 768px) {
+  .search-layout {
+    flex-direction: column;
+  }
+
+  .search-sidebar {
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+  }
+}
