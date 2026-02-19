@@ -9,7 +9,7 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { addcart, deletecart } from "../../reducers/cart";
 
 function ProductDetail() {
-  // ETATS
+  // ETATS & HOOKS
 
   const dispatch = useDispatch();
 
@@ -25,7 +25,7 @@ function ProductDetail() {
   const [userCart, setUserCart] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:3000/product/:id")
+    fetch(`http://localhost:3000/product/${id}`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
