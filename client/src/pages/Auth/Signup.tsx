@@ -30,7 +30,7 @@ function Signup() {
     try {
       // Envoyer les donnees du formulaire au back
       const response = await axios.post(
-        "http://localhost:5000/api/auth/signup",
+        "http://localhost:5001/api/auth/signup",
         {
           firstName: firstName,
           lastName: lastName,

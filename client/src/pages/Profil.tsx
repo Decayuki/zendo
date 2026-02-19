@@ -1,12 +1,21 @@
-import React from 'react';
+// =============================================================
+// PAGE PROFIL - Informations de l'utilisateur connecte
+// Pour l'instant c'est un placeholder (page vide)
+// Plus tard on affichera : infos perso, parametres, "Ouvrir ma boutique"
+// =============================================================
 
-const Profil: React.FC = () => {
+import React from "react";
+import "../styles/Pages.css";
+
+function Profil() {
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Profil</h1>
-      {/* futur code */}
+    <div className="page-container">
+      <h1 className="page-title">Mon profil</h1>
+      <p className="page-placeholder">
+        Bientot ici : informations personnelles, parametres, ouvrir ma boutique...
+      </p>
     </div>
   );
-};
+}
 
-export default Profil; 
+export default Profil;
