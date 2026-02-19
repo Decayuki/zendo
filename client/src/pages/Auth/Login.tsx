@@ -1,6 +1,7 @@
 // =============================================================
-// PAGE LOGIN (version refactorisee)
-// - Utilise les composants Button, Input, Message
+// PAGE LOGIN (version refactorisee) - Utilise les composants Button, Input, Message
+// C'est la meme logique que pages/Login.tsx mais avec les composants du dev
+// Route : /log (pour tester a cote de l'ancien /login)
 // =============================================================
 
 import React, { useState } from "react";
@@ -9,9 +10,9 @@ import "../../styles/Auth.css";
 import Button from "../../components/Button/Button";
 import GoogleIcon from "@mui/icons-material/Google";
 import { Input } from "../../components/Input/Input";
-import AuthHeader from "../../components/Auth/AuthHeader";
+import AuthHeader from "./AuthHeader";
 import { Message } from "../../components/Message/Message";
-import AuthFooter from "../../components/Auth/AuthFooter";
+import AuthFooter from "./AuthFooter";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -33,7 +34,7 @@ const Login = () => {
       localStorage.setItem("user", JSON.stringify(response.data.user));
       alert("Connexion reussie !");
 
-      // TODO: plus tard, rediriger vers la page d'accueil au lieu d'une alerte
+      // TODO: plus tard, rediriger vers la page d'accueil au lieu d'un alert
     } catch (err: any) {
       setError(err.response?.data?.message || "Erreur de connexion au serveur");
     }
@@ -79,7 +80,7 @@ const Login = () => {
             leftIcon={<GoogleIcon />}
             onClick={handleGoogle}
           >
-            Google
+            oogle
           </Button>
         </form>
         {/* --- LIENS EN BAS --- */}
