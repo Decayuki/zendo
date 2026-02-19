@@ -1,12 +1,17 @@
-import React from 'react';
+// =============================================================
+// PAGE SHOP - Page boutique vendeur (placeholder)
+// Plus tard : dashboard vendeur avec stats, commandes, produits CRUD
+// =============================================================
 
-const Shop: React.FC = () => {
+import React from "react";
+
+function Shop() {
   return (
-    <div style={{ padding: '20px' }}>
+    <div style={{ padding: "20px" }}>
       <h1>Votre boutique</h1>
-      {/* futur code */}
+      {/* Futur : dashboard vendeur */}
     </div>
   );
-};
+}
 
-export default Shop; 
+export default Shop;
