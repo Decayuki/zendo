@@ -1,7 +1,7 @@
 .product-list-page {
   min-height: 100vh;
-  background-color: #f9f7f2; /* Ton fond crème */
-  padding: 60px 5% 100px 5%; /* Marges sur les côtés */
+  background-color: #f9f7f2;
+  padding: 60px 5% 100px 5%;
 }
 
 .list-header {
@@ -23,7 +23,6 @@
 
 .product-grid {
   display: grid;
-  /* La grille s'adapte automatiquement à la largeur de l'écran */
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 30px;
   justify-items: center;

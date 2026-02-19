@@ -1,7 +1,7 @@
 // =============================================================
-// APP Routeur principal de l'application
-// Definit quelle URL affiche quelle page (+ affichage conditionnel)
-// Ici on definit les routes (quelle URL affiche quelle page)
+// APP.TSX - Routeur principal de l'application
+// Definit quelle URL affiche quelle page
+// Gere aussi l'affichage conditionnel de la Navbar
 // =============================================================
 
 import React from "react";
@@ -13,74 +13,72 @@ import {
   useLocation,
 } from "react-router-dom";
 
-// --- Pages Auth ---
+// --- Pages ---
 import Login from "./pages/Auth/Login";
 import Signup from "./pages/Auth/Signup";
-import RecoveryScreen from "./pages/Auth/RecoveryScreen";
-
-// --- Pages Contenu ---
+import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
-import Profil from "./pages/Profil";
 import Favoris from "./pages/Favoris";
+import Profil from "./pages/Profil";
 import Shop from "./pages/Shop";
 import ProductList from "./pages/ProductList";
 
 // --- Composants ---
 import Navbar from "./components/Navbar/Navbar";
 
-/**
- * Composant interne pour gérer la logique d'affichage (Navbar)
- * On utilise useLocation() ici car il doit être à l'intérieur de <BrowserRouter>
- */
 function AppContent() {
+  // useLocation() necessaire pour cacher la Navbar sur les pages d'auth
   const location = useLocation();
 
-  // Liste des chemins où la Navbar ne doit pas apparaître
-  const authRoutes = ["/login", "/signup", "/recovery", "/log"];
-  const hideNavbar = authRoutes.includes(location.pathname);
+  // On cache la navbar sur les pages d'auth
+  const hideNavbar =
+    location.pathname === "/login" ||
+    location.pathname === "/signup" ||
+    location.pathname === "/forgot-password";
 
   return (
     <>
-      {/* On affiche la Navbar seulement si on est PAS sur une page d'auth */}
-      {!hideNavbar && <Navbar />}
-
       <Routes>
-        {/* --- Navigation principale --- */}
+        {/* --- Pages d'authentification (sans navbar) --- */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+
+        {/* --- Pages principales (avec navbar) --- */}
         <Route path="/home" element={<Home />} />
         <Route path="/recherche" element={<Search />} />
         <Route path="/favoris" element={<Favoris />} />
-        <Route path="/boutique" element={<Shop />} />
         <Route path="/profil" element={<Profil />} />
+        <Route path="/boutique" element={<Shop />} />
 
-        {/* --- Routes Dynamiques (ProductList) --- */}
-        {/* Important : Ces routes doivent être après les routes fixes comme /favoris 
-            pour éviter que "favoris" soit considéré comme un nom de "family" */}
+        {/* --- Routes dynamiques (ProductList par famille/categorie) --- */}
+        {/* IMPORTANT : ces routes doivent etre APRES les routes fixes
+            sinon "favoris" serait interprete comme un nom de famille */}
         <Route path="/:family" element={<ProductList />} />
         <Route path="/:family/:category" element={<ProductList />} />
 
-        {/* --- Authentification --- */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/recovery" element={<RecoveryScreen />} />
-        
-        {/* --- Redirections --- */}
-        <Route path="/" element={<Navigate to="/home" />} />
-        <Route path="*" element={<Navigate to="/home" />} />
+        {/* --- Route par defaut : redirige vers login --- */}
+        {/* Plus tard on pourra rediriger vers /accueil si l'utilisateur est connecte */}
+        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
+
+      {/* On affiche la Navbar seulement si on est PAS sur une page d'auth */}
+      {!hideNavbar && <Navbar />}
     </>
   );
 }
 
-/**
- * Composant racine du projet
- */
 function App() {
   return (
+    // BrowserRouter : active le systeme de routing (navigation entre pages)
+    // Grace a lui on remplace le composant appele sans reload
     <BrowserRouter>
       <AppContent />
     </BrowserRouter>
   );
 }
 
+// On exporte pour l'utiliser dans main.tsx
 export default App;

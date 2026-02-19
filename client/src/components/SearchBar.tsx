@@ -1,36 +1,57 @@
-import React, { useState } from 'react';
-import { Search } from '@mui/icons-material';
-import '../styles/SearchBar.css';
+// =============================================================
+// COMPOSANT SEARCHBAR - Barre de recherche reutilisable
+// Ce composant peut etre appele depuis n'importe quelle page :
+// la page Recherche, la page Accueil, un header, etc.
+//
+// Il recoit deux "props" (parametres) du parent :
+// - value : le texte actuellement tape dans la barre
+// - onSearch : la fonction a appeler quand l'utilisateur lance une recherche
+// =============================================================
 
-const SearchBar: React.FC = () => {
-  const [query, setQuery] = useState<string>("");
+import React, { useState } from "react";
+import "../styles/SearchBar.css";
 
-  const handleSearch = (e: React.FormEvent) => {
+// Les props = les parametres que le composant parent envoie a SearchBar
+// C'est comme les arguments d'une fonction
+interface SearchBarProps {
+  placeholder?: string; // texte grise dans la barre (optionnel, "?" = pas obligatoire)
+  onSearch: (query: string) => void; // fonction appelee quand on lance la recherche
+}
+
+function SearchBar(props: SearchBarProps) {
+  // State local : ce que l'utilisateur est en train de taper
+  const [query, setQuery] = useState("");
+
+  // Quand l'utilisateur soumet le formulaire (clic ou Entree)
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    // Ici, on peut mettre futur algorithme de recherche
-    console.log("Recherche lancée pour :", query);
-  };
+
+    // Si la barre est vide, on ne fait rien
+    if (!query.trim()) {
+      return;
+    }
+
+    // Appeler la fonction du parent avec le texte tape
+    // C'est le parent qui decide quoi faire avec (appel API, filtre local, etc.)
+    props.onSearch(query);
+  }
 
   return (
-    <div className="search-container">
-      <form className="search-form" onSubmit={handleSearch}>
-        <input
-          type="text"
-          placeholder="Rechercher un produit, une marque..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          className="search-input"
-        />
-        <button type="submit" className="search-button">
-          <Search sx={{ color: "#3b4553", fontSize: 18 }} />
-        </button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit} className="searchbar">
+      <input
+        type="text"
+        className="searchbar-input"
+        placeholder={props.placeholder || "Rechercher un produit, un artisan..."}
+        value={query}
+        onChange={function (e) {
+          setQuery(e.target.value);
+        }}
+      />
+      <button type="submit" className="searchbar-button">
+        Rechercher
+      </button>
+    </form>
   );
-};
+}
 
 export default SearchBar;
-
-// e.nom de la variable qui contien l'objet 'événement' généré par le navigateur au moment où on valide le formulaire
-// : React.FremEvent : En TypeScript, préciser que c'est un FromEvent, TypeScript sait que cest événement vient d'un formulaire
-// e.preventDefault() : Pour qu'on ne perdra pas l'état après le recharge. Le comportement par défaut d'un formulaire : Quand on clique sur "Envoyer" ou que tu tapes "Entrée", le navigateur prend toutes les données du formulaire, les met dans l'URL, et recharge toute la page. 

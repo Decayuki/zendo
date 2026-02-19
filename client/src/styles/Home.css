@@ -1,15 +1,47 @@
-/* Home.css */
+/* ===== PAGE HOME — Layout uniquement ===== */
+/* Les styles des composants sont dans leurs propres fichiers CSS */
 
 .home-container {
-  padding: 20px;
-  padding-bottom: 80px; /* Espace pour la navbar mobile en bas */
+    min-height: 100vh;
+    background-color: #faf8f5;
+    padding: 20px;
+    padding-bottom: 80px; /* espace pour la navbar en bas */
+    font-family: "Segoe UI", sans-serif;
 }
 
-.product-grid {
-  display: grid;
-  /* Crée des colonnes automatiques de minimum 250px */
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-  justify-items: center;
-  margin-top: 30px;
+/* Header */
+.home-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.home-header .home-logo {
+    width: 40px;
+    height: 40px;
+    background-color: #3b5998;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.home-header .logo-text {
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.home-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0;
+    letter-spacing: 2px;
+}
+
+/* Barre de recherche */
+.home-search {
+    margin-bottom: 28px;
 }
