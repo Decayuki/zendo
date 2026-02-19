@@ -10,48 +10,86 @@ import product from '../asset/Logo/Product.png';
 const FAMILIES = ["Femme", "Homme", "Garcon", "Fille", "Bebe_fille", "Bebe_garcon", "Jouet", "Maison"];
 const CATEGORIES = ["Vetements", "Bijoux", "Chaussures", "Sacs", "Accessoires", "Sport", "Beaute", "Luminaire", "Tapis", "Decoration", "Art_de_la_table"];
 
-// --- SIMULATION DE DONNÉES (MOCK DATA) ---
-const mockProducts = [
-  { id: 1, title: "Bracelet Or", price: 89.00, image: product, description: "Bracelet en or 18 carats ciselé à la main.", family: "Homme", category: "Vetements" },
-  { id: 2, title: "Robe de Soirée", price: 120.00, image: product, description: "Robe longue élégante pour vos événements.", family: "Femme", category: "Vetements" },
-  { id: 3, title: "Bracelet Or", price: 89.00, image: product, description: "Bracelet en or 18 carats ciselé à la main.", family: "Femme", category: "Vetements" },
-];
+// Format attendu par le composant ProductView (mapping API → affichage)
+interface Variation {
+  _id?: string;
+  color?: string;
+  size?: string;
+  stock: number;
+  price: number;
+}
+
+interface ProductDisplay {
+  id: string;
+  title: string;
+  price: number;
+  image: string;
+  description: string;
+  variations: Variation[];
+}
 
 const ProductList: React.FC = () => {
   const { family: familySlug, category: categorySlug } = useParams();
-  const [products, setProducts] = useState(mockProducts); // On commence avec les mock data
-  const [loading, setLoading] = useState(false);
+  const [products, setProducts] = useState<ProductDisplay[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const dbFamily = familySlug ? fromSlug(familySlug, FAMILIES) : null;
   const dbCategory = categorySlug ? fromSlug(categorySlug, CATEGORIES) : null;
 
   useEffect(() => {
-    const getProducts = async () => {
-      // 🚀 Décommenter cette partie quand le backend sera prêt
-      /*
+    const fetchProducts = async () => {
       setLoading(true);
       try {
-        const response = await api.get('/products', {
-          params: { family: dbFamily, category: dbCategory }
-        });
-        setProducts(response.data);
+        // Paramètres de filtrage pour l'API
+        // Quand on clique "Voir tout" dans une famille : seulement family est défini (pas category)
+        // Quand on clique sur une catégorie spécifique : family ET category sont définis
+        const params: Record<string, string> = {
+          status: 'true' // Seulement les produits actifs (en vente)
+        };
+        
+        // Filtrer par famille si présente (ex: "Femme")
+        if (dbFamily) {
+          params.family = dbFamily;
+        }
+        
+        // Filtrer par catégorie SEULEMENT si présente dans l'URL
+        // Si categorySlug est undefined (clic sur "Voir tout"), dbCategory sera null et ne sera pas ajouté
+        if (dbCategory) {
+          params.category = dbCategory;
+        }
+
+        const response = await api.get<{ message: string; products: any[] }>('/products', { params });
+        const list = (response.data?.products ?? []).filter((p: any) => p && (p._id || p.id));
+
+        setProducts(
+          list.map((p: any) => {
+            const firstImage = p.images?.[0];
+            const imageSrc = typeof firstImage === 'string' && firstImage.trim() ? firstImage : product;
+            // Calculer le prix minimum depuis les variations, ou utiliser 0 par défaut
+            const variations = Array.isArray(p.variations) ? p.variations : [];
+            const minPrice = variations.length > 0 
+              ? Math.min(...variations.map((v: Variation) => v.price ?? 0))
+              : 0;
+            
+            return {
+              id: String(p._id ?? p.id ?? ''),
+              title: p.name ?? '',
+              price: minPrice,
+              image: imageSrc,
+              description: typeof p.description === 'string' ? p.description : '',
+              variations: variations,
+            };
+          })
+        );
       } catch (err) {
-        console.error("Erreur API", err);
+        console.error('Erreur API getProducts', err);
+        setProducts([]);
       } finally {
         setLoading(false);
       }
-      */
-      
-      // Simulation locale : on filtre nos mockProducts selon l'URL
-      const filtered = mockProducts.filter(p => {
-        const matchFamily = dbFamily ? p.family === dbFamily : true;
-        const matchCategory = dbCategory ? p.category === dbCategory : true;
-        return matchFamily && matchCategory;
-      });
-      setProducts(filtered);
     };
 
-    getProducts();
+    fetchProducts();
   }, [dbFamily, dbCategory]);
 
   return (
@@ -68,14 +106,15 @@ const ProductList: React.FC = () => {
           <div className="loader">Chargement des produits...</div>
         ) : (
           <div className="product-grid">
-            {products.map((p: any) => (
-              <Product 
-                key={p.id} 
-                id={p.id} 
-                title={p.title} 
-                price={p.price} 
-                image={p.image} 
-                description={p.description} 
+            {products.map((p) => (
+              <Product
+                key={p.id}
+                id={p.id}
+                title={p.title}
+                price={p.price}
+                image={p.image}
+                description={p.description}
+                variations={p.variations}
               />
             ))}
           </div>
