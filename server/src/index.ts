@@ -10,6 +10,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth";
 import productRoutes from "./routes/product";
+import variationRoutes from "./routes/variation";
 
 // Charge depuis le .env
 // (MONGO_URI, JWT_SECRET, PORT)
@@ -39,6 +40,9 @@ app.use("/api/auth", authRoutes);
 
 // Routes produits : GET /api/products, GET /api/products/:id
 app.use("/api/products", productRoutes);
+
+// Routes variations : GET /api/variations, GET /api/variations/:id
+app.use("/api/variations", variationRoutes);
 
 // Route de test pour verifier que le serveur fonctionne
 // http://localhost:5000
