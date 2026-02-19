@@ -1,0 +1,33 @@
+.header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #3b4553;
+  color: white;
+}
+
+/* LEFT */
+.header-menu {
+  justify-self: start;
+}
+
+/* CENTER */
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-self: center;
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* RIGHT */
+.header-cart {
+  display: flex;
+  gap: 20px;
+  justify-self: end;
+}

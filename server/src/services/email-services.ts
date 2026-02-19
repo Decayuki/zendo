@@ -13,14 +13,14 @@ const transporter = nodemailer.createTransport({
 });
 
 //fonction pour envoyer un mail
-export const sendMail = async (mail: string) => {
+export const sendMail = async (mail: string, token: string) => {
   // Send an email using async/await
   const info = await transporter.sendMail({
     from: '"Zendo" <ima.zieme@ethereal.email>',
-    to: mail,
-    subject: "Reinitialiser votre mot de passe",
-    text: "Cliquer sur ce lien pour reinitialiser le mot de passe",
-    html: "<b>Cliquer sur ce lien pour reinitialiser le mot de passe</b>",
+    to: { mail },
+    subject: "Réinitialiser votre mot de passe",
+    text: `Cliquer sur ce lien pour réinitialiser le mot de passe : http://localhost:3000/reset?token=${token}`, // Plain-text version of the message
+    html: `<b>Cliquer sur ce lien pour réinitialiser le mot de passe : http://localhost:3000/reset?token=${token}</b>`, // HTML version of the message
   });
 
   console.log("Message sent:", info.messageId);

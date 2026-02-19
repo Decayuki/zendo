@@ -23,6 +23,8 @@ import Favoris from "./pages/Favoris";
 import Profil from "./pages/Profil";
 import Shop from "./pages/Shop";
 import ProductList from "./pages/ProductList";
+import ResetScreen from "./pages/Auth/ResetScreen";
+import ProductDetail from "./pages/Buyer/ProductDetail";
 
 // --- Composants ---
 import Navbar from "./components/Navbar/Navbar";
@@ -35,7 +37,8 @@ function AppContent() {
   const hideNavbar =
     location.pathname === "/login" ||
     location.pathname === "/signup" ||
-    location.pathname === "/forgot-password";
+    location.pathname === "/recovery" ||
+    location.pathname === "/reset";
 
   return (
     <>
@@ -57,11 +60,12 @@ function AppContent() {
             sinon "favoris" serait interprete comme un nom de famille */}
         <Route path="/:family" element={<ProductList />} />
         <Route path="/:family/:category" element={<ProductList />} />
-
+        <Route path="/reset" element={<ResetScreen />} />
         {/* --- Route par defaut : redirige vers login --- */}
         {/* Plus tard on pourra rediriger vers /accueil si l'utilisateur est connecte */}
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="*" element={<Navigate to="/login" />} />
+        <Route path="/detailProduct/:id" element={<ProductDetail />} />
       </Routes>
 
       {/* On affiche la Navbar seulement si on est PAS sur une page d'auth */}

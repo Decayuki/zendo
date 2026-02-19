@@ -5,57 +5,67 @@
 
 import { useState } from "react";
 import "../../styles/Auth.css";
+import Button from "../../components/Button/Button";
+import { Input } from "../../components/Input/Input";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
-function RecoveryScreen() {
-  // Regex pour valider le format email
+function RecoveryScreen({ navigation }: any) {
+  // Grabbed from emailregex.com
   const EMAIL_REGEX: RegExp =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
+  // STATES
   const [error, setError] = useState("");
   const [mail, setMail] = useState("");
 
-  function handleSubmit() {
+  // Fonction de soumission du formulaire
+  const handleSubmit = () => {
     setError("");
     if (EMAIL_REGEX.test(mail)) {
-      fetch("http://localhost:5001/api/auth/recovery", {
+      fetch(`http://localhost:3000/recovery`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email: mail,
+          mail: mail,
         }),
       })
-        .then(function (response) {
-          return response.json();
-        })
-        .then(function (data) {
-          if (data.message === "Email envoye") {
-            alert("Email envoye !");
-            // TODO: rediriger vers /login
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.result === "Email envoyé") {
+            alert("Email envoyé");
           } else {
-            setError(data.message);
+            setError(data.result);
           }
         });
     } else {
       setError("Mauvais format");
     }
-  }
+  };
 
   return (
     <div className="auth-container">
       <div className="auth-card">
+        <div className="auth-return">
+          <Link to="/login" className="link">
+            <FontAwesomeIcon icon={faArrowLeft} size="lg" color="#3b4553" />
+          </Link>
+        </div>
+
         {/* --- EN-TETE : logo + titre --- */}
         <div className="auth-header">
           <div className="auth-logo">
             <span className="logo-text">Z</span>
           </div>
           <h1 className="auth-title">ZENDO</h1>
-          <p className="auth-subtitle">L'artisanat en tout simplicite</p>
+          <p className="auth-subtitle">L'artisanat en tout simplicité</p>
         </div>
         {error && <p className="auth-error">{error}</p>}
 
         <div className="form-group">
           <label htmlFor="email">Email</label>
-          <input
+          <Input
             id="email"
             type="email"
             placeholder="johndoe@example.com"
@@ -65,14 +75,10 @@ function RecoveryScreen() {
             }}
             required
           />
+          <Button onClick={handleSubmit}>Récupérer mon mot de passe</Button>
         </div>
-
-        <button className="auth-button" onClick={handleSubmit}>
-          Recuperer mon mot de passe
-        </button>
       </div>
     </div>
   );
 }
-
 export default RecoveryScreen;
