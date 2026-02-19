@@ -1,0 +1,42 @@
+.product-list-page {
+  min-height: 100vh;
+  background-color: #f9f7f2;
+  padding: 60px 5% 100px 5%;
+}
+
+.list-header {
+  margin-bottom: 50px;
+  margin-left: 10px;
+}
+
+.list-title {
+  font-size: 1.2rem;
+  color: #1a1a2e;
+  text-transform: capitalize;
+  margin-bottom: 10px;
+}
+
+.product-count {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+  justify-items: center;
+}
+
+.no-results {
+  text-align: center;
+  padding: 50px;
+  color: #666;
+  font-style: italic;
+}
+
+.loader {
+  text-align: center;
+  font-weight: bold;
+  color: #d4c5a9;
+}
