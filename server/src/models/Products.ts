@@ -97,7 +97,7 @@ const ProductSchema = new mongoose.Schema(
     reference: {
       type: String,
       // default: "", // !!!JC!!! pas de valeur par defaut, le vendeur doit la renseigner
-      require: true, // !!!JC!!! la reference est obligatoire pour identifier le produit
+      required: true, // !!!JC!!! la reference est obligatoire pour identifier le produit
       // !!!JC!!! Plus tard on pourra ajouter un index unique sur (sellerId + reference) pour garantir que chaque vendeur a des references uniques
     },
 
@@ -122,6 +122,13 @@ const ProductSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
+// Cela permet de faire "Product.find().populate('variations')" 
+// même si le champ n'existe pas physiquement dans la collection Product
+ProductSchema.virtual('variations', {
+  ref: 'Variation',          // Le modèle vers lequel on pointe
+  localField: '_id',         // Le champ dans Product
+  foreignField: 'productId'  // Le champ dans Variation qui contient l'ID du produit
+});
 
 const Product = mongoose.model("Product", ProductSchema);
 
