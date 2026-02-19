@@ -1,15 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FavoriteBorder, Favorite, AddShoppingCart } from "@mui/icons-material";
 import "../styles/ProductView.css";
 import ProductModal from "./ProductModal";
 
 // Définition de la structure des données du produit (TypeScript)
+interface Variation {
+  _id?: string;
+  color?: string;
+  size?: string;
+  stock: number;
+  price: number;
+}
+
 interface ProductProps {
-  id: number;
+  id: string | number;
   title: string;
   price: number;
   image: string;
   description: string;
+  variations?: Variation[];
 }
 
 const Product: React.FC<ProductProps> = ({
@@ -17,13 +26,21 @@ const Product: React.FC<ProductProps> = ({
   price,
   image,
   description,
+  variations = [],
 }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Fonction pour limiter la description à 100 caractères
+  // Debug: vérifier l'état du modal
+  useEffect(() => {
+    console.log('ProductView - isModalOpen:', isModalOpen);
+    console.log('ProductView - variations:', variations);
+  }, [isModalOpen, variations]);
+
+  // Fonction pour limiter la description à 100 caractères maximum (97 caractères + "..." = 100)
   const truncateDescription = (text: string) => {
-    return text.length > 100 ? text.substring(0, 100) + "..." : text;
+    if (!text) return "";
+    return text.length > 50 ? text.substring(0, 47) + "..." : text;
   };
   // Fonction appelée depuis Modal quand l'user valide ses choix
   const handleAddToCart = (selection: { color: string; size: string }) => {
@@ -56,7 +73,16 @@ const Product: React.FC<ProductProps> = ({
             </button>
 
             {/* Ouvre la Modal pour sélectionner les variantes avant l'achat */}
-            <button onClick={() => setIsModalOpen(true)} className="icon-btn">
+            <button 
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Clic sur panier, ouverture modal');
+                setIsModalOpen(true);
+              }} 
+              className="icon-btn"
+              type="button"
+            >
               <AddShoppingCart />
             </button>
           </div>
@@ -74,6 +100,7 @@ const Product: React.FC<ProductProps> = ({
           onClose={() => setIsModalOpen(false)}
           onConfirm={handleAddToCart}
           title={title}
+          variations={variations}
         />
       </div>
     </div>

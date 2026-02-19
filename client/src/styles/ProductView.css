@@ -62,4 +62,7 @@
   font-size: 0.9rem;
   color: #666;
   line-height: 1.4;
+  text-align: left;         /* Texte aligné à gauche */
+  white-space: normal;       /* Autorise les retours à la ligne */
+  word-break: break-word;    /* Coupe proprement les mots trop longs */
 }

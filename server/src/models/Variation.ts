@@ -1,22 +1,23 @@
 import mongoose from "mongoose";
 
 const VariationSchema = new mongoose.Schema(
-    {
-        productId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Product",
-            required: true,
-        },
-
-        color: { type: String },
-
-        size: { type: String }, // size_clothe | size_shoes | ring_size
-
-        stock: { type: Number, default: 0 },
-
-        price: { type: Number, required: true },
+  {
+    productId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+      required: true,
     },
-    { timestamps: true }
+
+    color: { type: String },
+
+    size: { type: String }, // size_clothe | size_shoes | ring_size
+
+    stock: { type: Number, default: 0 },
+
+    price: { type: Number, required: true },
+  },
+  { timestamps: true },
 );
 
-export default mongoose.model("Variation", VariationSchema);
+const Variation = mongoose.model("Variation", VariationSchema);
+export default Variation;

@@ -12,8 +12,10 @@ export const toSlug = (text: string): string => {
 };
 
 /**
- * Transforme "bebe-fille" en "Bebe_fille" pour la requête MongoDB
+ * Transforme "bebe-fille" ou "vêtements" en "Bebe_fille" / "Vetements" pour la requête MongoDB.
+ * Compare en normalisant les deux côtés (casse + accents) pour que l’URL matche toujours.
  */
 export const fromSlug = (slug: string, originalList: string[]): string => {
-  return originalList.find(item => toSlug(item) === slug) || slug;
+  const normalizedSlug = toSlug(slug);
+  return originalList.find((item) => toSlug(item) === normalizedSlug) || slug;
 };
