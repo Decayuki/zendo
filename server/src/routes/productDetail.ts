@@ -11,7 +11,6 @@ import {
   getProduct,
   addFavori,
   deleteFavori,
-  addProductToCart,
   getFavori,
 } from "../controllers/productDetail";
 
@@ -26,9 +25,6 @@ router.post("/user/:id/favoris/:productId", addFavori);
 
 // Quand on recoit un DELETE sur /favoris/:id, on appelle la fonction favori du controller
 router.delete("/user/:id/favoris/:productId", deleteFavori);
-
-// Quand on recoit un POST sur /favoris/:id, on appelle la fonction favori du controller
-router.post("/user/:id/cart/:productId", addProductToCart);
 
 // Quand on recoit un GET sur /favoris/:id, on appelle la fonction favori du controller
 router.get("/user/:id/favoris/:productId", getFavori);

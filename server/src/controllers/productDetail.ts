@@ -18,8 +18,10 @@ async function getProduct(req: Request, res: Response) {
     const productId = req.params.id;
 
     // Etape 2 : check produit par son id et recupere aussi les variations de ce produit
-    const product = await Product.findOne({ _id: productId });
-    const productVariations = await Variation.find({ productId: productId });
+    const product = await Product.findById({ _id: productId });
+    const productVariations = await Variation.findById({
+      productId: productId,
+    });
 
     // Etape 3 : renvoyer le produit trouvé
 
@@ -30,7 +32,7 @@ async function getProduct(req: Request, res: Response) {
       productVariations: productVariations,
     });
   } catch (error) {
-    console.error("Erreur login:", error);
+    console.error("Erreur product:", error);
     return res.status(500).json({ message: "Erreur serveur" });
   }
 }
@@ -48,8 +50,8 @@ async function addFavori(req: Request, res: Response) {
     const productId = req.params.productId;
 
     // Etape 2 : check user par son id et check produit par son id et recupere aussi les variations de ce produit
-    const user = await User.findOne({ _id: userId });
-    const product = await Product.findOne({ _id: productId });
+    const user = await User.findById({ _id: userId });
+    const product = await Product.findById({ _id: productId });
 
     // Etape 3 : verifier que user et produit existent
     if (!user || !product) {
@@ -75,7 +77,7 @@ async function addFavori(req: Request, res: Response) {
       addFavori: addFavori,
     });
   } catch (error) {
-    console.error("Erreur login:", error);
+    console.error("Erreur product:", error);
     return res.status(500).json({ message: "Erreur serveur" });
   }
 }
@@ -91,12 +93,25 @@ async function deleteFavori(req: Request, res: Response) {
     const userId = req.params.id;
     const productId = req.params.productId;
 
-    // Etape 2 : check user par son id et check produit par son id et recupere aussi les variations de ce produit
-    const user = await User.findOne({ _id: userId });
-    const product = await Product.findOne({ _id: productId });
+    // Etape 2 : check user par son id et check produit par son id
+    const user = await User.findById({ _id: userId });
+    const product = await Product.findById({ _id: productId });
 
-    // Etape 3 : met à jour le user en supprimant le produit de sa liste de favoris (champ favoris dans la collection User)
+    // Etape 3 : verifier que user et produit existent
+    if (!user || !product) {
+      return res
+        .status(404)
+        .json({ message: "Utilisateur ou produit non trouvé" });
+    }
 
+    // Etape 4 : verifier que le productId est dans les favoris
+    if (!user.favoris || !user.favoris.includes(productId)) {
+      return res
+        .status(400)
+        .json({ message: "Article non présent dans les favoris" });
+    }
+
+    // Etape 5 : met à jour le user en supprimant le produit de sa liste de favoris
     const deleteFavori = await User.updateOne(
       { _id: userId },
       { $pull: { favoris: productId } },
@@ -114,65 +129,33 @@ async function deleteFavori(req: Request, res: Response) {
 }
 
 // ---------------------------------------------------------
-// AJOUT PANIER
-// Route : POST /api/user/:id/favoris/:productId
-// Body attendu : { id, name, description, images, madeInFrance, sellerId }
-// ---------------------------------------------------------
-
-async function addProductToCart(req: Request, res: Response) {
-  try {
-    // Etape 1 : recupere l'id du produit et le user id dans les params de l'URL
-    const userId = req.params.id;
-    const productId = req.params.productId;
-
-    // Etape 2 : check user par son id et check produit par son id et recupere aussi les variations de ce produit
-    const user = await User.findOne({ _id: userId });
-    const product = await Product.findOne({ _id: productId });
-
-    // Etape 3 : met à jour le user en ajoutant le produit à sa liste de favoris (champ favoris dans la collection User)
-
-    const addProductToCart = await User.updateOne(
-      { _id: userId },
-      { $push: { cart: productId } },
-    );
-
-    // Code 200 = "OK"
-    return res.status(200).json({
-      message: "Article ajouté au panier",
-      addProductToCart: addProductToCart,
-    });
-  } catch (error) {
-    console.error("Erreur login:", error);
-    return res.status(500).json({ message: "Erreur serveur" });
-  }
-}
-// ---------------------------------------------------------
 // GET FAVORIS
-// Route : GET /api/user/:id/favoris/:productId
-// Body attendu : { id, name, description, images, madeInFrance, sellerId }
+// Route : GET /api/user/:id/favoris
+// Description : Récupère tous les produits favoris de l'utilisateur
 // ---------------------------------------------------------
 
 async function getFavori(req: Request, res: Response) {
   try {
-    // Etape 1 : recupere l'id du produit dans les params de l'URL
-    const productId = req.params.id;
+    // Etape 1 : recupere l'id utilisateur dans les params de l'URL
+    const userId = req.params.id;
 
-    // Etape 2 : check produit par son id et recupere aussi les variations de ce produit
-    const product = await Product.findOne({ _id: productId });
-    const productVariations = await Variation.find({ productId: productId });
+    // Etape 2 : check user par son id et recupere son tableau de favoris
+    const user = await User.findById({ _id: userId }).populate("favoris");
 
-    // Etape 3 : renvoyer le produit trouvé
+    // Etape 3 : verifier que l'utilisateur existe
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    }
 
-    // Code 200 = "OK"
+    // Etape 4 : renvoyer les favoris de l'utilisateur
     return res.status(200).json({
-      message: "Produit trouvé",
-      product: product,
-      productVariations: productVariations,
+      message: "Favoris récupérés",
+      favoris: user.favoris || [],
     });
   } catch (error) {
-    console.error("Erreur login:", error);
+    console.error("Erreur getFavori:", error);
     return res.status(500).json({ message: "Erreur serveur" });
   }
 }
 
-export { getProduct, addFavori, deleteFavori, addProductToCart, getFavori };
+export { getProduct, addFavori, deleteFavori, getFavori };
