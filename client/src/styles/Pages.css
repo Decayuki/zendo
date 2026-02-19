@@ -1,0 +1,22 @@
+/* ===== PAGES PLACEHOLDER (Accueil, Favoris, Profil) ===== */
+/* Style temporaire pour les pages pas encore developpees */
+
+.page-container {
+    min-height: 100vh;
+    background-color: #faf8f5;
+    padding: 30px 20px;
+    padding-bottom: 80px; /* espace pour la navbar en bas */
+    font-family: "Segoe UI", sans-serif;
+}
+
+.page-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0 0 12px 0;
+}
+
+.page-placeholder {
+    font-size: 14px;
+    color: #8e8e9a;
+}

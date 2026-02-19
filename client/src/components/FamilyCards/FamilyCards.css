@@ -1,0 +1,45 @@
+/* ===== COMPOSANT FAMILY CARDS ===== */
+
+.family-cards-section {
+    margin-bottom: 28px;
+}
+
+.family-cards-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0 0 14px 0;
+}
+
+/* Scroll horizontal */
+.family-cards-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.family-cards-scroll::-webkit-scrollbar {
+    height: 0px;
+}
+
+/* Bouton famille */
+.family-card {
+    flex-shrink: 0;
+    padding: 16px 24px;
+    background-color: #ffffff;
+    border: 1px solid #e0ddd8;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a2e;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+    font-family: "Segoe UI", sans-serif;
+}
+
+.family-card:hover {
+    background-color: #d4c5a9;
+    border-color: #d4c5a9;
+}
