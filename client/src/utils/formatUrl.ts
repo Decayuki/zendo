@@ -1,19 +1,28 @@
-// src/utils/formatUrl.ts
+// =============================================================
+// UTILITAIRE FORMAT URL
+// Convertit les noms de la BDD en slugs pour les URLs et inversement
+// Exemple : "Bebe_fille" → "bebe-fille" (pour l'URL)
+//           "bebe-fille" → "Bebe_fille" (pour la requete MongoDB)
+// =============================================================
 
-/**
- * Transforme "Bebe_fille" en "bebe-fille" pour l'URL
- */
-export const toSlug = (text: string): string => {
+// Transforme un nom BDD en slug URL
+// "Bebe_fille" → "bebe-fille"
+function toSlug(text: string): string {
   return text
     .toLowerCase()
-    .replace(/_/g, '-')           // Remplace les underscores par des tirets
-    .normalize("NFD")             // Sépare les accents des lettres
-    .replace(/[\u0300-\u036f]/g, ""); // Supprime les accents
-};
+    .replace(/_/g, "-")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
 
-/**
- * Transforme "bebe-fille" en "Bebe_fille" pour la requête MongoDB
- */
-export const fromSlug = (slug: string, originalList: string[]): string => {
-  return originalList.find(item => toSlug(item) === slug) || slug;
-};
+// Transforme un slug URL en nom BDD
+// "bebe-fille" → "Bebe_fille"
+// On cherche dans la liste originale pour retrouver la bonne casse
+function fromSlug(slug: string, originalList: string[]): string {
+  const found = originalList.find(function (item) {
+    return toSlug(item) === slug;
+  });
+  return found || slug;
+}
+
+export { toSlug, fromSlug };
