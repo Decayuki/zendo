@@ -1,0 +1,38 @@
+/* ===== COMPOSANT CATEGORY CHIPS ===== */
+
+.category-chips-section {
+    margin-bottom: 28px;
+}
+
+.category-chips-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0 0 14px 0;
+}
+
+/* Grille de chips en flex-wrap */
+.category-chips-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Chip individuel */
+.category-chip {
+    padding: 10px 16px;
+    background-color: #ffffff;
+    border: 1px solid #e0ddd8;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #1a1a2e;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+    font-family: "Segoe UI", sans-serif;
+}
+
+.category-chip:hover {
+    background-color: #d4c5a9;
+    border-color: #d4c5a9;
+}

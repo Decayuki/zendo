@@ -1,0 +1,30 @@
+// =============================================================
+// ROUTES PRODUCT - Aiguillage pour les produits
+// Meme logique que routes/auth.ts :
+// On recoit l'URL, on envoie vers la bonne fonction du controller
+// =============================================================
+
+import { Router } from "express";
+import { getProducts, getProductById, createProduct, deleteProduct } from "../controllers/product";
+
+const router = Router();
+
+// GET /api/products - recuperer la liste des produits (avec filtres optionnels)
+// Exemples :
+//   GET /api/products              -> tous les produits
+//   GET /api/products?family=Femme -> seulement les produits "Femme"
+//   GET /api/products?limit=8      -> seulement 8 produits
+router.get("/", getProducts);
+
+// GET /api/products/:id - recuperer un seul produit par son ID
+// Exemple : GET /api/products/65a1b2c3d4e5f6g7h8i9j0
+router.get("/:id", getProductById);
+
+// POST /api/products - creer un nouveau produit
+// Body : { name, family, category, reference, sellerId, ... }
+router.post("/", createProduct);
+
+// DELETE /api/products/:id - supprimer un produit par son ID
+router.delete("/:id", deleteProduct);
+
+export default router;

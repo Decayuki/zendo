@@ -1,0 +1,83 @@
+/* ===== COMPOSANT PRODUCT ROW ===== */
+/* Rangee horizontale scrollable de produits */
+
+.product-row-section {
+    margin-bottom: 28px;
+}
+
+.product-row-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0 0 14px 0;
+}
+
+/* Container scroll horizontal */
+.product-row-scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 8px;
+    /* Masquer la scrollbar sur Webkit (Chrome, Safari) */
+    -webkit-overflow-scrolling: touch;
+}
+
+/* VARIANTE GRILLE — remplacer le bloc ci-dessus pour afficher en grille
+.product-row-scroll {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+.product-row-item {
+    width: auto;
+}
+*/
+
+/* Scrollbar discrete */
+.product-row-scroll::-webkit-scrollbar {
+    height: 4px;
+}
+
+.product-row-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.product-row-scroll::-webkit-scrollbar-thumb {
+    background-color: #d4c5a9;
+    border-radius: 4px;
+}
+
+/* Chaque carte dans la rangee */
+.product-row-item {
+    flex-shrink: 0;
+    width: 160px;
+    scroll-snap-align: start;
+}
+
+/* Chargement / erreur / vide */
+.product-row-loading,
+.product-row-error,
+.product-row-empty {
+    text-align: center;
+    font-size: 14px;
+    color: #8e8e9a;
+    margin-top: 10px;
+}
+
+.product-row-error {
+    color: #c0392b;
+}
+
+/* Responsive : cartes plus larges sur tablette/desktop */
+@media (min-width: 600px) {
+    .product-row-item {
+        width: 180px;
+    }
+}
+
+@media (min-width: 900px) {
+    .product-row-item {
+        width: 200px;
+    }
+}

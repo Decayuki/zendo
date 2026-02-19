@@ -1,28 +1,46 @@
 // =============================================================
-// COMPOSANT NAVBAR
+// COMPOSANT NAVBAR - Barre de navigation en bas de l'ecran
+// Affiche les liens : Accueil, Recherche, Favoris, Profil, Boutique
+// Icones MUI pour le visuel
 // =============================================================
 
 import React from "react";
 import { NavLink } from "react-router-dom";
+import {
+  Home,
+  Search,
+  Favorite,
+  Person,
+  Storefront,
+} from "@mui/icons-material";
 import "./Navbar.css";
 
 function Navbar() {
   return (
     <nav className="navbar">
-      <NavLink to="/accueil" className="navbar-item">
-        Accueil
+      <NavLink to="/home" className="navbar-item">
+        <Home className="navbar-icon" />
+        <span className="navbar-label">Accueil</span>
       </NavLink>
 
       <NavLink to="/recherche" className="navbar-item">
-        Recherche
+        <Search className="navbar-icon" />
+        <span className="navbar-label">Recherche</span>
       </NavLink>
 
       <NavLink to="/favoris" className="navbar-item">
-        Favoris
+        <Favorite className="navbar-icon" />
+        <span className="navbar-label">Favoris</span>
       </NavLink>
 
       <NavLink to="/profil" className="navbar-item">
-        Profil
+        <Person className="navbar-icon" />
+        <span className="navbar-label">Profil</span>
+      </NavLink>
+
+      <NavLink to="/boutique" className="navbar-item">
+        <Storefront className="navbar-icon" />
+        <span className="navbar-label">Boutique</span>
       </NavLink>
     </nav>
   );
