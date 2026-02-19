@@ -1,11 +1,9 @@
-/* Product.css */
-
 .product-card {
   width: 100%;
   max-width: 350px;
   background-color: #fff;
   border-radius: 8px;
-  overflow: hidden; /* Pour que l'image ne dépasse pas des coins arrondis */
+  overflow: hidden;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   margin: 10px;
   border: 1px solid #f0f0f0;
@@ -14,7 +12,7 @@
 .product-image {
   width: 100%;
   height: 300px;
-  object-fit: cover; /* Garde les proportions de l'image */
+  object-fit: cover;
 }
 
 .product-info {

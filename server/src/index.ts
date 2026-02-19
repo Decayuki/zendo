@@ -9,7 +9,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth";
-import productRoutes from "./routes/products";
+import productRoutes from "./routes/product";
 
 // Charge depuis le .env
 // (MONGO_URI, JWT_SECRET, PORT)
@@ -37,13 +37,8 @@ app.use(express.json());
 //
 app.use("/api/auth", authRoutes);
 
-// Toutes les routes qui commencent par /api/products sont gerées par productRoutes
-// Exemple :
-//   - GET /api/products        -> liste des produits
-//   - POST /api/products       -> création d'un produit
-//   - DELETE /api/products/:id -> suppression d'un produit
+// Routes produits : GET /api/products, GET /api/products/:id
 app.use("/api/products", productRoutes);
-
 
 // Route de test pour verifier que le serveur fonctionne
 // http://localhost:5000

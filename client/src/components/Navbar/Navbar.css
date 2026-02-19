@@ -1,4 +1,4 @@
-/* ===== NAVBAR - Barre de navigation en bas ===== */
+/* ===== NAVBAR - Barre de navigation fixe en bas ===== */
 
 .navbar {
   position: fixed;
@@ -6,31 +6,51 @@
   left: 0;
   right: 0;
   height: 60px;
-  background-color: #ffffff;
-  border-top: 1px solid #e0ddd8;
+  background-color: #3b4553;
   display: flex;
   justify-content: space-around;
   align-items: center;
+  z-index: 1000;
   font-family: "Segoe UI", sans-serif;
 }
 
-/* Chaque element de la navbar */
+/* Chaque element de la navbar (lien + icone + label) */
 .navbar-item {
   text-decoration: none;
-  font-size: 13px;
-  font-weight: 500;
-  color: #8e8e9a;
-  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 8px;
+  transition: all 0.2s;
+}
+
+/* Icone */
+.navbar-item .navbar-icon {
+  font-size: 22px;
+  color: #e5e5e5;
+  transition: color 0.2s;
+}
+
+/* Label texte sous l'icone */
+.navbar-label {
+  font-size: 10px;
+  color: #e5e5e5;
   transition: color 0.2s;
 }
 
 /* Onglet actif (la page actuelle) */
-.navbar-item.active {
-  color: #3b5998;
+.navbar-item.active .navbar-icon {
+  color: #eed7b8;
+}
+
+.navbar-item.active .navbar-label {
+  color: #eed7b8;
   font-weight: 700;
 }
 
 /* Hover au survol */
-.navbar-item:hover {
-  color: #1a1a2e;
+.navbar-item:hover .navbar-icon,
+.navbar-item:hover .navbar-label {
+  color: #ffffff;
 }
