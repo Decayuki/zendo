@@ -120,6 +120,16 @@ const ProductSchema = new mongoose.Schema(
   },
 );
 
+ProductSchema.virtual('variations', {
+  ref: 'Variation',
+  localField: '_id',
+  foreignField: 'productId' // Doit correspondre au nom dans Variation.ts
+});
+ProductSchema.set('toJSON', { virtuals: true });
+ProductSchema.set('toObject', { virtuals: true });
+
+
 const Product = mongoose.model("Product", ProductSchema);
 
 export default Product;
+
