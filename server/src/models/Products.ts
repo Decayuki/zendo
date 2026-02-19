@@ -98,7 +98,7 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       // default: "", // !!!JC!!! pas de valeur par defaut, le vendeur doit la renseigner
       require: true, // !!!JC!!! la reference est obligatoire pour identifier le produit
-                     // !!!JC!!! Plus tard on pourra ajouter un index unique sur (sellerId + reference) pour garantir que chaque vendeur a des references uniques
+      // !!!JC!!! Plus tard on pourra ajouter un index unique sur (sellerId + reference) pour garantir que chaque vendeur a des references uniques
     },
 
     // Statut du produit : actif (visible) ou inactif (cache)
