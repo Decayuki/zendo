@@ -16,7 +16,9 @@ import {
 // --- Pages ---
 import Login from "./pages/Auth/Login";
 import Signup from "./pages/Auth/Signup";
-import ForgotPassword from "./pages/ForgotPassword";
+import RecoveryScreen from "./pages/Auth/RecoveryScreen";
+import ResetScreen from "./pages/Auth/ResetScreen";
+import ProductDetail from "./pages/ProductDetail";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
 import Favoris from "./pages/Favoris";
@@ -44,7 +46,8 @@ function AppContent() {
         {/* --- Pages d'authentification (sans navbar) --- */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/recovery" element={<RecoveryScreen />} />
+        <Route path="/reset" element={<ResetScreen />} />
 
         {/* --- Pages principales (avec navbar) --- */}
         <Route path="/home" element={<Home />} />
@@ -63,7 +66,7 @@ function AppContent() {
         {/* Plus tard on pourra rediriger vers /accueil si l'utilisateur est connecte */}
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="*" element={<Navigate to="/login" />} />
-        <Route path="/detailProduct/:id" element={<ProductDetail />} />
+        <Route path="/produit/:id" element={<ProductDetail />} />
       </Routes>
 
       {/* On affiche la Navbar seulement si on est PAS sur une page d'auth */}

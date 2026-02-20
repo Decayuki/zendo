@@ -6,13 +6,16 @@
 
 import React from "react";
 import "../styles/Pages.css";
+import { Header } from "../components/Header/Header";
 
 function Profil() {
   return (
     <div className="page-container">
+      <Header />
       <h1 className="page-title">Mon profil</h1>
       <p className="page-placeholder">
-        Bientot ici : informations personnelles, parametres, ouvrir ma boutique...
+        Bientot ici : informations personnelles, parametres, ouvrir ma
+        boutique...
       </p>
     </div>
   );
