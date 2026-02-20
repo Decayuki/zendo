@@ -19,8 +19,8 @@ export const sendMail = async (email: string, token: string) => {
     from: '"Zendo" <ima.zieme@ethereal.email>',
     to: email,
     subject: "Réinitialiser votre mot de passe",
-    text: `Cliquer sur ce lien pour réinitialiser le mot de passe : http://localhost:5001/api/auth/reset?token=${token}`, // Plain-text version of the message
-    html: `<b>Cliquer sur ce lien pour réinitialiser le mot de passe : http://localhost:5001/api/auth/reset?token=${token}</b>`, // HTML version of the message
+    text: `Cliquer sur ce lien pour réinitialiser le mot de passe : http://localhost:3000/reset?token=${token}`, // Plain-text version of the message
+    html: `<b>Cliquer sur ce lien pour réinitialiser le mot de passe : http://localhost:3000/reset?token=${token}</b>`, // HTML version of the message
   });
 
   console.log("Message sent:", info.messageId);
