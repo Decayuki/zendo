@@ -10,6 +10,7 @@ import { Input } from "../../components/Input/Input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { Message } from "../../components/Message/Message";
 
 function RecoveryScreen({ navigation }: any) {
   // Grabbed from emailregex.com
@@ -33,12 +34,7 @@ function RecoveryScreen({ navigation }: any) {
       })
         .then((response) => response.json())
         .then((data) => {
-          if (data.message === "Email envoyé") {
-            alert("Email envoyé");
-          } else {
-            console.log(data.message);
-            setError(data.message);
-          }
+          setError(data.message);
         });
     } else {
       setError("Mauvais format");
@@ -62,7 +58,7 @@ function RecoveryScreen({ navigation }: any) {
           <h1 className="auth-title">ZENDO</h1>
           <p className="auth-subtitle">L'artisanat en tout simplicité</p>
         </div>
-        {error && <p className="auth-error">{error}</p>}
+        <Message type="error">{error}</Message>
 
         <div className="form-group">
           <label htmlFor="email">Email</label>

@@ -206,7 +206,8 @@ async function recovery(req: Request, res: Response) {
       );
       sendMail(email, token);
       return res.status(200).json({
-        message: "Email envoyé",
+        message:
+          "Si cet email existe, un lien a été envoyé pour réinitialiser votre mot de passe",
       });
     }
   } catch (error) {
