@@ -24,19 +24,20 @@ function RecoveryScreen({ navigation }: any) {
   const handleSubmit = () => {
     setError("");
     if (EMAIL_REGEX.test(mail)) {
-      fetch(`http://localhost:3000/recovery`, {
+      fetch(`http://localhost:5001/api/auth/recovery`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          mail: mail,
+          email: mail,
         }),
       })
         .then((response) => response.json())
         .then((data) => {
-          if (data.result === "Email envoyé") {
+          if (data.message === "Email envoyé") {
             alert("Email envoyé");
           } else {
-            setError(data.result);
+            console.log(data.message);
+            setError(data.message);
           }
         });
     } else {

@@ -11,10 +11,32 @@ import api from "../services/api";
 import { fromSlug } from "../utils/formatUrl";
 import ProductView from "../components/ProductView/ProductView";
 import "../styles/ProductList.css";
+import { Header } from "../components/Header/Header";
 
 // Listes des enums pour la conversion slug → nom BDD
-const FAMILIES = ["Femme", "Homme", "Garcon", "Fille", "Bebe_fille", "Bebe_garcon", "Jouet", "Maison"];
-const CATEGORIES = ["Vetements", "Bijoux", "Chaussures", "Sacs", "Accessoires", "Sport", "Beaute", "Luminaire", "Tapis", "Decoration", "Art_de_la_table"];
+const FAMILIES = [
+  "Femme",
+  "Homme",
+  "Garcon",
+  "Fille",
+  "Bebe_fille",
+  "Bebe_garcon",
+  "Jouet",
+  "Maison",
+];
+const CATEGORIES = [
+  "Vetements",
+  "Bijoux",
+  "Chaussures",
+  "Sacs",
+  "Accessoires",
+  "Sport",
+  "Beaute",
+  "Luminaire",
+  "Tapis",
+  "Decoration",
+  "Art_de_la_table",
+];
 
 function ProductList() {
   // Etape 1 : recuperer les parametres de l'URL
@@ -32,32 +54,37 @@ function ProductList() {
   const dbCategory = categorySlug ? fromSlug(categorySlug, CATEGORIES) : null;
 
   // Etape 2 : charger les produits depuis le backend
-  useEffect(function () {
-    setLoading(true);
+  useEffect(
+    function () {
+      setLoading(true);
 
-    // Construire les parametres de la requete
-    const queryParams: any = {};
-    if (dbFamily) {
-      queryParams.family = dbFamily;
-    }
-    if (dbCategory) {
-      queryParams.category = dbCategory;
-    }
+      // Construire les parametres de la requete
+      const queryParams: any = {};
+      if (dbFamily) {
+        queryParams.family = dbFamily;
+      }
+      if (dbCategory) {
+        queryParams.category = dbCategory;
+      }
 
-    api.get("/products", { params: queryParams })
-      .then(function (response) {
-        setProducts(response.data.products);
-        setLoading(false);
-      })
-      .catch(function (error) {
-        console.error("Erreur chargement produits:", error);
-        setLoading(false);
-      });
-  }, [dbFamily, dbCategory]);
+      api
+        .get("/products", { params: queryParams })
+        .then(function (response) {
+          setProducts(response.data.products);
+          setLoading(false);
+        })
+        .catch(function (error) {
+          console.error("Erreur chargement produits:", error);
+          setLoading(false);
+        });
+    },
+    [dbFamily, dbCategory],
+  );
 
   // Etape 3 : affichage
   return (
     <div className="product-list-page">
+      <Header />
       <header className="list-header">
         <h1 className="list-title">
           {dbFamily} {dbCategory ? "> " + dbCategory.replace("_", " ") : ""}
@@ -77,7 +104,9 @@ function ProductList() {
                   id={product._id}
                   title={product.name}
                   price={product.price || 0}
-                  image={product.images && product.images[0] ? product.images[0] : ""}
+                  image={
+                    product.images && product.images[0] ? product.images[0] : ""
+                  }
                   description={product.description || ""}
                 />
               );
