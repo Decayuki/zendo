@@ -1,7 +1,7 @@
 // =============================================================
 // MODELE PRODUCT - Represente un produit dans la base de donnees
 // Chaque produit appartient a un vendeur et a une categorie
-// Les images sont stockees sous forme d'URLs (pas les fichiers eux-memes)
+// IMG = Url ...reste la question du stockage...
 // =============================================================
 
 import mongoose from "mongoose";
@@ -12,124 +12,125 @@ import mongoose from "mongoose";
 
 // Familles de produits (qui porte/utilise le produit)
 const FAMILIES = [
-  "Femme",
-  "Homme",
-  "Garcon",
-  "Fille",
-  "Bebe_fille",
-  "Bebe_garcon",
-  "Jouet",
-  "Maison",
+    "Femme",
+    "Homme",
+    "Garcon",
+    "Fille",
+    "Bebe_fille",
+    "Bebe_garcon",
+    "Jouet",
+    "Maison",
 ];
 
 // Categories de produits (type de produit)
 const CATEGORIES = [
-  "Vetements",
-  "Bijoux",
-  "Chaussures",
-  "Sacs",
-  "Accessoires",
-  "Sport",
-  "Beaute",
-  "Luminaire",
-  "Tapis",
-  "Decoration",
-  "Art_de_la_table",
+    "Vetements",
+    "Bijoux",
+    "Chaussures",
+    "Sacs",
+    "Accessoires",
+    "Sport",
+    "Beaute",
+    "Luminaire",
+    "Tapis",
+    "Decoration",
+    "Art_de_la_table",
 ];
 
 const ProductSchema = new mongoose.Schema(
-  {
-    // Nom du produit (ex: "Bracelet en cuir tresse")
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
+    {
+        // Nom du produit
+        name: {
+            type: String,
+            required: true,
+            trim: true,
+        },
 
-    // Description du produit
-    description: {
-      type: String,
-      default: "",
-    },
+        // Description du produit
+        description: {
+            type: String,
+            default: "",
+        },
 
-    // Images du produit : tableau d'URLs
-    // Exemple : ["https://exemple.com/img1.jpg", "https://exemple.com/img2.jpg"]
-    // On stocke les URLs, pas les fichiers
-    images: {
-      type: [String],
-      default: [],
-    },
+        // Images du produit : tableau d'URLs
+        // Exemple : ["https://exemple.com/img1.jpg", "https://exemple.com/img2.jpg"]
 
-    // Prix du produit en euros
-    // Plus tard ce prix pourra etre dans un modele Variation (couleur/taille)
-    price: {
-      type: Number,
-      required: true,
-    },
+        images: {
+            type: [String],
+            default: [],
+        },
 
-    // Famille du produit (Femme, Homme, Enfant, Maison...)
-    family: {
-      type: String,
-      enum: FAMILIES,
-      required: true,
-    },
+        // !!!JC!!! pas ici mais pour variation
+        // Prix du produit en euros
+        // Plus tard ce prix pourra etre dans un modele Variation (couleur/taille)
+        // price: {
+        //   type: Number,
+        //   required: true,
+        // },
 
-    // Categorie du produit (Vetements, Bijoux, Chaussures...)
-    category: {
-      type: String,
-      enum: CATEGORIES,
-      required: true,
-    },
+        // Famille du produit (Femme, Homme, Enfant, Maison...)
+        family: {
+            type: String,
+            enum: FAMILIES,
+            required: true,
+        },
 
-    // Materiaux utilises (tableau car un produit peut avoir plusieurs materiaux)
-    material: {
-      type: [String],
-      default: [],
-    },
+        // Categorie du produit (Vetements, Bijoux, Chaussures...)
+        category: {
+            type: String,
+            enum: CATEGORIES,
+            required: true,
+        },
 
-    // Fabrique en France (oui/non)
-    madeInFrance: {
-      type: Boolean,
-      default: false,
-    },
+        // Materiaux utilises (tableau car un produit peut avoir plusieurs materiaux)
+        material: {
+            type: [String],
+            default: [],
+        },
 
-    // Reference interne du produit (code vendeur)
-    reference: {
-      type: String,
-      default: "",
-    },
+        madeInFrance: {
+            type: Boolean,
+            default: false,
+        },
 
-    // Statut du produit : actif (visible) ou inactif (cache)
-    status: {
-      type: String,
-      enum: ["active", "inactive"],
-      default: "active",
-    },
+        // Reference produit (code vendeur)
+        reference: {
+            type: String,
+            // default: "", // !!!JC!!! pas de valeur par defaut, le vendeur doit la renseigner
+            required: true, // !!!JC!!! la reference est obligatoire pour identifier le produit
+            // !!!JC!!! Plus tard on pourra ajouter un index unique sur (sellerId + reference) pour garantir que chaque vendeur a des references uniques
+        },
 
-    // ID du vendeur qui a cree ce produit
-    // Plus tard on liera ca au modele Seller
-    // Pour l'instant on stocke juste l'ID du User qui vend
-    sellerId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+        // Statut du produit : actif (visible) ou inactif (cache)
+        status: {
+            type: Boolean, // !!!JC!!! boolean car une string "active"/"inactive" ca prend plus de place et c'est plus compliqué a manipuler que true/false
+            // enum: ["active", "inactive"],
+            default: true, // !!!JC!!! par defaut le produit est actif, le vendeur doit le desactiver s'il ne veut pas le vendre
+        },
+
+        // ID du vendeur qui a cree ce produit
+        // Plus tard on liera ca au modele Seller
+        // Pour l'instant on stocke juste l'ID du User qui vend
+        sellerId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true, // !!!JC!!! le vendeur est obligatoire pour savoir a qui appartient le produit
+        },
     },
-  },
-  {
-    // Ajoute automatiquement createdAt et updatedAt
-    timestamps: true,
-  },
+    {
+        // Ajoute automatiquement createdAt et updatedAt
+        timestamps: true,
+    }
 );
+// Cela permet de faire "Product.find().populate('variations')"
+// même si le champ n'existe pas physiquement dans la collection Product
 
-ProductSchema.virtual('variations', {
-  ref: 'Variation',
-  localField: '_id',
-  foreignField: 'productId' // Doit correspondre au nom dans Variation.ts
+ProductSchema.virtual("variations", {
+    ref: "Variation", // Le modèle vers lequel on pointe
+    localField: "_id", // Le champ dans Product
+    foreignField: "productId", // Le champ dans Variation qui contient l'ID du produit
 });
-ProductSchema.set('toJSON', { virtuals: true });
-ProductSchema.set('toObject', { virtuals: true });
-
 
 const Product = mongoose.model("Product", ProductSchema);
 
 export default Product;
-
