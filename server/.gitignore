@@ -1,0 +1,14 @@
+# Dependances
+node_modules/
+
+# Variables d'environnement (contient les secrets : mdp MongoDB, cle JWT...)
+.env
+
+# Fichiers de build
+dist/
+
+# Fichiers systeme
+.DS_Store
+
+# Logs
+*.log
