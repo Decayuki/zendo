@@ -89,8 +89,8 @@ function ProductDetail() {
           <p className="product-price">Prix : {productPrice}€</p>
           <FontAwesomeIcon
             icon={faHeart}
-            onClick={() => handleFavoriClick()}
-            style={iconStyle}
+            // onClick={() => handleFavoriClick()}
+            // style={iconStyle}
             className="heart-icon"
           />
         </div>

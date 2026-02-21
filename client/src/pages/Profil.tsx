@@ -5,17 +5,24 @@
 // =============================================================
 
 import React from "react";
-import "../styles/Pages.css";
+import ProfileHeader from "../components/Profils/ProfileHeader";
 
-function Profil() {
+
+const Profil = () => {
   return (
-    <div className="page-container">
-      <h1 className="page-title">Mon profil</h1>
-      <p className="page-placeholder">
-        Bientot ici : informations personnelles, parametres, ouvrir ma boutique...
-      </p>
+    <div className="profile-page-container">
+      {/* Affichage de la partie haute (photo + nom) */}
+      <ProfileHeader />
+
+      {/* Tu pourras ajouter ici la suite : menu, historique, déconnexion */}
+      <div className="profile-options-list">
+        {/* Exemple futur : 
+           <button>Mes commandes</button>
+           <button>Paramètres</button>
+        */}
+      </div>
     </div>
   );
-}
+};
 
 export default Profil;
