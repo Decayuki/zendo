@@ -13,6 +13,8 @@ const VariationSchema = new mongoose.Schema(
         size: { type: String }, // size_clothe | size_shoes | ring_size
 
         stock: { type: Number, default: 0 },
+        
+        price: { type: Number, required: true },
 
     },
     { timestamps: true }

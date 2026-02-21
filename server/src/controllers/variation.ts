@@ -7,7 +7,7 @@ import Variation from "../models/Variation";
 // ---------------------------------------------------------
 export async function createVariation(req: Request, res: Response) {
   try {
-    const { productId, color, size, stock } = req.body;
+    const { productId, color, size, stock, price } = req.body;
 
     // Validation
     if (!productId) {
@@ -21,6 +21,7 @@ export async function createVariation(req: Request, res: Response) {
       color,
       size,
       stock: stock ?? 0,
+      price
     });
 
     return res.status(201).json({
