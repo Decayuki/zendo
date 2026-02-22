@@ -9,6 +9,8 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { addcart, deletecart } from "../reducers/cart";
 import { useParams } from "react-router-dom";
 import { Message } from "../components/Message/Message";
+import ProductModal from "../components/ProductModal/ProductModal";
+import { color } from "@mui/system";
 
 function ProductDetail() {
   // ETATS & HOOKS
@@ -25,6 +27,12 @@ function ProductDetail() {
     description: "",
     _id: "",
   });
+  const [variations, setVariations] = useState<any[]>([
+    {
+      color: "",
+      size: "",
+    },
+  ]);
   // set la donnée favorie pour afficher le coeur plein ou vide
   const [isFavori, setIsFavori] = useState(false);
   // set les favoris de l'utilisateur pour vérifier si le produit est dans les favoris ou pas
@@ -35,6 +43,8 @@ function ProductDetail() {
   const { id } = useParams();
   // set le message d'ajout ou de suppression du panier
   const [message, setMessage] = useState("");
+  // set l'état pour afficher ou non le modal de sélection des variations
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     // si je n'ai pas d'id, je ne fetch rien
@@ -44,10 +54,12 @@ function ProductDetail() {
       .then((response) => response.json())
       .then((data) => {
         setProduct(data.product);
+        setVariations(data.variations || []);
+        console.log(data.variations);
       })
       .catch((error) => console.error("Erreur fetch produit:", error));
     // fetch les favoris de l'utilisateur pour vérifier si le produit est dans les favoris ou pas
-    fetch(`http://localhost:5001/api/favorites`, {
+    fetch(`http://localhost:5001/api/favoris`, {
       method: "GET",
       headers: { Authorization: "Bearer " + localStorage.getItem("token") },
     })
@@ -90,7 +102,7 @@ function ProductDetail() {
     setIsFavori(nextState);
     // si le produit était déjà dans les favoris, je le supprime, sinon je l'ajoute
     if (previousState) {
-      fetch(`http://localhost:5001/api/favorites/${id}`, {
+      fetch(`http://localhost:5001/api/favoris/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -102,7 +114,7 @@ function ProductDetail() {
           setError(data.message);
         });
     } else {
-      fetch(`http://localhost:5001/api/favorites/${id}`, {
+      fetch(`http://localhost:5001/api/favoris/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -115,19 +127,18 @@ function ProductDetail() {
         });
     }
   };
+
   // fonction pour ajouter ou supprimer le produit du panier de l'utilisateur
   const handleAddCartClick = () => {
     // si je n'ai pas d'id je ne fetch pas
     if (!product?._id) return;
-    // si le produit est déjà dans le panier, je le supprime, sinon je l'ajoute
-    if (userCart.includes(product._id)) {
-      dispatch(deletecart(product._id));
-      setUserCart(userCart.filter((cartId) => cartId !== product._id));
-      setMessage("Produit supprimé du panier");
+    if (variations && variations.length > 0) {
+      setShowModal(true);
     } else {
+      console.log("Produit ajouté au panier:", product._id);
       dispatch(addcart(product._id));
       setUserCart([...userCart, product._id]);
-      setMessage("Produit ajouté au panier");
+      setError("Produit ajouté au panier");
     }
   };
 
@@ -152,7 +163,7 @@ function ProductDetail() {
           />
         </div>
 
-        <Message message={error} type="error" />
+        <Message message={error} variant="error" />
 
         <div className="product-smallImage">
           <img src={smallImage()} alt="Product" />
@@ -162,7 +173,15 @@ function ProductDetail() {
           <p className="product-description">{product?.description || ""}</p>
         </div>
         <Button onClick={handleAddCartClick}>Ajouter au panier</Button>
-        <Message message={message} type="success" />
+        <ProductModal
+          isOpen={showModal}
+          onClose={() => setShowModal(false)}
+          onConfirm={(selection) => {
+            handleAddCartClick(selection);
+          }}
+          title="Choisissez une variation"
+          variations={variations}
+        />
       </div>
 
       <Navbar />

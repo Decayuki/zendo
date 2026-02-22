@@ -1,7 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState = {
-  value: [],
+  value: {
+    productId: "",
+    size: "",
+    color: "",
+    quantity: 0,
+  },
 };
 
 export const cartSlice = createSlice({

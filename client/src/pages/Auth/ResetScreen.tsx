@@ -5,6 +5,7 @@ import { Input } from "../../components/Input/Input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
+import { Message } from "../../components/Message/Message";
 
 function ResetScreen() {
   const navigate = useNavigate();
@@ -79,7 +80,7 @@ function ResetScreen() {
           <h1 className="auth-title">ZENDO</h1>
           <p className="auth-subtitle">L'artisanat en tout simplicité</p>
         </div>
-        {error && <p className="auth-error">{error}</p>}
+        <Message variant="error" message={error} />
 
         <div className="form-group">
           <label htmlFor="password">Nouveau mot de passe</label>
