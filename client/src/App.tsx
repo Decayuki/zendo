@@ -61,7 +61,6 @@ function AppContent() {
             sinon "favoris" serait interprete comme un nom de famille */}
         <Route path="/:family" element={<ProductList />} />
         <Route path="/:family/:category" element={<ProductList />} />
-
         {/* --- Route par defaut : redirige vers login --- */}
         {/* Plus tard on pourra rediriger vers /accueil si l'utilisateur est connecte */}
         <Route path="/" element={<Navigate to="/login" />} />
