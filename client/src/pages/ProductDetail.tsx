@@ -33,6 +33,8 @@ function ProductDetail() {
   const [userCart, setUserCart] = useState<string[]>([]);
   // Récupère l'ID de la route
   const { id } = useParams();
+  // set le message d'ajout ou de suppression du panier
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     // si je n'ai pas d'id, je ne fetch rien
@@ -121,9 +123,11 @@ function ProductDetail() {
     if (userCart.includes(product._id)) {
       dispatch(deletecart(product._id));
       setUserCart(userCart.filter((cartId) => cartId !== product._id));
+      setMessage("Produit supprimé du panier");
     } else {
       dispatch(addcart(product._id));
       setUserCart([...userCart, product._id]);
+      setMessage("Produit ajouté au panier");
     }
   };
 
@@ -157,8 +161,8 @@ function ProductDetail() {
         <div className="product-description-container">
           <p className="product-description">{product?.description || ""}</p>
         </div>
-
         <Button onClick={handleAddCartClick}>Ajouter au panier</Button>
+        <Message message={message} type="success" />
       </div>
 
       <Navbar />
