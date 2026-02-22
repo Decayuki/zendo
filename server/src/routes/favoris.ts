@@ -1,27 +1,25 @@
 // =============================================================
-// ROUTES FAVORIS - Aiguillage pour les favoris utilisateur
-// Permet d'ajouter, supprimer et lister les favoris d'un user
-//
-// GET    /api/user/:id/favoris              -> liste des favoris
-// POST   /api/user/:id/favoris/:productId   -> ajouter un favori
-// DELETE /api/user/:id/favoris/:productId   -> retirer un favori
+// Ici c'est "l'aiguillage" :
+// Si quelqu'un appelle POST /favoris ça envoie vers la fonction favoris du controller
+// Juste un intermédiaire entre l'URL et la logique
+// ROUTES FAVORIS - Definit les URLs pour les favoris
+// Quand le frontend appelle /api/favoris ou /api/favoris/:productId
 // =============================================================
 
 import { Router } from "express";
-import { getFavoris, addFavori, deleteFavori } from "../controllers/favoris";
+import { addFavori, deleteFavori, getFavori } from "../controllers/favoris";
 
+// On cree un "routeur" Express
 const router = Router();
 
-// Recuperer tous les favoris d'un utilisateur
-// Exemple : GET /api/user/65abc123/favoris
-router.get("/:id/favoris", getFavoris);
+// Quand on recoit un POST sur /favoris/:id, on appelle la fonction favori du controller
+router.post("/:productId", addFavori);
 
-// Ajouter un produit aux favoris
-// Exemple : POST /api/user/65abc123/favoris/65xyz789
-router.post("/:id/favoris/:productId", addFavori);
+// Quand on recoit un DELETE sur /favoris/:id, on appelle la fonction favori du controller
+router.delete("/:productId", deleteFavori);
 
-// Retirer un produit des favoris
-// Exemple : DELETE /api/user/65abc123/favoris/65xyz789
-router.delete("/:id/favoris/:productId", deleteFavori);
+// Quand on recoit un GET sur /favoris, on appelle la fonction favori du controller
+router.get("/", getFavori);
 
+// On exporte le routeur pour l'utiliser dans index.ts
 export default router;

@@ -12,7 +12,6 @@ import authRoutes from "./routes/auth";
 import productRoutes from "./routes/product";
 import variationRoutes from "./routes/variation";
 import favorisRoutes from "./routes/favoris";
-import cartRoutes from "./routes/cart";
 
 // Charge depuis le .env
 // (MONGO_URI, JWT_SECRET, PORT)
@@ -46,11 +45,8 @@ app.use("/api/products", productRoutes);
 // Routes variations : GET/POST /api/products/:id/variations, DELETE /api/variations/:id
 app.use("/api", variationRoutes);
 
-// Routes favoris : GET/POST/DELETE /api/user/:id/favoris/...
-app.use("/api/user", favorisRoutes);
-
-// Routes panier : GET/POST/DELETE /api/user/:id/cart/...
-app.use("/api/user", cartRoutes);
+// Routes favoris : GET/POST/DELETE /api/favoris/...
+app.use("/api/favoris", favorisRoutes);
 
 // Route de test pour verifier que le serveur fonctionne
 // http://localhost:5000
