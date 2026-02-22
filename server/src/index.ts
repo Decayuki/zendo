@@ -10,7 +10,9 @@ import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth";
 import productRoutes from "./routes/product";
-import favoriteRoutes from "./routes/favorite";
+import variationRoutes from "./routes/variation";
+import favorisRoutes from "./routes/favoris";
+import cartRoutes from "./routes/cart";
 
 // Charge depuis le .env
 // (MONGO_URI, JWT_SECRET, PORT)
@@ -38,11 +40,17 @@ app.use(express.json());
 //
 app.use("/api/auth", authRoutes);
 
-// Routes produits : GET /api/products, GET /api/products/:id
+// Routes produits : GET /api/products, GET /api/products/:id, POST, DELETE
 app.use("/api/products", productRoutes);
 
-// Routes favoris : TODO
-app.use("/api/favorites", favoriteRoutes);
+// Routes variations : GET/POST /api/products/:id/variations, DELETE /api/variations/:id
+app.use("/api", variationRoutes);
+
+// Routes favoris : GET/POST/DELETE /api/user/:id/favoris/...
+app.use("/api/user", favorisRoutes);
+
+// Routes panier : GET/POST/DELETE /api/user/:id/cart/...
+app.use("/api/user", cartRoutes);
 
 // Route de test pour verifier que le serveur fonctionne
 // http://localhost:5000
