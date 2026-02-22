@@ -58,7 +58,7 @@ function RecoveryScreen({ navigation }: any) {
           <h1 className="auth-title">ZENDO</h1>
           <p className="auth-subtitle">L'artisanat en tout simplicité</p>
         </div>
-        <Message type="error">{error}</Message>
+        <Message variant="error" message={error} />
 
         <div className="form-group">
           <label htmlFor="email">Email</label>
