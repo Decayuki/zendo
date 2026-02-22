@@ -3,6 +3,7 @@
 // =============================================================
 
 import mongoose from "mongoose";
+import CartItemSchema from "./CartItemSchema";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -78,6 +79,10 @@ const UserSchema = new mongoose.Schema(
         default: [], // par defaut c'est un tableau vide
       },
     ],
+    cart: {
+      type: [CartItemSchema],
+      default: [], // par defaut c'est un tableau vide
+    },
   },
   {
     // Pour ajouter les champs createdAt et updatedAt
