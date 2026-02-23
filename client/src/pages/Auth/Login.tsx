@@ -13,11 +13,17 @@ import { Input } from "../../components/Input/Input";
 import AuthHeader from "./AuthHeader";
 import { Message } from "../../components/Message/Message";
 import AuthFooter from "./AuthFooter";
+import { useDispatch } from "react-redux"; 
+import { setCredentials } from "../../reducers/user"; 
+import { useNavigate } from "react-router-dom"; // Pour rediriger vers le profil
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const dispatch = useDispatch(); // Initialisation du dispatch
+  const navigate = useNavigate(); // Initialisation du hook useNavigate
 
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -30,11 +36,19 @@ const Login = () => {
           password,
         },
       );
+      // 1. Sauvegarde browser 
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
-      alert("Connexion reussie !");
 
-      // TODO: plus tard, rediriger vers la page d'accueil au lieu d'un alert
+      // 2. ACTUALISATION REDUX (Ce qui permet l'affichage sur la page Profil)
+      dispatch(setCredentials({
+        user: response.data.user,
+        token: response.data.token
+      }));
+
+      // alert("Connexion reussie !");
+      // TODO: Redirection vers /home ou /profil
+     navigate("/home");
     } catch (err: any) {
       setError(err.response?.data?.message || "Erreur de connexion au serveur");
     }
@@ -80,7 +94,7 @@ const Login = () => {
             leftIcon={<GoogleIcon />}
             onClick={handleGoogle}
           >
-            oogle
+            Google
           </Button>
         </form>
         {/* --- LIENS EN BAS --- */}
