@@ -7,10 +7,9 @@ import "../styles/ProductDetail.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { addcart, deletecart } from "../reducers/cart";
-import { useParams } from "react-router-dom";
+import { data, useParams } from "react-router-dom";
 import { Message } from "../components/Message/Message";
 import ProductModal from "../components/ProductModal/ProductModal";
-import { color } from "@mui/system";
 
 function ProductDetail() {
   // ETATS & HOOKS
@@ -27,10 +26,12 @@ function ProductDetail() {
     description: "",
     _id: "",
   });
+  // set les variations du produit
   const [variations, setVariations] = useState<any[]>([
     {
       color: "",
       size: "",
+      quantity: 0,
     },
   ]);
   // set la donnée favorie pour afficher le coeur plein ou vide
@@ -46,6 +47,7 @@ function ProductDetail() {
   // set l'état pour afficher ou non le modal de sélection des variations
   const [showModal, setShowModal] = useState(false);
 
+  // useEffect pour fetch les données du produit et vérifier si le produit est dans les favoris ou pas
   useEffect(() => {
     // si je n'ai pas d'id, je ne fetch rien
     if (!id) return;
@@ -74,6 +76,7 @@ function ProductDetail() {
         }
       });
   }, [id]);
+
   // fonction pour récupérer la première image du produit
   const firstImage = () => {
     if (product?.images && product.images.length > 0) {
@@ -81,6 +84,7 @@ function ProductDetail() {
     }
     return "";
   };
+
   // fonction pour récupérer la deuxième image du produit si elle existe, sinon la première image
   const smallImage = () => {
     if (!product?.images) return "";
@@ -128,17 +132,58 @@ function ProductDetail() {
     }
   };
 
-  // fonction pour ajouter ou supprimer le produit du panier de l'utilisateur
-  const handleAddCartClick = () => {
-    // si je n'ai pas d'id je ne fetch pas
-    if (!product?._id) return;
+  // fonction pour afficher le modal de sélection des variations si le produit en a, sinon ajouter directement le produit au panier
+  const modal = () => {
     if (variations && variations.length > 0) {
       setShowModal(true);
     } else {
-      console.log("Produit ajouté au panier:", product._id);
-      dispatch(addcart(product._id));
-      setUserCart([...userCart, product._id]);
-      setError("Produit ajouté au panier");
+      setShowModal(false);
+    }
+  };
+
+  // fonction pour ajouter un produit dans le panier de l'utilisateur
+  const handleAddCartClick = (
+    color: string,
+    size: string,
+    quantity: number,
+  ) => {
+    // si je n'ai pas d'id je ne fetch pas
+    if (!product?._id) return;
+    // si le produit a des variations, j'affiche le modal de sélection des variations, sinon j'ajoute directement le produit au panier
+    if (showModal) {
+      fetch(`http://localhost:5001/api/cart/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+        body: JSON.stringify({
+          color: color,
+          size: size,
+          quantity: quantity,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setError(data.message);
+        });
+    } else {
+      fetch(`http://localhost:5001/api/cart/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+        body: JSON.stringify({
+          color: color,
+          size: size,
+          quantity: quantity,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setError(data.message);
+        });
     }
   };
 
@@ -172,16 +217,16 @@ function ProductDetail() {
         <div className="product-description-container">
           <p className="product-description">{product?.description || ""}</p>
         </div>
-        <Button onClick={handleAddCartClick}>Ajouter au panier</Button>
         <ProductModal
           isOpen={showModal}
           onClose={() => setShowModal(false)}
-          onConfirm={(selection) => {
-            handleAddCartClick(selection);
+          onConfirm={({ color, size, quantity }: any) => {
+            handleAddCartClick(color, size, quantity);
           }}
           title="Choisissez une variation"
           variations={variations}
         />
+        <Button onClick={() => modal()}>Ajouter au panier</Button>
       </div>
 
       <Navbar />
