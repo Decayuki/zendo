@@ -3,7 +3,7 @@
 // =============================================================
 
 import mongoose from "mongoose";
-import CartItemSchema from "./CartItemSchema";
+import { CartItemSchema } from "./CartItemSchema";
 
 const UserSchema = new mongoose.Schema(
   {
