@@ -21,7 +21,7 @@ async function getProducts(req: Request, res: Response) {
   try {
     // Etape 1 : construire le filtre
     // Par defaut on n'affiche que les produits actifs (status = "active" dans le model)
-    const filter: any = { status: "active" };
+    const filter: any = { status: true };
 
     // Filtre par famille
     if (req.query.family) {
@@ -68,12 +68,18 @@ async function getProducts(req: Request, res: Response) {
       sortOption = { price: -1 };
     }
 
-    // Etape 4 : chercher les produits dans la base
-    const products = await Product.find(filter).sort(sortOption).limit(limit);
+    // Etape 4 : chercher les produits ET inclure les variations
+    // .populate('variations') utilise le champ virtuel défini dans modèle
+    console.log("Filtre envoyé à MongoDB :", filter);
+    const products = await Product.find(filter)
+      .populate("variations")
+      .sort(sortOption)
+      .limit(limit);
+    console.log("Nombre de produits trouvés :", products.length);
 
     // Etape 5 : renvoyer les produits au frontend
     return res.status(200).json({
-      message: "Produits recuperes",
+      message: "Produits récupérés avec succès",
       products: products,
       count: products.length,
     });
@@ -128,7 +134,6 @@ async function createProduct(req: Request, res: Response) {
     const name = req.body.name;
     const description = req.body.description;
     const images = req.body.images;
-    const price = req.body.price;
     const family = req.body.family;
     const category = req.body.category;
     const material = req.body.material;
@@ -138,9 +143,10 @@ async function createProduct(req: Request, res: Response) {
     const sellerId = req.body.sellerId;
 
     // Etape 2 : verifier les champs obligatoires
-    if (!name || !price || !family || !category) {
+    if (!name || !family || !category || !reference) {
       return res.status(400).json({
-        message: "Les champs name, price, family et category sont obligatoires",
+        message:
+          "Les champs name,family, category et reference sont obligatoires",
       });
     }
 
@@ -149,7 +155,6 @@ async function createProduct(req: Request, res: Response) {
       name: name,
       description: description,
       images: images,
-      price: price,
       family: family,
       category: category,
       material: material,

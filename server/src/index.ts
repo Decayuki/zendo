@@ -11,6 +11,8 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/auth";
 import productRoutes from "./routes/product";
 import variationRoutes from "./routes/variation";
+
+
 import favorisRoutes from "./routes/favoris";
 import cartRoutes from "./routes/cart";
 
@@ -43,8 +45,8 @@ app.use("/api/auth", authRoutes);
 // Routes produits : GET /api/products, GET /api/products/:id, POST, DELETE
 app.use("/api/products", productRoutes);
 
-// Routes variations : GET/POST /api/products/:id/variations, DELETE /api/variations/:id
-app.use("/api", variationRoutes);
+// Routes variations : GET /api/variations, GET /api/variations/:id
+app.use("/api/variations", variationRoutes);
 
 // Routes favoris : GET/POST/DELETE /api/user/:id/favoris/...
 app.use("/api/user", favorisRoutes);
