@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import Button from "../components/Button/Button";
 import { Header } from "../components/Header/Header";
 import Navbar from "../components/Navbar/Navbar";
 import "../styles/ProductDetail.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import { addcart, deletecart } from "../reducers/cart";
 import { data, useParams } from "react-router-dom";
 import { Message } from "../components/Message/Message";
 import ProductModal from "../components/ProductModal/ProductModal";
+import { addToCart } from "../services/cartService";
 
 function ProductDetail() {
   // ETATS & HOOKS
-
-  const dispatch = useDispatch();
 
   // permet d'afficher le message d'ajout ou de suppression des favoris
   const [error, setError] = useState("");
@@ -132,15 +129,6 @@ function ProductDetail() {
     }
   };
 
-  // fonction pour afficher le modal de sélection des variations si le produit en a, sinon ajouter directement le produit au panier
-  const modal = () => {
-    if (variations && variations.length > 0) {
-      setShowModal(true);
-    } else {
-      setShowModal(false);
-    }
-  };
-
   // fonction pour ajouter un produit dans le panier de l'utilisateur
   const handleAddCartClick = (
     color: string,
@@ -149,41 +137,11 @@ function ProductDetail() {
   ) => {
     // si je n'ai pas d'id je ne fetch pas
     if (!product?._id) return;
-    // si le produit a des variations, j'affiche le modal de sélection des variations, sinon j'ajoute directement le produit au panier
+    // si le modal de sélection des variations est ouvert, j'ajoute le produit au panier de l'utilisateur avec les variations sélectionnées
     if (showModal) {
-      fetch(`http://localhost:5001/api/cart/${id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-        body: JSON.stringify({
-          color: color,
-          size: size,
-          quantity: quantity,
-        }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          setError(data.message);
-        });
-    } else {
-      fetch(`http://localhost:5001/api/cart/${id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-        body: JSON.stringify({
-          color: color,
-          size: size,
-          quantity: quantity,
-        }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          setError(data.message);
-        });
+      addToCart(product._id, color, size, quantity).then((message) => {
+        setError(message);
+      });
     }
   };
 
@@ -226,7 +184,7 @@ function ProductDetail() {
           title="Choisissez une variation"
           variations={variations}
         />
-        <Button onClick={() => modal()}>Ajouter au panier</Button>
+        <Button onClick={() => setShowModal(true)}>Ajouter au panier</Button>
       </div>
 
       <Navbar />

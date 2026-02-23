@@ -20,8 +20,8 @@ import Variation from "../models/Variation";
 async function getProducts(req: Request, res: Response) {
   try {
     // Etape 1 : construire le filtre
-    // Par defaut on n'affiche que les produits actifs (status = "active" dans le model)
-    const filter: any = { status: "active" };
+    // Par defaut on n'affiche que les produits actifs (status = "true" dans le model)
+    const filter: any = { status: "true" };
 
     // Filtre par famille
     if (req.query.family) {
