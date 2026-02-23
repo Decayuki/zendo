@@ -6,16 +6,21 @@
 
 import React from "react";
 import ProfileHeader from "../components/Profils/ProfileHeader";
+import ProfileMenu from "../components/Profils/ProfileMenu";
+import "../styles/Pages.css";
 
 
 const Profil = () => {
   return (
-    <div className="profile-page-container">
+    <div className="page-container">
       {/* Affichage de la partie haute (photo + nom) */}
       <ProfileHeader />
 
+      {/* Partie menu de gestion */}
+      <ProfileMenu />
+
       {/* Tu pourras ajouter ici la suite : menu, historique, déconnexion */}
-      <div className="profile-options-list">
+      <div>
         {/* Exemple futur : 
            <button>Mes commandes</button>
            <button>Paramètres</button>
