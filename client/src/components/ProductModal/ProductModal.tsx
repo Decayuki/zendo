@@ -15,7 +15,13 @@ interface ProductModalProps {
   onClose: () => void;
   // onConfirm doit être une fonction qui reçoit un objet avec les choix de l'utilisateur : { color: string, size: string }
   onConfirm:
-    | { handleValidation: (selection: { color: string; size: string }) => void }
+    | {
+        handleValidation: (selection: {
+          color: string;
+          size: string;
+          quantity: number;
+        }) => void;
+      }
     | any;
   title: string;
   variations: any[];
@@ -24,6 +30,8 @@ interface ProductModalProps {
 function ProductModal(props: ProductModalProps) {
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
+  // set l'état pour stocker la quantité sélectionnée par l'utilisateur
+  const [selectedQuantity, setSelectedQuantity] = useState(1);
 
   // Si la modal est fermee, on n'affiche rien
   if (!props.isOpen) {
@@ -33,7 +41,11 @@ function ProductModal(props: ProductModalProps) {
   // Quand l'utilisateur valide ses choix
   function handleValidation() {
     if (selectedColor && selectedSize) {
-      props.onConfirm({ color: selectedColor, size: selectedSize });
+      props.onConfirm({
+        color: selectedColor,
+        size: selectedSize,
+        quantity: selectedQuantity,
+      });
       props.onClose();
     } else {
       alert("Veuillez choisir une couleur et une taille");
@@ -82,6 +94,17 @@ function ProductModal(props: ProductModalProps) {
     }
     return false;
   }
+
+  const handleIncreaseQuantity = () => {
+    if (selectedQuantity < 10) {
+      setSelectedQuantity(selectedQuantity + 1);
+    }
+  };
+  const handleDecreaseQuantity = () => {
+    if (selectedQuantity > 1) {
+      setSelectedQuantity(selectedQuantity - 1);
+    }
+  };
   return (
     <div className="modal-overlay">
       <div className="modal-content">
@@ -132,6 +155,15 @@ function ProductModal(props: ProductModalProps) {
                 </button>
               );
             })}
+            {/* Section Tailles */}
+            <div className="option-group">
+              <label>Quantité :</label>
+              <div className="options">
+                <button onClick={handleDecreaseQuantity}>-</button>
+                <span>{selectedQuantity}</span>
+                <button onClick={handleIncreaseQuantity}>+</button>
+              </div>
+            </div>
           </div>
         </div>
 
