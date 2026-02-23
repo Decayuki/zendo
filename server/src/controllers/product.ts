@@ -1,10 +1,11 @@
 // =============================================================
 // CONTROLLER PRODUCT - Logique metier pour les produits
-// GET (liste + detail), POST (creation), DELETE (suppression)
+// GET (liste + detail), CRUD Classique
 // =============================================================
 
 import { Request, Response } from "express";
 import Product from "../models/Product";
+import Variation from "../models/Variation";
 
 // ---------------------------------------------------------
 // GET PRODUCTS - Recuperer la liste des produits
@@ -40,6 +41,14 @@ async function getProducts(req: Request, res: Response) {
     // Filtre par vendeur
     if (req.query.sellerId) {
       filter.sellerId = req.query.sellerId;
+    }
+
+    // Filtre par recherche texte (nom du produit)
+    // $regex permet de chercher un mot dans le nom, meme partiel
+    // $options: "i" = insensible a la casse (majuscule/minuscule)
+    // Exemple : ?q=bracelet trouvera "Bracelet en cuir tresse"
+    if (req.query.q) {
+      filter.name = { $regex: req.query.q, $options: "i" };
     }
 
     // Etape 2 : nombre max de resultats
@@ -100,9 +109,13 @@ async function getProductById(req: Request, res: Response) {
       });
     }
 
-    // Etape 4 : renvoyer le produit
+    // Etape 4 : recuperer les variations
+    const variations = await Variation.find({ productId: productId });
+
+    // Etape 5 : renvoyer le produit + ses variations
     return res.status(200).json({
       product: product,
+      variations: variations,
     });
   } catch (error) {
     console.error("Erreur getProductById:", error);

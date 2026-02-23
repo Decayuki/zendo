@@ -1,7 +1,7 @@
 // =============================================================
 // COMPOSANT PRODUCTCARD - Carte produit reutilisable
 // Affiche l'image, le nom, le prix et un badge Made in France
-// Utilise sur la page Accueil dans les ProductRow
+// Utilisé sur Home dans les ProductRow
 // =============================================================
 
 import React from "react";
@@ -10,7 +10,7 @@ import "./ProductCard.css";
 // Props du composant
 interface ProductCardProps {
   product: any; // objet produit venant du backend
-  onClick: (product: any) => void; // fonction appelee au clic
+  onClick: (product: any) => void; // fonction appelée au clic
 }
 
 function ProductCard(props: ProductCardProps) {
