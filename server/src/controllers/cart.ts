@@ -111,8 +111,11 @@ async function deleteCartItem(req: Request, res: Response) {
         .json({ message: "Utilisateur ou produit non trouvé" });
     }
 
-    // Etape 4 : verifier que le productId est dans les favoris
-    if (!user.cart || !user.cart.includes(productId)) {
+    // Etape 4 : verifier que le productId est dans le panier
+    if (
+      !user.cart ||
+      !user.cart.some((item) => item.product.equals(productId))
+    ) {
       return res
         .status(400)
         .json({ message: "Article non présent dans le panier" });
