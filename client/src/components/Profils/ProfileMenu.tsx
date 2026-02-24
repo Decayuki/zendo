@@ -14,7 +14,7 @@ const ProfileMenu = () => {
   return (
     <div className="profile-menu-container">
       <h3 className="profile-menu-title">Gestion de votre profil</h3>
-      <div className="profile-menu-card">
+      <div className="white-card">
         {menuItems.map((item, index) => (
           <div key={index} className="menu-item">
             <div className="menu-item-left">

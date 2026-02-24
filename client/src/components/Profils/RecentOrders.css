@@ -7,7 +7,7 @@
 /* La carte blanche qui contient la liste */
 .white-card-scroll {
   background-color: #ffffff;
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 15px;
   box-shadow: 0 1px 2px rgba(0,0,0,0.05);
   
@@ -15,7 +15,7 @@
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: 15px;
+  gap: 18px;
   
   /* Active le défilement horizontal */
   overflow-x: auto;
@@ -35,7 +35,8 @@
 /* Style de chaque article dans la ligne */
 .order-item {
   flex: 0 0 auto; /* EMPÊCHE l'élément de rétrécir ou de passer à la ligne */
-  width: 150px;   /* Largeur fixe pour chaque article */
+  width: 120px; /* Largeur fixe pour chaque article */
+  height: 180px;
   display: flex;
   flex-direction: column;
 }
@@ -43,8 +44,8 @@
 .order-image-wrapper {
   position: relative;
   width: 100%;
-  height: 100px;
-  border-radius: 8px;
+  height: 100%;
+  border-radius: 3px;
   overflow: hidden;
 }
 
