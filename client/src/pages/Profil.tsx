@@ -7,6 +7,7 @@
 import React from "react";
 import ProfileHeader from "../components/Profils/ProfileHeader";
 import ProfileMenu from "../components/Profils/ProfileMenu";
+import RecentOrders from "../components/Profils/RecentOrders";
 import "../styles/Pages.css";
 
 
@@ -19,7 +20,10 @@ const Profil = () => {
       {/* Partie menu de gestion */}
       <ProfileMenu />
 
-      {/* Tu pourras ajouter ici la suite : menu, historique, déconnexion */}
+      {/* Section 2 : Achats récents */}
+      <RecentOrders />
+
+      {/* On ajoutera ici la suite : menu, historique, déconnexion */}
       <div>
         {/* Exemple futur : 
            <button>Mes commandes</button>
