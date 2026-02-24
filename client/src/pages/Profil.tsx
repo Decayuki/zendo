@@ -8,8 +8,8 @@ import React from "react";
 import ProfileHeader from "../components/Profils/ProfileHeader";
 import ProfileMenu from "../components/Profils/ProfileMenu";
 import RecentOrders from "../components/Profils/RecentOrders";
+import ProfileSettings from "../components/Profils/ProfileSettings";
 import "../styles/Pages.css";
-
 
 const Profil = () => {
   return (
@@ -22,14 +22,8 @@ const Profil = () => {
 
       {/* Section 2 : Achats récents */}
       <RecentOrders />
-
-      {/* On ajoutera ici la suite : menu, historique, déconnexion */}
-      <div>
-        {/* Exemple futur : 
-           <button>Mes commandes</button>
-           <button>Paramètres</button>
-        */}
-      </div>
+      {/* 4. Section Paramètres (Langue + Déconnexion) */}
+      <ProfileSettings />
     </div>
   );
 };
