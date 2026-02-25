@@ -169,6 +169,7 @@ async function recovery(req: Request, res: Response) {
 
     // Etape 2 : verification input
     if (!email) {
+      console.log("Email requis");
       return res.status(400).json({
         message: "Email requis",
       });
@@ -185,8 +186,9 @@ async function recovery(req: Request, res: Response) {
     const user = await User.findOne({ email: email });
 
     if (!user) {
-      return res.status(400).json({
-        message: "Utilisateur non reconnu",
+      return res.status(200).json({
+        message:
+          "Si cet email existe, un lien a été envoyé pour réinitialiser votre mot de passe",
       });
     }
     // Etape 5 : si user trouvé, envoi du mail de récupération
@@ -203,7 +205,10 @@ async function recovery(req: Request, res: Response) {
         { expiresIn: "15m" },
       );
       sendMail(email, token);
-      return res.status(200);
+      return res.status(200).json({
+        message:
+          "Si cet email existe, un lien a été envoyé pour réinitialiser votre mot de passe",
+      });
     }
   } catch (error) {
     console.error("Erreur recovery:", error);

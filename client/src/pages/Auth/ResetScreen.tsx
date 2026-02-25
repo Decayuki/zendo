@@ -4,9 +4,11 @@ import Button from "../../components/Button/Button";
 import { Input } from "../../components/Input/Input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Message } from "../../components/Message/Message";
 
-function ResetScreen({ navigation }: any) {
+function ResetScreen() {
+  const navigate = useNavigate();
   useEffect(() => {
     /* URLSearchParams : permet de recuperer les parametres dans l'URL (ce qui est après le ? dans l'URL)
     ex ici : http://localhost:3000/reset?token=xxx */
@@ -33,7 +35,7 @@ function ResetScreen({ navigation }: any) {
   const handleSubmit = () => {
     setError("");
     if (password === password2 && password.length >= 6) {
-      fetch(`http://localhost:3000/user/reset`, {
+      fetch(`http://localhost:5001/api/auth/reset`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,12 +47,10 @@ function ResetScreen({ navigation }: any) {
       })
         .then((response) => response.json())
         .then((data) => {
-          if (data.result === "Mot de passe mis à jour") {
-            navigation.navigate("Login", {
-              screen: "Login",
-            });
+          if (data.message === "Mot de passe mis à jour") {
+            navigate("/login");
           } else {
-            setError(data.result);
+            setError(data.message);
           }
         });
     } else {
@@ -80,7 +80,7 @@ function ResetScreen({ navigation }: any) {
           <h1 className="auth-title">ZENDO</h1>
           <p className="auth-subtitle">L'artisanat en tout simplicité</p>
         </div>
-        {error && <p className="auth-error">{error}</p>}
+        <Message variant="error" message={error} />
 
         <div className="form-group">
           <label htmlFor="password">Nouveau mot de passe</label>
@@ -105,7 +105,7 @@ function ResetScreen({ navigation }: any) {
             }}
             required
           />
-          <Button onClick={handleSubmit}>Récupérer mon mot de passe</Button>
+          <Button onClick={handleSubmit}>Réinitialiser mon mot de passe</Button>
         </div>
       </div>
     </div>

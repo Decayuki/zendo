@@ -8,11 +8,11 @@
 // Transforme un nom BDD en slug URL
 // "Bebe_fille" → "bebe-fille"
 function toSlug(text: string): string {
-    return text
-        .toLowerCase()
-        .replace(/_/g, "-")
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
+  return text
+    .toLowerCase()
+    .replace(/_/g, "-")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
 }
 
 /**
@@ -20,8 +20,8 @@ function toSlug(text: string): string {
  * Compare en normalisant les deux côtés (casse + accents) pour que l’URL matche toujours.
  */
 const fromSlug = (slug: string, originalList: string[]): string => {
-    const normalizedSlug = toSlug(slug);
-    return originalList.find((item) => toSlug(item) === normalizedSlug) || slug;
+  const normalizedSlug = toSlug(slug);
+  return originalList.find((item) => toSlug(item) === normalizedSlug) || slug;
 };
 
 export { toSlug, fromSlug };

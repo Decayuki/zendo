@@ -11,6 +11,7 @@ import FamilyCards from "../components/FamilyCards/FamilyCards";
 import ProductRow from "../components/ProductRow/ProductRow";
 
 import CategoryChips from "../components/CategoryChips/CategoryChips";
+import { Header } from "../components/Header/Header";
 import "../styles/Home.css";
 
 // --- CONSTANTES ---
@@ -59,12 +60,7 @@ function Home() {
   return (
     <div className="home-container">
       {/* Provisoire en attendant composant header */}
-      <div className="home-header">
-        <div className="home-logo">
-          <span className="logo-text">Z</span>
-        </div>
-        <h1 className="home-title">ZENDO</h1>
-      </div>
+      <Header />
 
       {/* --- BARRE DE RECHERCHE --- */}
       <div className="home-search">

@@ -10,6 +10,7 @@ import ProfileMenu from "../components/Profils/ProfileMenu";
 import RecentOrders from "../components/Profils/RecentOrders";
 import ProfileSettings from "../components/Profils/ProfileSettings";
 import "../styles/Pages.css";
+import { Header } from "../components/Header/Header";
 
 const Profil = () => {
   return (
