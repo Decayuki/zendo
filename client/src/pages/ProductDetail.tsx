@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { data, useParams } from "react-router-dom";
 import { Message } from "../components/Message/Message";
-import ProductModal from "../components/ProductModal/ProductModal";
+import ProductModal from "../components/Modal/ProductModal/ProductModal";
 import { addToCart } from "../services/cartService";
 
 function ProductDetail() {

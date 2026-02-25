@@ -7,7 +7,7 @@
 
 import React, { useState } from "react";
 import { FavoriteBorder, Favorite, AddShoppingCart } from "@mui/icons-material";
-import ProductModal from "../ProductModal/ProductModal";
+import ProductModal from "../Modal/ProductModal/ProductModal";
 import "./ProductView.css";
 
 // Les props que le composant parent doit fournir
@@ -32,13 +32,21 @@ function ProductView(props: ProductViewProps) {
   }
 
   // Fonction appelee depuis la Modal quand l'utilisateur valide ses choix
-  function handleAddToCart(selection: { color: string; size: string }) {
+  function handleAddToCart(selection: {
+    color: string;
+    size: string;
+    quantity: number;
+  }) {
     console.log(
-      "Produit ajoute : " + props.title +
-      ", Couleur: " + selection.color +
-      ", Taille: " + selection.size
+      "Produit ajoute : " +
+        props.title +
+        ", Couleur: " +
+        selection.color +
+        ", Taille: " +
+        selection.size +
+        ", Quantité: " +
+        selection.quantity,
     );
-    // Plus tard : envoyer l'ID du produit et ses variantes au backend
   }
 
   return (
@@ -53,7 +61,9 @@ function ProductView(props: ProductViewProps) {
           <div className="product-actions">
             {/* Toggle Favoris */}
             <button
-              onClick={function () { setIsFavorite(!isFavorite); }}
+              onClick={function () {
+                setIsFavorite(!isFavorite);
+              }}
               className="icon-btn"
             >
               {isFavorite ? (
@@ -65,7 +75,9 @@ function ProductView(props: ProductViewProps) {
 
             {/* Ouvre la Modal pour choisir les variantes */}
             <button
-              onClick={function () { setIsModalOpen(true); }}
+              onClick={function () {
+                setIsModalOpen(true);
+              }}
               className="icon-btn"
             >
               <AddShoppingCart />
@@ -84,9 +96,15 @@ function ProductView(props: ProductViewProps) {
         {/* Modal de selection couleur/taille */}
         <ProductModal
           isOpen={isModalOpen}
-          onClose={function () { setIsModalOpen(false); }}
-          onConfirm={handleAddToCart}
+          onClose={() => setIsModalOpen(false)}
+          onConfirm={handleAddToCart} 
           title={props.title}
+          // AJOUTER les variations (ici en exemple, à remplacer par props.variations si dispo)
+          variations={[
+            { color: "Noir", size: "M" },
+            { color: "Noir", size: "L" },
+            { color: "Blanc", size: "S" },
+          ]}
         />
       </div>
     </div>
