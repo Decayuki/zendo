@@ -6,7 +6,7 @@
 // =============================================================
 
 import React, { useState } from "react";
-import Button from "../Button/Button";
+import Button from "../../Button/Button";
 import "./ProductModal.css";
 
 // Les props que le composant parent doit fournir
@@ -14,15 +14,11 @@ interface ProductModalProps {
   isOpen: boolean;
   onClose: () => void;
   // onConfirm doit être une fonction qui reçoit un objet avec les choix de l'utilisateur : { color: string, size: string }
-  onConfirm:
-    | {
-        handleValidation: (selection: {
-          color: string;
-          size: string;
-          quantity: number;
-        }) => void;
-      }
-    | any;
+  onConfirm: (selection: {
+    color: string;
+    size: string;
+    quantity: number;
+  }) => void;
   title: string;
   variations: any[];
 }
@@ -144,24 +140,24 @@ function ProductModal(props: ProductModalProps) {
                 <button
                   key={size}
                   className={selectedSize === size ? "active" : ""}
-                  onClick={function () {
-                    setSelectedSize(size);
-                  }}
-                  disabled={
-                    sizeDisponible(size) ? false : true
-                  } /* Si la taille n'est pas disponible pour la couleur sélectionnée, on disable le bouton */
+                  onClick={() => setSelectedSize(size)}
+                  disabled={!sizeDisponible(size)}
                 >
                   {size}
                 </button>
               );
             })}
-            {/* Section Tailles */}
+            {/* Section Quantité*/}
             <div className="option-group">
               <label>Quantité :</label>
-              <div className="options">
-                <button onClick={handleDecreaseQuantity}>-</button>
-                <span>{selectedQuantity}</span>
-                <button onClick={handleIncreaseQuantity}>+</button>
+              <div className="quantity-selector">
+                <button type="button" onClick={handleDecreaseQuantity}>
+                  -
+                </button>
+                <span className="quantity-value">{selectedQuantity}</span>
+                <button type="button" onClick={handleIncreaseQuantity}>
+                  +
+                </button>
               </div>
             </div>
           </div>
