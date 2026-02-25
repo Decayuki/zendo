@@ -1,0 +1,76 @@
+
+/* Fond de la page */
+.profile-page-container {
+  background-color: #F5F1E9;
+  min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+/* Titres des blocs */
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 10px;
+  padding-left: 5px;
+}
+
+/* La carte blanche (Base pour Menu, Achats et Paramètres) */
+.white-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  overflow: hidden; /* Pour que le hover respecte les arrondis */
+}
+
+/* Ligne d'un menu */
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.menu-item:hover {
+  background-color: #f9f9f9;
+}
+
+/* Partie gauche de la ligne (Icone + Texte) */
+.menu-item-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.menu-icon {
+  color: #444;
+  font-size: 20px !important;
+}
+
+/* Partie droite (Langue + Chevron) */
+.menu-item-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.language-text {
+  color: #888;
+  font-size: 14px;
+}
+
+.chevron-icon {
+  color: #ccc;
+  font-size: 18px !important;
+}
+
+.language-selected {
+  color: #888; /* Gris pour la langue sélectionnée */
+  font-size: 14px;
+}
