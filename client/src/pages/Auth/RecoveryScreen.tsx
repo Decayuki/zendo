@@ -10,6 +10,7 @@ import { Input } from "../../components/Input/Input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { Message } from "../../components/Message/Message";
 
 function RecoveryScreen({ navigation }: any) {
   // Grabbed from emailregex.com
@@ -24,20 +25,16 @@ function RecoveryScreen({ navigation }: any) {
   const handleSubmit = () => {
     setError("");
     if (EMAIL_REGEX.test(mail)) {
-      fetch(`http://localhost:3000/recovery`, {
+      fetch(`http://localhost:5001/api/auth/recovery`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          mail: mail,
+          email: mail,
         }),
       })
         .then((response) => response.json())
         .then((data) => {
-          if (data.result === "Email envoyé") {
-            alert("Email envoyé");
-          } else {
-            setError(data.result);
-          }
+          setError(data.message);
         });
     } else {
       setError("Mauvais format");
@@ -61,7 +58,7 @@ function RecoveryScreen({ navigation }: any) {
           <h1 className="auth-title">ZENDO</h1>
           <p className="auth-subtitle">L'artisanat en tout simplicité</p>
         </div>
-        {error && <p className="auth-error">{error}</p>}
+        <Message variant="error" message={error} />
 
         <div className="form-group">
           <label htmlFor="email">Email</label>

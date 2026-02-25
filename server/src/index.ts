@@ -48,11 +48,11 @@ app.use("/api/products", productRoutes);
 // Routes variations : GET /api/variations, GET /api/variations/:id
 app.use("/api/variations", variationRoutes);
 
-// Routes favoris : GET/POST/DELETE /api/user/:id/favoris/...
-app.use("/api/user", favorisRoutes);
+// Routes favoris : GET/POST/DELETE /api/favoris/...
+app.use("/api/favoris", favorisRoutes);
 
-// Routes panier : GET/POST/DELETE /api/user/:id/cart/...
-app.use("/api/user", cartRoutes);
+// Routes cart : GET/POST/DELETE /api/cart/...
+app.use("/api/cart", cartRoutes);
 
 // Route de test pour verifier que le serveur fonctionne
 // http://localhost:5000

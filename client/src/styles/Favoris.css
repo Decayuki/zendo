@@ -1,0 +1,54 @@
+/* affichage des favoris en 2 colonnes*/
+.page-favoris-list {
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+/* liste des favoris dans une cart*/
+.favoris-item {
+  background-color: #f9f9f9;
+  border-radius: 14px;
+  cursor: pointer;
+}
+
+/* image qui prend la totalité de la largeur*/
+.favoris-image {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+}
+
+/* Contenu */
+
+.favoris-info {
+  padding: 10px;
+}
+
+/* Nom produit */
+.favoris-title {
+  font-size: 14px;
+  margin: 0;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+/* Ligne bas : prix + panier */
+.favoris-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.favoris-price {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.favoris-cart {
+  font-size: 14px;
+  opacity: 0.6;
+}

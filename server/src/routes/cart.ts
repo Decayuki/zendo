@@ -1,27 +1,33 @@
 // =============================================================
-// ROUTES CART - Aiguillage pour le panier utilisateur
-// Permet d'ajouter, supprimer et consulter le panier d'un user
-//
-// GET    /api/user/:id/cart              -> contenu du panier
-// POST   /api/user/:id/cart/:productId   -> ajouter au panier
-// DELETE /api/user/:id/cart/:productId   -> retirer du panier
+// Ici c'est "l'aiguillage" :
+// Si quelqu'un appelle POST /cart ça envoie vers la fonction cart du controller
+// Juste un intermédiaire entre l'URL et la logique
+// ROUTES cart - Definit les URLs pour les cart
+// Quand le frontend appelle /api/cart ou /api/cart/:productId
 // =============================================================
 
 import { Router } from "express";
-import { getCart, addToCart, removeFromCart } from "../controllers/cart";
+import {
+  addCartItem,
+  deleteCartItem,
+  updateCartItem,
+  getCartItems,
+} from "../controllers/cart";
 
+// On cree un "routeur" Express
 const router = Router();
 
-// Recuperer le contenu du panier d'un utilisateur
-// Exemple : GET /api/user/65abc123/cart
-router.get("/:id/cart", getCart);
+// Quand on recoit un POST sur /cart/:id, on appelle la fonction cart du controller
+router.post("/:productId", addCartItem);
 
-// Ajouter un produit au panier
-// Exemple : POST /api/user/65abc123/cart/65xyz789
-router.post("/:id/cart/:productId", addToCart);
+// Quand on recoit un DELETE sur /cart/:id, on appelle la fonction cart du controller
+router.delete("/:productId", deleteCartItem);
 
-// Retirer un produit du panier
-// Exemple : DELETE /api/user/65abc123/cart/65xyz789
-router.delete("/:id/cart/:productId", removeFromCart);
+// Quand on recoit un DELETE sur /cart/:id, on appelle la fonction cart du controller
+router.patch("/:productId", updateCartItem);
 
+// Quand on recoit un GET sur /cart, on appelle la fonction cart du controller
+router.get("/", getCartItems);
+
+// On exporte le routeur pour l'utiliser dans index.ts
 export default router;

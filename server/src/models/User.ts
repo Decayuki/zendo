@@ -3,6 +3,7 @@
 // =============================================================
 
 import mongoose from "mongoose";
+import { CartItemSchema } from "./CartItemSchema";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -78,15 +79,10 @@ const UserSchema = new mongoose.Schema(
         default: [], // par defaut c'est un tableau vide
       },
     ],
-    // liste des produits dans le panier de l'utilisateur (references aux produits)
-    cart: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Product",
-        required: false, // un utilisateur peut ne pas avoir de produits dans son panier
-        default: [], // par defaut c'est un tableau vide
-      },
-    ],
+    cart: {
+      type: [CartItemSchema],
+      default: [], // par defaut c'est un tableau vide
+    },
   },
   {
     // Pour ajouter les champs createdAt et updatedAt
