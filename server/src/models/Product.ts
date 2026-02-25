@@ -122,12 +122,13 @@ const ProductSchema = new mongoose.Schema(
         timestamps: true,
     }
 );
-// Cela permet de faire "Product.find().populate('variations')"
-// même si le champ n'existe pas physiquement dans la collection Product
+
+// --- VIRTUAL POPULATE ---
+// Création du lien avec la collection Variation
 ProductSchema.virtual("variations", {
-    ref: "Variation", // Le modèle vers lequel on pointe
-    localField: "_id", // Le champ dans Product
-    foreignField: "productId", // Le champ dans Variation qui contient l'ID du produit
+  ref: "Variation",           // Nom du modèle cible
+  localField: "_id",          // Clé ici (Product)
+  foreignField: "productId",  // Clé dans la collection cible (Variation)
 });
 
 const Product = mongoose.model("Product", ProductSchema);

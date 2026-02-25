@@ -29,6 +29,17 @@ import ProductList from "./pages/ProductList";
 // --- Composants ---
 import Navbar from "./components/Navbar/Navbar";
 
+// Reducers
+import { configureStore } from "@reduxjs/toolkit";
+import { Provider } from "react-redux";
+import userSlice from "./reducers/user";
+
+const store = configureStore({
+  reducer: {
+    user: userSlice,
+  },
+});
+
 function AppContent() {
   // useLocation() necessaire pour cacher la Navbar sur les pages d'auth
   const location = useLocation();
@@ -78,9 +89,11 @@ function App() {
   return (
     // BrowserRouter : active le systeme de routing (navigation entre pages)
     // Grace a lui on remplace le composant appele sans reload
-    <BrowserRouter>
-      <AppContent />
-    </BrowserRouter>
+   <Provider store={store}>
+      <BrowserRouter>
+        <AppContent />
+      </BrowserRouter>
+    </Provider>
   );
 }
 
