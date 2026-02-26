@@ -85,14 +85,7 @@ function ProductModal(props: ProductModalProps) {
       return true;
     }
     // je vérifie dans la map des choix si la taille est disponible pour la couleur sélectionnée
-    for (let i = 0; i < props.variations.length; i++) {
-      const variation = props.variations[i];
-      // si la variation correspond à la couleur et à la taille, alors cette taille est disponible pour cette couleur
-      if (variation.color === selectedColor && variation.size === size) {
-        return true;
-      }
-    }
-    return false;
+    return choix.get(selectedColor)?.includes(size) || false;
   }
 
   const handleIncreaseQuantity = () => {

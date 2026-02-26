@@ -28,6 +28,28 @@ async function addCartItem(req: Request, res: Response) {
       return res.status(404).json({ message: "Produit non trouvé" });
     }
     // Etape 3 : mise à jour du panier de l'utilisateur en ajoutant le produit avec la variation choisie
+    const user = await User.findById({ _id: userId });
+    // on vérifie si user et panier existent
+    if (user && user.cart) {
+      // on vérifie si le produit avec la même variation existe déjà dans le panier
+      for (let i = 0; i < user.cart.length; i++) {
+        const item = user.cart[i];
+        if (
+          item.product.equals(productId as any) &&
+          item.size === size &&
+          item.color === color
+        ) {
+          // Si le produit avec la même variation existe déjà, on met à jour la quantité
+          item.quantity += quantity;
+          await user.save();
+          return res.status(200).json({
+            message: "Produit ajouté au panier",
+            addItem: item,
+          });
+        }
+      }
+    }
+
     const addItem = await User.updateOne(
       { _id: userId },
       { $push: { cart: { product: productId, size, color, quantity } } },

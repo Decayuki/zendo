@@ -15,6 +15,8 @@ import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ProductModal from "../components/ProductModal/ProductModal";
 import { addToCart } from "../services/cartService";
+import { removeFavori } from "../services/favoriService";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { Message } from "../components/Message/Message";
 
 function Favoris() {
@@ -25,6 +27,9 @@ function Favoris() {
 
   // set l'état pour afficher ou non le modal de sélection des variations
   const [showModal, setShowModal] = useState(false);
+
+  // set l'état pour stocker le produit sélectionné pour la modal
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
 
   useEffect(() => {
     // fetch les favoris de l'utilisateur
@@ -52,6 +57,25 @@ function Favoris() {
       });
   }, []);
 
+  const handleFavoriClick = (productId: string) => {
+    // Supprime le produit des favoris
+    removeFavori(productId).then((message) => {
+      setError(message);
+      // Refetch les favoris pour mettre à jour la liste
+      fetch(`http://localhost:5001/api/favoris`, {
+        method: "GET",
+        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setFavoris(data.favoris || []);
+        });
+    });
+  };
+  const handleModalOpen = (product: any) => {
+    setSelectedProduct(product);
+    setShowModal(true);
+  };
   const favorisList = () => {
     return favoris.map((favori: any) => (
       <div key={favori._id} className="favoris-item">
@@ -67,24 +91,17 @@ function Favoris() {
           <div className="favoris-bottom">
             <p className="favoris-price">{favori.price}€</p>
             <FontAwesomeIcon
-              onClick={() => setShowModal(true)}
+              onClick={() => handleModalOpen(favori)}
               className="favoris-cart"
               icon={faCartShopping}
               size="lg"
               color="black"
             />
-            <ProductModal
-              isOpen={showModal}
-              onClose={() => setShowModal(false)}
-              onConfirm={({ color, size, quantity }: any) => {
-                // j'appelle la fonction addToCart du service cartService pour ajouter le produit au panier de l'utilisateur
-                // .then pour récupérer le message d'ajout au panier et l'afficher à l'utilisateur
-                addToCart(favori._id, color, size, quantity).then((message) => {
-                  setError(message);
-                });
-              }}
-              title="Choisissez une variation"
-              variations={favori.variations || []}
+            <FontAwesomeIcon
+              icon={faHeart}
+              onClick={() => handleFavoriClick(favori._id)}
+              style={{ color: "#E9BE59" }}
+              className="heart-icon"
             />
           </div>
         </div>
@@ -99,6 +116,22 @@ function Favoris() {
         <Message message={error} variant="error" />
         <div className="page-favoris">
           <div className="page-favoris-list">{favorisList()}</div>
+          <ProductModal
+            key={selectedProduct?._id}
+            isOpen={showModal}
+            onClose={() => setShowModal(false)}
+            onConfirm={({ color, size, quantity }: any) => {
+              // j'appelle la fonction addToCart du service cartService pour ajouter le produit au panier de l'utilisateur
+              // .then pour récupérer le message d'ajout au panier et l'afficher à l'utilisateur
+              addToCart(selectedProduct._id, color, size, quantity).then(
+                (message) => {
+                  setError(message);
+                },
+              );
+            }}
+            title="Choisissez une variation"
+            variations={selectedProduct?.variations || []}
+          />
         </div>
       </div>
       <Navbar />

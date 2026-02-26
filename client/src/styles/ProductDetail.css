@@ -1,46 +1,17 @@
 /* ========================================
-   CONTENEUR PRINCIPAL
-   ======================================== */
-.product-detail-container {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  padding-bottom: 120px;
-  max-width: 100%;
-  margin: 0 auto;
-  align-items: stretch;
-  overflow-y: auto;
-  scrollbar-width: auto;
-  scrollbar-color: #d4a574 #f5f5f5;
-}
-
-.product-detail-container::-webkit-scrollbar {
-  width: 12px;
-}
-
-.product-detail-container::-webkit-scrollbar-track {
-  background: #faf8f5;
-}
-
-.product-detail-container::-webkit-scrollbar-thumb {
-  background: #faf8f5;
-  border-radius: 6px;
-}
-
-/* ========================================
    IMAGE DU PRODUIT
    ======================================== */
 .product-image {
   width: 100%;
-  height: 500px;
+  height: 400px;
   border-radius: 0;
   overflow: hidden;
-  background: #faf8f5;
+  background: #f9f9f9;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  padding-top: 80px;
+  padding-top: 60px;
 }
 
 .product-image img {
@@ -50,47 +21,19 @@
 }
 
 /* ========================================
-   PETITES IMAGES
-   ======================================== */
-.product-smallImage {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-  padding: 20px;
-  background: white;
-}
-
-.product-smallImage img {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 8px;
-  cursor: pointer;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
-  border: 2px solid transparent;
-}
-
-.product-smallImage img:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(212, 165, 116, 0.3);
-  border-color: #d4a574;
-}
-
-/* ========================================
    INFOS PRODUIT
    ======================================== */
 .product-info {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  justify-content: flex-start;
-  padding: 30px 20px;
-  background: #faf8f5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .product-title {
-  font-size: 28px;
+  font-size: 20px;
   font-weight: 600;
   color: #000000;
   margin: 0;
@@ -98,10 +41,47 @@
 }
 
 .product-price {
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 700;
   color: #000000;
   margin: 0;
+}
+
+.heart-icon {
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.heart-icon:hover {
+  transform: scale(1.1);
+}
+
+/* ========================================
+   PETITES IMAGES
+   ======================================== */
+.product-smallImage {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 15px;
+  background: #f9f9f9;
+}
+
+.product-smallImage img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+  cursor: pointer;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.product-smallImage img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* ========================================
@@ -109,15 +89,64 @@
    ======================================== */
 .product-description-container {
   padding: 20px;
-  background: #fafafa;
-  border-radius: 0;
-  border-left: 4px solid #d4a574;
-  margin: 0;
+  background: #ffffff;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.product-description-container h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+  color: #000000;
 }
 
 .product-description {
-  color: #000000;
+  color: #666666;
   line-height: 1.6;
-  font-size: 16px;
+  font-size: 14px;
   margin: 0;
+}
+
+/* ========================================
+   VARIATIONS
+   ======================================== */
+.product-variations {
+  display: flex;
+  gap: 10px;
+  padding: 20px;
+  background: #ffffff;
+}
+
+.product-variations select {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+.product-variations select:focus {
+  outline: none;
+  border-color: #d4a574;
+  background-color: #ffffff;
+}
+
+/* ========================================
+   SÉLECTEUR QUANTITÉ
+   ======================================== */
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  background: #ffffff;
+}
+
+.quantity-selector span {
+  font-weight: 600;
+  font-size: 16px;
+  min-width: 30px;
+  text-align: center;
 }

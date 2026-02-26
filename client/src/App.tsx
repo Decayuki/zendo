@@ -25,6 +25,7 @@ import Favoris from "./pages/Favoris";
 import Profil from "./pages/Profil";
 import Shop from "./pages/Shop";
 import ProductList from "./pages/ProductList";
+import Cart from "./pages/Cart";
 
 // --- Composants ---
 import Navbar from "./components/Navbar/Navbar";
@@ -77,6 +78,7 @@ function AppContent() {
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="*" element={<Navigate to="/login" />} />
         <Route path="/produit/:id" element={<ProductDetail />} />
+        <Route path="/cart" element={<Cart />} />
       </Routes>
 
       {/* On affiche la Navbar seulement si on est PAS sur une page d'auth */}
@@ -89,7 +91,7 @@ function App() {
   return (
     // BrowserRouter : active le systeme de routing (navigation entre pages)
     // Grace a lui on remplace le composant appele sans reload
-   <Provider store={store}>
+    <Provider store={store}>
       <BrowserRouter>
         <AppContent />
       </BrowserRouter>
