@@ -3,11 +3,16 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import RedeemIcon from '@mui/icons-material/Redeem';
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import "./ProfileMenu.css";
-import UserInfosModal from "../Modal/UserInfoMoal/UserInfoModal"
+import UserInfosModal from "../Modal/UserInfoMoal/UserInfoModal";
 
 
 const ProfileMenu = () => {
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+
+  //  Fonction pour fermer la modal proprement
+  const handleCloseModal = () => {
+    setIsInfoModalOpen(false);
+  };
 
   const menuItems = [
     { 
@@ -36,7 +41,8 @@ const ProfileMenu = () => {
           <div 
             key={index} 
             className="menu-item" 
-            onClick={item.action ? item.action : undefined} // Déclenche la modal si l'action existe
+            onClick={item.action ? item.action : undefined}
+            style={{ cursor: item.action ? 'pointer' : 'default' }} // Déclenche la modal si l'action existe
           >
             <div className="menu-item-left">
               <span className="menu-icon">{item.icon}</span>
@@ -49,7 +55,7 @@ const ProfileMenu = () => {
       {/* INDISPENSABLE : Appeler le composant ici pour qu'il puisse s'afficher */}
       <UserInfosModal 
         isOpen={isInfoModalOpen} 
-        onClose={() => setIsInfoModalOpen(false)} 
+        onClose={handleCloseModal} 
       />
     </div>
   );
