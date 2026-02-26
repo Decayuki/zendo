@@ -24,7 +24,7 @@ const ProfileMenu = () => {
     { 
       icon: <StorefrontIcon />, 
       label: "Ouvrir ma boutique", 
-      link: "/boutique" 
+      link: "/vendeur"
     },
   ];
 

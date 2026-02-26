@@ -15,8 +15,8 @@ import variationRoutes from "./routes/variation";
 
 import favorisRoutes from "./routes/favoris";
 import cartRoutes from "./routes/cart";
-
-import userRoutes from "./routes/user";       
+import sellerRoutes from "./routes/seller";
+import userRoutes from "./routes/user";
 import addressRoutes from "./routes/address";
 
 // Charge depuis le .env
@@ -45,12 +45,6 @@ app.use(express.json());
 //
 app.use("/api/auth", authRoutes);
 
-// Route pour le profil utilisateur (Update nom, prénom, email)
-app.use("/api/users", userRoutes);
-
-// Route pour les adresses (Save/Update shipping address)
-app.use("/api/address", addressRoutes);
-
 // Routes produits : GET /api/products, GET /api/products/:id, POST, DELETE
 app.use("/api/products", productRoutes);
 
@@ -62,6 +56,15 @@ app.use("/api/favoris", favorisRoutes);
 
 // Routes cart : GET/POST/DELETE /api/cart/...
 app.use("/api/cart", cartRoutes);
+
+// Routes seller : GET /api/seller/:id (dashboard vendeur)
+app.use("/api/seller", sellerRoutes);
+
+// Routes user : PUT /api/users/:id (update profil)
+app.use("/api/users", userRoutes);
+
+// Routes address : POST /api/address/save/:userId (sauvegarder adresse)
+app.use("/api/address", addressRoutes);
 
 // Route de test pour verifier que le serveur fonctionne
 // http://localhost:5000

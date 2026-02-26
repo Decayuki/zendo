@@ -8,6 +8,7 @@
 .info-section h3 {
   font-size: 16px;
   margin: 15px 0;
+
   color: #1a1a1a;
 }
 
@@ -27,7 +28,7 @@
 .input-group input, .input-group select {
   padding: 10px;
   border: 1px solid #ddd;
-  border-radius: 5px;
+  border-radius: 8px;
   font-size: 14px;
 }
 

@@ -17,10 +17,15 @@ import { Types } from "mongoose";
 // ---------------------------------------------------------
 async function addCartItem(req: Request, res: Response) {
   try {
-    // Etape 1 : recupere l'id du produit dans les params de l'URL
+    // Etape 1 : recupere l'id du produit et du user
     const productId = req.params.productId;
     const userId = getUserFromHeaders(req);
-    const { size, color, quantity } = req.body;
+    if (!userId) {
+      return res.status(401).json({ message: "Non autorise" });
+    }
+    const size = req.body.size;
+    const color = req.body.color;
+    const quantity = req.body.quantity;
 
     // Etape 2 : check produit par son id
     const product = await Product.findById({ _id: productId });
@@ -51,15 +56,20 @@ async function addCartItem(req: Request, res: Response) {
 // ---------------------------------------------------------
 async function updateCartItem(req: Request, res: Response) {
   try {
-    // Etape 1 : recupere l'id du produit dans les params de l'URL
+    // Etape 1 : recupere l'id du produit, du cart item et du user
     const productId = req.params.productId;
     const cartItemId = req.params.cartItemId; // l'ID du sous-document dans cart
     const userId = getUserFromHeaders(req);
-    const { size, color, quantity } = req.body; // les nouvelles valeurs pour la variation et la quantité
+    if (!userId) {
+      return res.status(401).json({ message: "Non autorise" });
+    }
+    const size = req.body.size;
+    const color = req.body.color;
+    const quantity = req.body.quantity;
 
-    // Objet de mise à jour en fonction des champs présents dans le corps de la requête
+    // Objet de mise a jour en fonction des champs presents dans le body
     const updates: any = {};
-    // Seuls les champs présents dans le corps de la requête seront mis à jour
+    // Seuls les champs presents dans le body seront mis a jour
     if (size) updates["cart.$.size"] = size;
     if (color) updates["cart.$.color"] = color;
     if (quantity !== undefined && Number(quantity) > 0)
@@ -95,8 +105,11 @@ async function updateCartItem(req: Request, res: Response) {
 
 async function deleteCartItem(req: Request, res: Response) {
   try {
-    // Etape 1 : recupere l'id du produit et le user id dans les params de l'URL
+    // Etape 1 : recupere l'id du produit, du cart item et du user
     const userId = getUserFromHeaders(req);
+    if (!userId) {
+      return res.status(401).json({ message: "Non autorise" });
+    }
     const productId = req.params.productId as unknown as Types.ObjectId;
     const cartItemId = req.params.cartItemId; // l'ID du sous-document dans cart
 
@@ -146,11 +159,14 @@ async function deleteCartItem(req: Request, res: Response) {
 
 async function getCartItems(req: Request, res: Response) {
   try {
-    // Etape 1 : recupere l'id utilisateur dans les params de l'URL
+    // Etape 1 : recupere l'id utilisateur depuis le token JWT
     const userId = getUserFromHeaders(req);
+    if (!userId) {
+      return res.status(401).json({ message: "Non autorise" });
+    }
 
-    // Etape 2 : check user par son id et recupere son tableau de panier
-    const user = await User.findById({ _id: userId }).populate("cart");
+    // Etape 2 : check user par son id et populate les refs Product dans le cart
+    const user = await User.findById({ _id: userId }).populate("cart.product");
 
     // Etape 3 : verifier que l'utilisateur existe
     if (!user) {
