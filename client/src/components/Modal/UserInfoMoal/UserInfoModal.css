@@ -59,3 +59,37 @@
 .input-row .input-group {
   flex: 1;
 }
+.input-group input, .input-group select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.disabled-input {
+  background-color: #f0f0f0;
+  color: #888;
+  cursor: not-allowed;
+}
+
+.phone-input-container {
+  display: flex;
+  gap: 10px;
+}
+
+.phone-input-container select {
+  width: 80px;
+}
+
+.phone-input-container input {
+  flex: 1;
+}
+
+.input-row {
+  display: flex;
+  gap: 15px;
+}
+
+.input-row .input-group {
+  flex: 1;
+}
