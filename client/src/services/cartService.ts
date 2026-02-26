@@ -1,31 +1,30 @@
 // =============================================================
 // UTILITAIRE AJOUT AU PANIER
-// Contient la fonction addToCart qui envoie une requete POST à l'API pour ajouter un produit au panier de l'utilisateur
+// Contient la fonction addToCart qui envoie une requete POST a l'API
+// pour ajouter un produit au panier de l'utilisateur
 // =============================================================
 
-const addToCart = (
-  // je récupere l'id du produit et les choix de l'utilisateur (couleur, taille, quantité) pour les envoyer à l'API
+import api from "./api";
+
+const addToCart = function (
   productId: string,
   color: string,
   size: string,
   quantity: number,
-) => {
-  // j'envoie une requete POST à l'API pour ajouter le produit au panier de l'utilisateur
-  return fetch(`http://localhost:5001/api/cart/${productId}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("token"),
-    },
-    body: JSON.stringify({
+) {
+  // on envoie une requete POST via api.ts au lieu d'une URL en dur
+  return api
+    .post("/cart/" + productId, {
       color: color,
       size: size,
       quantity: quantity,
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      return data.message;
+    }, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    })
+    .then(function (response) {
+      return response.data.message;
     });
 };
 

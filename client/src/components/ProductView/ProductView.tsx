@@ -17,6 +17,7 @@ interface ProductViewProps {
   price: number;
   image: string;
   description: string;
+  variations?: any[];
 }
 
 function ProductView(props: ProductViewProps) {
@@ -99,12 +100,7 @@ function ProductView(props: ProductViewProps) {
           onClose={() => setIsModalOpen(false)}
           onConfirm={handleAddToCart} 
           title={props.title}
-          // AJOUTER les variations (ici en exemple, à remplacer par props.variations si dispo)
-          variations={[
-            { color: "Noir", size: "M" },
-            { color: "Noir", size: "L" },
-            { color: "Blanc", size: "S" },
-          ]}
+          variations={props.variations || []}
         />
       </div>
     </div>

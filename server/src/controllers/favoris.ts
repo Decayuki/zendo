@@ -21,7 +21,8 @@ async function getProduct(req: Request, res: Response) {
 
     // Etape 2 : check produit par son id et recupere aussi les variations de ce produit
     const product = await Product.findById({ _id: productId });
-    const productVariations = await Variation.findById({
+    // find() et pas findById() car on cherche TOUTES les variations du produit (pas une seule par ID)
+    const productVariations = await Variation.find({
       productId: productId,
     });
 
@@ -47,11 +48,14 @@ async function getProduct(req: Request, res: Response) {
 
 async function addFavori(req: Request, res: Response) {
   try {
-    // Etape 1 : recupere l'id du produit et le user id dans les params de l'URL
+    // Etape 1 : recupere l'id du produit et le user id depuis le token
     const userId = getUserFromHeaders(req);
+    if (!userId) {
+      return res.status(401).json({ message: "Non autorise" });
+    }
     const productId = req.params.productId as unknown as Types.ObjectId;
 
-    // Etape 2 : check user par son id et check produit par son id et recupere aussi les variations de ce produit
+    // Etape 2 : check user par son id et check produit par son id
     const user = await User.findById({ _id: userId });
     const product = await Product.findById({ _id: productId });
 
@@ -62,7 +66,7 @@ async function addFavori(req: Request, res: Response) {
         .json({ message: "Utilisateur ou produit non trouvé" });
     }
 
-    // Etape 4 : verifier que le productId n'est pas déjà dans les favoris
+    // Etape 4 : verifier que le productId n'est pas deja dans les favoris
     if (user.favoris && user.favoris.includes(productId)) {
       return res.status(400).json({ message: "Article déjà dans les favoris" });
     }
@@ -90,8 +94,11 @@ async function addFavori(req: Request, res: Response) {
 
 async function deleteFavori(req: Request, res: Response) {
   try {
-    // Etape 1 : recupere l'id du produit et le user id dans les params de l'URL
+    // Etape 1 : recupere l'id du produit et le user id depuis le token
     const userId = getUserFromHeaders(req);
+    if (!userId) {
+      return res.status(401).json({ message: "Non autorise" });
+    }
     const productId = req.params.productId as unknown as Types.ObjectId;
 
     // Etape 2 : check user par son id et check produit par son id
@@ -137,8 +144,11 @@ async function deleteFavori(req: Request, res: Response) {
 
 async function getFavori(req: Request, res: Response) {
   try {
-    // Etape 1 : recupere l'id utilisateur dans les params de l'URL
+    // Etape 1 : recupere l'id utilisateur depuis le token JWT
     const userId = getUserFromHeaders(req);
+    if (!userId) {
+      return res.status(401).json({ message: "Non autorise" });
+    }
 
     // Etape 2 : check user par son id et recupere son tableau de favoris
     const user = await User.findById({ _id: userId }).populate("favoris");

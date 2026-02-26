@@ -25,6 +25,7 @@ import Favoris from "./pages/Favoris";
 import Profil from "./pages/Profil";
 import Shop from "./pages/Shop";
 import ProductList from "./pages/ProductList";
+import SellerHome from "./pages/Seller/SellerHome";
 
 // --- Composants ---
 import Navbar from "./components/Navbar/Navbar";
@@ -67,6 +68,12 @@ function AppContent() {
         <Route path="/profil" element={<Profil />} />
         <Route path="/boutique" element={<Shop />} />
 
+        {/* --- Route produit (avant les catch-all dynamiques) --- */}
+        <Route path="/produit/:id" element={<ProductDetail />} />
+
+        {/* --- Route vendeur --- */}
+        <Route path="/vendeur" element={<SellerHome />} />
+
         {/* --- Routes dynamiques (ProductList par famille/categorie) --- */}
         {/* IMPORTANT : ces routes doivent etre APRES les routes fixes
             sinon "favoris" serait interprete comme un nom de famille */}
@@ -74,9 +81,7 @@ function AppContent() {
         <Route path="/:family/:category" element={<ProductList />} />
         {/* --- Route par defaut : redirige vers login --- */}
         {/* Plus tard on pourra rediriger vers /accueil si l'utilisateur est connecte */}
-        <Route path="/" element={<Navigate to="/login" />} />
         <Route path="*" element={<Navigate to="/login" />} />
-        <Route path="/produit/:id" element={<ProductDetail />} />
       </Routes>
 
       {/* On affiche la Navbar seulement si on est PAS sur une page d'auth */}
