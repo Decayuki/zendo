@@ -16,6 +16,9 @@ import variationRoutes from "./routes/variation";
 import favorisRoutes from "./routes/favoris";
 import cartRoutes from "./routes/cart";
 
+import userRoutes from "./routes/user";       
+import addressRoutes from "./routes/address";
+
 // Charge depuis le .env
 // (MONGO_URI, JWT_SECRET, PORT)
 dotenv.config();
@@ -41,6 +44,12 @@ app.use(express.json());
 // Exemple : POST /api/auth/signup, POST /api/auth/login
 //
 app.use("/api/auth", authRoutes);
+
+// Route pour le profil utilisateur (Update nom, prénom, email)
+app.use("/api/users", userRoutes);
+
+// Route pour les adresses (Save/Update shipping address)
+app.use("/api/address", addressRoutes);
 
 // Routes produits : GET /api/products, GET /api/products/:id, POST, DELETE
 app.use("/api/products", productRoutes);
