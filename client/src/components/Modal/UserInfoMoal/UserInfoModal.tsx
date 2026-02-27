@@ -56,25 +56,16 @@ const UserInfosModal = ({ isOpen, onClose }: UserInfosModalProps) => {
       }
     }
 
-    // 2. VALIDATION
-    if (!userId) {
-      alert("Erreur : Impossible de récupérer votre identifiant.");
-      return;
-    }
-
-    if (!firstName.trim() || !lastName.trim() || !email.trim()) {
-      alert("Le prénom, le nom et l'adresse mail ne peuvent pas être vides.");
+    // 2. VALIDATION : Seul l'email est requis
+    if (!email.trim()) {
+      alert("L'adresse mail ne peut pas être vide.");
       return;
     }
     try {
-      // 2. APPEL API : Mise à jour du Profil (PUT /api/users/:id)
-      const userPromise = axios.put(
+      // 2. APPEL API USER : Uniquement avec l'email
+    const userPromise = axios.put(
         `http://localhost:5001/api/users/${userId}`,
-        {
-          firstName,
-          lastName,
-          email,
-        },
+        { email } // On n'envoie plus le nom/prénom
       );
 
       // 3. APPEL API : Enregistrement/Update Adresse (POST /api/address/save/:userId)
@@ -131,8 +122,8 @@ const UserInfosModal = ({ isOpen, onClose }: UserInfosModalProps) => {
               <input
                 type="text"
                 value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                placeholder="Votre prénom"
+                disabled // Empêche la modification
+                className="disabled-input"
               />
             </div>
             <div className="input-group">
@@ -140,8 +131,8 @@ const UserInfosModal = ({ isOpen, onClose }: UserInfosModalProps) => {
               <input
                 type="text"
                 value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                placeholder="Votre nom"
+                disabled // Empêche la modification
+                className="disabled-input"
               />
             </div>
             <div className="input-group">
