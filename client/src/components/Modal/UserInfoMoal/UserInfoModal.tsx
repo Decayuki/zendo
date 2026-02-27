@@ -32,15 +32,54 @@ const UserInfosModal = ({ isOpen, onClose }: UserInfosModalProps) => {
   });
   // On remplit les champs dès que la Modal s'ouvre ou que Redux change
   useEffect(() => {
+    const loadUserData = async () => {
+    // 1. Remplissage des infos utilisateur (Redux)
     if (user) {
       setFirstName(user.firstName || "");
       setLastName(user.lastName || "");
       setEmail(user.email || "");
+    };
+    // 2. Récupération de l'adresse depuis le Backend
+    if (isOpen && (user?._id || token)) {
+      try {
+        // Récupération de l'ID via user ou décodage token
+        let userId = user?._id;
+        if (!userId && token) {
+          const decoded: any = jwtDecode(token);
+          userId = decoded.id;
+        }
 
-      // Optionnel : on pourrait ajouter ici un appel GET /api/address/:userId
-      // pour pré-remplir l'adresse si elle existe déjà en base
+        const response = await axios.get(`http://localhost:5001/api/address/${userId}`);
+        const allAddresses = response.data; // C'est le tableau d'adresses
+
+        // 3. Filtrage côté Front pour l'adresse de type "shipping"
+        if (Array.isArray(allAddresses)) {
+          const shippingAddr = allAddresses.find(
+            (addr: any) => addr.addressType === "shipping"
+          );
+
+          if (shippingAddr) {
+            setAddress({
+              country: shippingAddr.country || "",
+              countryCode: shippingAddr.phone?.startsWith("+") 
+                ? shippingAddr.phone.substring(0, 3) 
+                : "+33",
+              phone: shippingAddr.phone?.startsWith("+") 
+                ? shippingAddr.phone.substring(3) 
+                : shippingAddr.phone || "",
+              street: shippingAddr.street || "",
+              city: shippingAddr.city || "",
+              postalCode: shippingAddr.postalCode || "",
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Erreur lors du chargement de l'adresse :", error);
+      }
     }
-  }, [user, isOpen]);
+  };
+    loadUserData();
+  }, [user, isOpen,token]);
 
   const handleSave = async () => {
     // 1. RÉCUPÉRATION DE L'ID (via Redux ou via Décodage du Token)
@@ -69,7 +108,7 @@ const UserInfosModal = ({ isOpen, onClose }: UserInfosModalProps) => {
       );
 
       // 3. APPEL API : Enregistrement/Update Adresse (POST /api/address/save/:userId)
-      // On n'envoie l'adresse que si les champs minimum sont remplis
+      // On n'envoie l'adresse que si les champs sont remplis
       let addressPromise = Promise.resolve(null);
       if (address.street && address.city && address.phone) {
         addressPromise = axios.post(
@@ -80,7 +119,7 @@ const UserInfosModal = ({ isOpen, onClose }: UserInfosModalProps) => {
             postalCode: address.postalCode,
             city: address.city,
             country: address.country,
-            addressType: "shipping", // Par défaut 
+            addressType: "shipping", // Définit le type
           },
         );
       }
