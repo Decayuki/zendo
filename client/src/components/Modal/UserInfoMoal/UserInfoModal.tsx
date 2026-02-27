@@ -151,6 +151,13 @@ const UserInfosModal = ({ isOpen, onClose }: UserInfosModalProps) => {
   return (
     <div className="modal-overlay">
       <div className="modal-content info-modal-container">
+        <button 
+          className="modal-close-button" 
+          onClick={onClose} 
+          aria-label="Fermer"
+        >
+          &times;
+        </button>
         <h2 className="modal-title">Informations personnelles</h2>
         
         <div className="info-section-wrapper">
@@ -185,7 +192,6 @@ const UserInfosModal = ({ isOpen, onClose }: UserInfosModalProps) => {
             </div>
           </div>
 
-          <hr className="modal-divider" />
 
           <div className="info-section">
             <h3>Adresse</h3>
@@ -254,9 +260,6 @@ const UserInfosModal = ({ isOpen, onClose }: UserInfosModalProps) => {
 
         {/* Les boutons doivent être en dehors du wrapper de scroll pour rester visibles */}
         <div className="modal-actions">
-          <Button variant="secondary" onClick={onClose}>
-            Annuler
-          </Button>
           <Button variant="primary" onClick={handleSave}>
             Enregistrer
           </Button>
