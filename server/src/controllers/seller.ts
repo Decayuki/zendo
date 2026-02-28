@@ -154,4 +154,46 @@ async function createSeller(req: Request, res: Response) {
     return res.status(500).json({ message: "Erreur serveur lors de la création de la boutique" });
   }
 }
-export { getSellerHome, getSellerInfos, createSeller };
+
+// =============================================================
+// UPDATE SELLER INFOS - Modifier les infos de la boutique
+// PUT /api/seller/update/:id (où :id est le userId)
+// =============================================================
+async function updateSellerInfos(req: Request, res: Response) {
+  try {
+    const userId = req.params.id;
+    const { shopName, shopLogo, shopStatus, siretNumber } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({ message: "ID utilisateur manquant" });
+    }
+
+    // On prépare les données à mettre à jour
+    // On ne met à jour que ce qui est envoyé dans le body
+    const updateData: any = {};
+    if (shopName !== undefined) updateData.shopName = shopName;
+    if (shopLogo !== undefined) updateData.shopLogo = shopLogo;
+    if (shopStatus !== undefined) updateData.shopStatus = shopStatus;
+    if (siretNumber !== undefined) updateData.siretNumber = siretNumber;
+
+    const updatedSeller = await Seller.findOneAndUpdate(
+      { userId: userId },
+      { $set: updateData },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedSeller) {
+      return res.status(404).json({ message: "Boutique non trouvée pour cet utilisateur" });
+    }
+
+    return res.status(200).json({
+      message: "Informations de la boutique mises à jour",
+      seller: updatedSeller
+    });
+  } catch (error) {
+    console.error("Erreur updateSellerInfos:", error);
+    return res.status(500).json({ message: "Erreur serveur lors de la mise à jour" });
+  }
+}
+
+export { getSellerHome, getSellerInfos, createSeller, updateSellerInfos };
