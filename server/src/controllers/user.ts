@@ -5,21 +5,26 @@ import User from "../models/User";
 async function updateProfile(req: Request, res: Response) {
   try {
     // Étape 1 : Récupérer l'ID depuis l'URL
-    const { id } = req.params; 
-   
-    
+    const { id } = req.params;
+
     // Étape 2 : Récupérer les données de modification
-    const { email } = req.body;
+    const { email, role } = req.body;
 
     if (!email) {
-      return res.status(400).json({ message: "L'adresse email est obligatoire"});
+      return res
+        .status(400)
+        .json({ message: "L'adresse email est obligatoire" });
     }
+
+    // Préparer l'objet de mise à jour
+    const updateData: any = { email };
+    if (role) updateData.role = role; // On n'ajoute role que s'il est présent dans la requête
 
     // Étape 3 : Mise à jour via l'ID de l'URL
     const updatedUser = await User.findByIdAndUpdate(
       id,
-      { email },
-      { new: true, runValidators: true }
+      updateData,
+      { new: true, runValidators: true },
     );
 
     if (!updatedUser) {
