@@ -58,7 +58,7 @@ const ShopInfoModal = ({
                 type="text"
                 value={shopName}
                 onChange={(e) => setShopName(e.target.value)}
-                placeholder="Ex: Ma Super Boutique"
+                placeholder="Ex: Ma Boutique"
               />
             </div>
 
