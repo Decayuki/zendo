@@ -81,6 +81,7 @@ function AppContent() {
         <Route path="/:family/:category" element={<ProductList />} />
         {/* --- Route par defaut : redirige vers login --- */}
         {/* Plus tard on pourra rediriger vers /accueil si l'utilisateur est connecte */}
+        <Route path="/" element={<Navigate to="/login" />} />
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
 
