@@ -27,6 +27,14 @@ async function addCartItem(req: Request, res: Response) {
     if (!product) {
       return res.status(404).json({ message: "Produit non trouvé" });
     }
+    // Etape 3 check que les variations sont renseignées
+    if (!size || !color || !quantity) {
+      return res
+        .status(400)
+        .json({
+          message: "Veuillez renseigner la taille, la couleur et la quantité",
+        });
+    }
     // Etape 3 : mise à jour du panier de l'utilisateur en ajoutant le produit avec la variation choisie
     const user = await User.findById({ _id: userId });
     // on vérifie si user et panier existent
@@ -168,8 +176,13 @@ async function deleteCartItem(req: Request, res: Response) {
 
 async function getCartItems(req: Request, res: Response) {
   try {
-    // Etape 1 : recupere l'id utilisateur dans les params de l'URL
+    // Etape 1 : recupere l'id utilisateur dans les headers
     const userId = getUserFromHeaders(req);
+
+    // Etape 1.5 : vérifier que l'userId n'est pas null
+    if (!userId) {
+      return res.status(401).json({ message: "Utilisateur non authentifié" });
+    }
 
     // Etape 2 : check user par son id et recupere son tableau de panier
     const user = await User.findById({ _id: userId }).populate("cart");

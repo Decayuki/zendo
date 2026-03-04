@@ -35,9 +35,9 @@ const updateCartItem = (
   cartItemId: string,
   selectedQuantity: number,
 ) => {
-  // j'envoie une requete PUT à l'API pour mettre à jour le produit dans le panier de l'utilisateur
+  // j'envoie une requete PATCH à l'API pour mettre à jour le produit dans le panier de l'utilisateur
   return fetch(`http://localhost:5001/api/cart/${productId}/${cartItemId}`, {
-    method: "PUT",
+    method: "PATCH",
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("token"),

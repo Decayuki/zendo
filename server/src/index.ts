@@ -65,6 +65,9 @@ app.use("/api/users", userRoutes);
 // Routes address : POST /api/address/save/:userId (sauvegarder adresse)
 app.use("/api/address", addressRoutes);
 
+// Routes orders : POST /api/orders/create (creer une commande)
+app.use("/api/orders", require("./routes/order"));
+
 // Route de test pour verifier que le serveur fonctionne
 // http://localhost:5000
 app.get("/", function (req, res) {

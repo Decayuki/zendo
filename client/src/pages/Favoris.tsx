@@ -27,6 +27,8 @@ function Favoris() {
   // On stocke l'id du favori selectionne pour ouvrir le bon modal (un seul a la fois)
   const [selectedFavoriId, setSelectedFavoriId] = useState<string | null>(null);
 
+  const [showModal, setShowModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
   useEffect(function () {
     // Etape 1 : fetch les favoris de l'utilisateur
     api

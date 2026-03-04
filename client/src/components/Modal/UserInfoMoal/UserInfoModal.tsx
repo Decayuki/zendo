@@ -33,53 +33,55 @@ const UserInfosModal = ({ isOpen, onClose }: UserInfosModalProps) => {
   // On remplit les champs dès que la Modal s'ouvre ou que Redux change
   useEffect(() => {
     const loadUserData = async () => {
-    // 1. Remplissage des infos utilisateur (Redux)
-    if (user) {
-      setFirstName(user.firstName || "");
-      setLastName(user.lastName || "");
-      setEmail(user.email || "");
-    };
-    // 2. Récupération de l'adresse depuis le Backend
-    if (isOpen && (user?._id || token)) {
-      try {
-        // Récupération de l'ID via user ou décodage token
-        let userId = user?._id;
-        if (!userId && token) {
-          const decoded: any = jwtDecode(token);
-          userId = decoded.id;
-        }
-
-        const response = await axios.get(`http://localhost:5001/api/address/${userId}`);
-        const allAddresses = response.data; // C'est le tableau d'adresses
-
-        // 3. Filtrage côté Front pour l'adresse de type "shipping"
-        if (Array.isArray(allAddresses)) {
-          const shippingAddr = allAddresses.find(
-            (addr: any) => addr.addressType === "shipping"
-          );
-
-          if (shippingAddr) {
-            setAddress({
-              country: shippingAddr.country || "",
-              countryCode: shippingAddr.phone?.startsWith("+") 
-                ? shippingAddr.phone.substring(0, 3) 
-                : "+33",
-              phone: shippingAddr.phone?.startsWith("+") 
-                ? shippingAddr.phone.substring(3) 
-                : shippingAddr.phone || "",
-              street: shippingAddr.street || "",
-              city: shippingAddr.city || "",
-              postalCode: shippingAddr.postalCode || "",
-            });
-          }
-        }
-      } catch (error) {
-        console.error("Erreur lors du chargement de l'adresse :", error);
+      // 1. Remplissage des infos utilisateur (Redux)
+      if (user) {
+        setFirstName(user.firstName || "");
+        setLastName(user.lastName || "");
+        setEmail(user.email || "");
       }
-    }
-  };
+      // 2. Récupération de l'adresse depuis le Backend
+      if (isOpen && (user?._id || token)) {
+        try {
+          // Récupération de l'ID via user ou décodage token
+          let userId = user?._id;
+          if (!userId && token) {
+            const decoded: any = jwtDecode(token);
+            userId = decoded.id;
+          }
+
+          const response = await axios.get(
+            `http://localhost:5001/api/address/${userId}`,
+          );
+          const allAddresses = response.data; // C'est le tableau d'adresses
+
+          // 3. Filtrage côté Front pour l'adresse de type "shipping"
+          if (Array.isArray(allAddresses)) {
+            const shippingAddr = allAddresses.find(
+              (addr: any) => addr.addressType === "shipping",
+            );
+
+            if (shippingAddr) {
+              setAddress({
+                country: shippingAddr.country || "",
+                countryCode: shippingAddr.phone?.startsWith("+")
+                  ? shippingAddr.phone.substring(0, 3)
+                  : "+33",
+                phone: shippingAddr.phone?.startsWith("+")
+                  ? shippingAddr.phone.substring(3)
+                  : shippingAddr.phone || "",
+                street: shippingAddr.street || "",
+                city: shippingAddr.city || "",
+                postalCode: shippingAddr.postalCode || "",
+              });
+            }
+          }
+        } catch (error) {
+          console.error("Erreur lors du chargement de l'adresse :", error);
+        }
+      }
+    };
     loadUserData();
-  }, [user, isOpen,token]);
+  }, [user, isOpen, token]);
 
   const handleSave = async () => {
     // 1. RÉCUPÉRATION DE L'ID (via Redux ou via Décodage du Token)
@@ -102,9 +104,9 @@ const UserInfosModal = ({ isOpen, onClose }: UserInfosModalProps) => {
     }
     try {
       // 2. APPEL API USER : Uniquement avec l'email
-    const userPromise = axios.put(
+      const userPromise = axios.put(
         `http://localhost:5001/api/users/${userId}`,
-        { email } // On n'envoie plus le nom/prénom
+        { email }, // On n'envoie plus le nom/prénom
       );
 
       // 3. APPEL API : Enregistrement/Update Adresse (POST /api/address/save/:userId)
@@ -151,15 +153,15 @@ const UserInfosModal = ({ isOpen, onClose }: UserInfosModalProps) => {
   return (
     <div className="modal-overlay">
       <div className="modal-content info-modal-container">
-        <button 
-          className="modal-close-button" 
-          onClick={onClose} 
+        <button
+          className="modal-close-button"
+          onClick={onClose}
           aria-label="Fermer"
         >
           &times;
         </button>
         <h2 className="modal-title">Informations personnelles</h2>
-        
+
         <div className="info-section-wrapper">
           <div className="info-section">
             <h3>Mes informations</h3>
@@ -192,7 +194,6 @@ const UserInfosModal = ({ isOpen, onClose }: UserInfosModalProps) => {
             </div>
           </div>
 
-
           <div className="info-section">
             <h3>Adresse</h3>
             <div className="input-group">
@@ -201,7 +202,9 @@ const UserInfosModal = ({ isOpen, onClose }: UserInfosModalProps) => {
                 type="text"
                 value={address.country}
                 placeholder="Ex: France"
-                onChange={(e) => setAddress({ ...address, country: e.target.value })}
+                onChange={(e) =>
+                  setAddress({ ...address, country: e.target.value })
+                }
               />
             </div>
 
@@ -210,7 +213,9 @@ const UserInfosModal = ({ isOpen, onClose }: UserInfosModalProps) => {
               <div className="phone-input-row">
                 <select
                   value={address.countryCode}
-                  onChange={(e) => setAddress({ ...address, countryCode: e.target.value })}
+                  onChange={(e) =>
+                    setAddress({ ...address, countryCode: e.target.value })
+                  }
                 >
                   <option value="+33">+33 (FR)</option>
                   <option value="+32">+32 (BE)</option>
@@ -220,7 +225,9 @@ const UserInfosModal = ({ isOpen, onClose }: UserInfosModalProps) => {
                   type="tel"
                   value={address.phone}
                   placeholder="612345678"
-                  onChange={(e) => setAddress({ ...address, phone: e.target.value })}
+                  onChange={(e) =>
+                    setAddress({ ...address, phone: e.target.value })
+                  }
                 />
               </div>
             </div>
@@ -231,7 +238,9 @@ const UserInfosModal = ({ isOpen, onClose }: UserInfosModalProps) => {
                 type="text"
                 value={address.street}
                 placeholder="15 rue de la Paix"
-                onChange={(e) => setAddress({ ...address, street: e.target.value })}
+                onChange={(e) =>
+                  setAddress({ ...address, street: e.target.value })
+                }
               />
             </div>
 
@@ -242,7 +251,9 @@ const UserInfosModal = ({ isOpen, onClose }: UserInfosModalProps) => {
                   type="text"
                   value={address.city}
                   placeholder="Paris"
-                  onChange={(e) => setAddress({ ...address, city: e.target.value })}
+                  onChange={(e) =>
+                    setAddress({ ...address, city: e.target.value })
+                  }
                 />
               </div>
               <div className="input-group half">
@@ -251,7 +262,9 @@ const UserInfosModal = ({ isOpen, onClose }: UserInfosModalProps) => {
                   type="text"
                   value={address.postalCode}
                   placeholder="75000"
-                  onChange={(e) => setAddress({ ...address, postalCode: e.target.value })}
+                  onChange={(e) =>
+                    setAddress({ ...address, postalCode: e.target.value })
+                  }
                 />
               </div>
             </div>

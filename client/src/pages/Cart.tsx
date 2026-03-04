@@ -15,17 +15,13 @@ import Button from "../components/Button/Button";
 import { Link, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { updateCartItem } from "../services/cartService";
 
 function Cart() {
   // ETATS & HOOKS
   const [cart, setCart] = useState<any[]>([]);
 
   const [error, setError] = useState("");
-
-  // set l'état pour stocker la quantité sélectionnée par l'utilisateur
-  const [selectedQuantity, setSelectedQuantity] = useState<number | undefined>(
-    undefined,
-  );
 
   useEffect(() => {
     // fetch les produits du panier de l'utilisateur
@@ -51,13 +47,13 @@ function Cart() {
               cart[i].productData = productData.product;
               // mettre à jour le panier avec les données du produit
               setCart([...cart]);
-              setSelectedQuantity(cart[i].quantity);
             });
         }
         console.log(cart);
       });
   }, []);
 
+  // fonction pour afficher la liste des produits du panier de l'utilisateur
   const cartList = () => {
     return cart.map((item: any) => (
       <div key={item._id} className="product-item">
@@ -77,9 +73,9 @@ function Cart() {
             <div className="product-variations-info">
               <span className="product-color">Couleur : {item.color}</span>
               <div className="product-quantity-controls">
-                <button onClick={handleDecreaseQuantity}>-</button>
-                <span>{selectedQuantity}</span>
-                <button onClick={handleIncreaseQuantity}>+</button>
+                <button onClick={() => handleDecreaseQuantity(item)}>-</button>
+                <span>{item.quantity}</span>
+                <button onClick={() => handleIncreaseQuantity(item)}>+</button>
               </div>
             </div>
             <div className="product-size-delete">
@@ -96,54 +92,38 @@ function Cart() {
     ));
   };
 
-  const handleIncreaseQuantity = () => {
-    if (selectedQuantity < 10) {
-      setSelectedQuantity(selectedQuantity + 1);
-      fetch(
-        `http://localhost:5001/api/cart/${cart[i].product}/${cart[i]._id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-          body: JSON.stringify({ quantity: selectedQuantity + 1 }),
-        },
-      );
-      console.log("Quantité augmentée");
+  // fonctions pour augmenter la quantité d'un produit dans le panier de l'utilisateur
+  const handleIncreaseQuantity = (item: any) => {
+    if (item.quantity < 10) {
+      item.quantity += 1;
+      setCart([...cart]);
+      updateCartItem(item.product, item._id, item.quantity);
     }
   };
-  const handleDecreaseQuantity = () => {
-    if (selectedQuantity > 1) {
-      setSelectedQuantity(selectedQuantity - 1);
-      fetch(
-        `http://localhost:5001/api/cart/${cart[i].product}/${cart[i]._id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-          body: JSON.stringify({ quantity: selectedQuantity - 1 }),
-        },
-      );
-      console.log("Quantité diminuée");
+  // fonctions pour diminuer la quantité d'un produit dans le panier de l'utilisateur
+  const handleDecreaseQuantity = (item: any) => {
+    if (item.quantity > 1) {
+      item.quantity -= 1;
+      setCart([...cart]);
+      updateCartItem(item.product, item._id, item.quantity);
     }
   };
-
   const handleDeleteClick = (item: any) => {
-    // TODO : fonction pour supprimer un produit du panier de l'utilisateur
+    // supprimer le produit du panier de l'utilisateur
+    setCart((prevCart) =>
+      // filtrer le panier pour supprimer le produit correspondant
+      prevCart.filter((cartItem) => cartItem._id !== item._id),
+    );
+
     fetch(`http://localhost:5001/api/cart/${item.product}/${item._id}`, {
       method: "DELETE",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
     })
+      // mettre a jour le panier apres suppression du produit
       .then((response) => response.json())
-      .then((data) => {
-        // mettre à jour le panier après la suppression
-        setCart(cart.filter((item) => item._id !== data.deletedItemId));
-      });
+      .catch(() => {});
   };
 
   return (
