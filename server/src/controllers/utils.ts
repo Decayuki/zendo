@@ -13,10 +13,7 @@ export function getUserFromHeaders(req: any): string | null {
 
   try {
     // Etape 3 : decoder le token pour savoir de quel user il s'agit
-    const decodedToken = jwt.verify(
-      token,
-      process.env.JWT_SECRET as string,
-    );
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET as string);
     // on recupere l'id du user a partir du token decode
     const userId = (decodedToken as { id: string }).id;
     return userId;

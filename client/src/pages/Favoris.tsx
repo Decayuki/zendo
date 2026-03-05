@@ -9,11 +9,14 @@ import "../styles/Pages.css";
 import "../styles/Favoris.css";
 import { useEffect, useState } from "react";
 import { Header } from "../components/Header/Header";
+import Navbar from "../components/Navbar/Navbar";
 import { Link } from "react-router-dom";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ProductModal from "../components/Modal/ProductModal/ProductModal";
 import { addToCart } from "../services/cartService";
+import { removeFavori } from "../services/favoriService";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { Message } from "../components/Message/Message";
 import api from "../services/api";
 
@@ -24,6 +27,8 @@ function Favoris() {
   // On stocke l'id du favori selectionne pour ouvrir le bon modal (un seul a la fois)
   const [selectedFavoriId, setSelectedFavoriId] = useState<string | null>(null);
 
+  const [showModal, setShowModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
   useEffect(function () {
     // Etape 1 : fetch les favoris de l'utilisateur
     api
@@ -61,7 +66,11 @@ function Favoris() {
         <div key={favori._id} className="favoris-item">
           <Link to={"/produit/" + favori._id} className="favoris-link">
             <img
-              src={favori.images && favori.images[0] ? favori.images[0] : "/placeholder.png"}
+              src={
+                favori.images && favori.images[0]
+                  ? favori.images[0]
+                  : "/placeholder.png"
+              }
               alt={favori.name}
               className="favoris-image"
             />
@@ -85,7 +94,9 @@ function Favoris() {
                   setSelectedFavoriId(null);
                 }}
                 onConfirm={function ({ color, size, quantity }: any) {
-                  addToCart(favori._id, color, size, quantity).then(function (message: string) {
+                  addToCart(favori._id, color, size, quantity).then(function (
+                    message: string,
+                  ) {
                     setError(message);
                   });
                 }}
@@ -106,8 +117,25 @@ function Favoris() {
         <Message message={error} variant="error" />
         <div className="page-favoris">
           <div className="page-favoris-list">{favorisList()}</div>
+          <ProductModal
+            key={selectedProduct?._id}
+            isOpen={showModal}
+            onClose={() => setShowModal(false)}
+            onConfirm={({ color, size, quantity }: any) => {
+              // j'appelle la fonction addToCart du service cartService pour ajouter le produit au panier de l'utilisateur
+              // .then pour récupérer le message d'ajout au panier et l'afficher à l'utilisateur
+              addToCart(selectedProduct._id, color, size, quantity).then(
+                (message) => {
+                  setError(message);
+                },
+              );
+            }}
+            title="Choisissez une variation"
+            variations={selectedProduct?.variations || []}
+          />
         </div>
       </div>
+      <Navbar />
     </div>
   );
 }

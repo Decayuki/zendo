@@ -98,7 +98,7 @@ function ProductView(props: ProductViewProps) {
         <ProductModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          onConfirm={handleAddToCart} 
+          onConfirm={handleAddToCart}
           title={props.title}
           variations={props.variations || []}
         />
