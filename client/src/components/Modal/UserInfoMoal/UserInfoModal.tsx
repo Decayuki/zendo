@@ -105,7 +105,7 @@ const UserInfosModal = ({ isOpen, onClose }: UserInfosModalProps) => {
     try {
       // 2. APPEL API USER : Uniquement avec l'email
       const userPromise = axios.put(
-        `http://localhost:5001/api/users/${userId}`,
+        `http://localhost:5001/api/auth/${userId}`,
         { email }, // On n'envoie plus le nom/prénom
       );
 

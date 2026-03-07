@@ -33,9 +33,6 @@ router.use("/cart", cartRoutes);
 // Routes seller : GET /api/seller/:id (dashboard vendeur)
 router.use("/seller", sellerRoutes);
 
-// Routes user : PUT /api/users/:id (update profil)
-router.use("/users", userRoutes);
-
 // Routes address : POST /api/address/save/:userId (sauvegarder adresse)
 router.use("/address", addressRoutes);
 
